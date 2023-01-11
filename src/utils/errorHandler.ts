@@ -20,6 +20,7 @@ const errorHandler = (
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       errorCode: error.errorCode,
+      message: error.message,
     });
   }
 

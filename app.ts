@@ -9,6 +9,7 @@ import express, {
 } from "express";
 const app = express();
 const server = http.createServer(app);
+import connectDB from "./src/config/db.js";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -21,6 +22,9 @@ import errorHandler from "./src/utils/errorHandler.js";
 
 // express router
 import userRouter from "./src/user/user.route.js";
+
+// init DB
+connectDB();
 
 // bodyparser
 app.use(express.urlencoded({ extended: true }));

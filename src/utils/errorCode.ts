@@ -1,5 +1,5 @@
 const errorCode = {
-  TEST: 310,
+  TEST: 400,
 };
 
 export default errorCode;

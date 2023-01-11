@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "removeComments": true,
+    // es1015 for no import error (no needed extension for js files)
+    "target": "es2022",
+    "module": "es2022",
+    "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmitOnError": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "incremental": true,
+    // create all js files in dist folder
+    "outDir": "dist",
+    // for running jest correctly
+    "allowJs": true,
+    "esModuleInterop": true
+  }
+}

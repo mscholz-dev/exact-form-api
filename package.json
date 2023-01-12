@@ -11,7 +11,7 @@
     "build": "npx tsc",
     "start": "node dist/app.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist/app.js\"",
-    "test": "jest --watch --no-cache --detectOpenHandles --watchAll --config ./dist/test/jest.config.js"
+    "test": "jest --watch --no-cache --runInBand --detectOpenHandles --watchAll --config ./dist/test/jest.config.js"
   },
   "repository": {
     "type": "git",

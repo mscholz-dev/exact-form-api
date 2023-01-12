@@ -7,7 +7,6 @@ type Create = {
   username: string;
   email: string;
   password: string;
-  password2: string;
 };
 
 export default class UserService {
@@ -15,7 +14,6 @@ export default class UserService {
     username,
     email,
     password,
-    password2,
   }: Create) {
     const hash = await argon.hash(password);
 

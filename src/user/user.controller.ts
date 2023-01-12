@@ -3,8 +3,10 @@ import AppError from "../utils/AppError.js";
 import errorCode from "../utils/errorCode.js";
 import xss from "xss";
 import { handleValidator } from "../utils/form.js";
+import { signJwt } from "../utils/jwt.js";
 
 import Service from "./user.service.js";
+import { cookieOptions } from "../utils/cookie.js";
 const UserService = new Service();
 
 type Create = {
@@ -52,8 +54,11 @@ export default class UserController {
       reqData,
     );
 
-    console.log(user);
+    const jwt = signJwt(user);
 
-    res.status(200).end();
+    res
+      .status(200)
+      .cookie("user", jwt, cookieOptions)
+      .end();
   }
 }

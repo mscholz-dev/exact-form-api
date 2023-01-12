@@ -33,6 +33,6 @@ const UserSchema = new Schema(
 );
 
 export default mongoose.model(
-  "UserModel",
+  "userModel",
   UserSchema,
 );

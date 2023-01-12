@@ -14,8 +14,6 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-// import multer from "multer";
-// const upload = multer();
 
 // error
 import errorHandler from "./src/utils/errorHandler.js";
@@ -24,8 +22,10 @@ import errorHandler from "./src/utils/errorHandler.js";
 import userRouter from "./src/user/user.route.js";
 
 // init DB
-connectDB();
-
+if (process.env.NODE_ENV !== "test") {
+  const db = await connectDB();
+  console.log(`MongoDB connected to: ${db}`);
+}
 // bodyparser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

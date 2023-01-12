@@ -1,7 +1,7 @@
 import AppError from "../utils/AppError.js";
 import errorCode from "../utils/errorCode.js";
 import argon from "argon2";
-import UserModel from "./user.model.js";
+import userModel from "./user.model.js";
 
 type Create = {
   username: string;
@@ -19,7 +19,7 @@ export default class UserService {
 
     // unique username and email
     const userAlreadyExist =
-      await UserModel.findOne(
+      await userModel.findOne(
         {
           $or: [
             { username: username },
@@ -57,7 +57,7 @@ export default class UserService {
       );
     }
 
-    return await UserModel.create({
+    return await userModel.create({
       username: username,
       email: email,
       password: hash,

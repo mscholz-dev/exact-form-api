@@ -20,13 +20,11 @@ export const signJwt = ({
       400,
     );
 
-  const jwtData = {
-    username,
-    email,
-  };
-
   return jwt.sign(
-    JSON.stringify(jwtData),
+    JSON.stringify({
+      username,
+      email,
+    }),
     process.env.JWT_SECRET,
     jwtOptions,
   );

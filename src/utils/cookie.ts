@@ -1,8 +1,8 @@
 import { CookieOptions } from "express-serve-static-core";
 
 export const cookieOptions: CookieOptions = {
-  // one week
-  maxAge: 1000 * 60 * 60 * 24 * 7,
+  // 8 weeks
+  maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
   path: "/",
   sameSite: "lax",
   secure: true,

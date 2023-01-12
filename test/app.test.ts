@@ -1,12 +1,7 @@
-// import { PrismaClient } from "@prisma/client";
-// const prisma = new PrismaClient();
+import userModel from "../src/user/user.model.js";
 
 // contact
-// import "./contact/email.test";
-
-// auth
-// import "./auth/signup.test";
-// import "./auth/signin.test";
+import "./user/user.create.test.js";
 
 // delete cache for every test
 beforeEach(() => {
@@ -15,5 +10,5 @@ beforeEach(() => {
 
 // reset test db
 afterAll(async () => {
-  // await prisma.user.deleteMany();
+  await userModel.deleteMany();
 });

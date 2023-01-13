@@ -20,7 +20,7 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  // console.log(error);
+  // console.log(err);
 
   if (
     err.name === "MongoServerError" &&

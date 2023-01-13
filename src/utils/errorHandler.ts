@@ -5,8 +5,13 @@ import {
   NextFunction,
 } from "express";
 
+type MongoError = {
+  code: number;
+  keyPattern: {};
+};
+
 const errorHandler = (
-  error: {
+  err: {
     name?: string;
     details?: string;
     statusCode?: number;
@@ -17,10 +22,36 @@ const errorHandler = (
 ) => {
   // console.log(error);
 
-  if (error instanceof AppError) {
-    return res.status(error.statusCode).json({
-      errorCode: error.errorCode,
-      message: error.message,
+  if (
+    err.name === "MongoServerError" &&
+    (err as MongoError).code === 11000
+  ) {
+    const mongoError = err as MongoError;
+
+    let errorMessage = "";
+
+    if (
+      mongoError.keyPattern.hasOwnProperty(
+        "username",
+      )
+    ) {
+      errorMessage = "username already exists";
+    } else if (
+      mongoError.keyPattern.hasOwnProperty(
+        "email",
+      )
+    ) {
+      errorMessage = "email already exists";
+    }
+
+    return res.status(400).json({
+      message: errorMessage,
+    });
+  }
+
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      message: err.message,
     });
   }
 

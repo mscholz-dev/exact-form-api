@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import AppError from "../utils/AppError.js";
-import errorCode from "../utils/errorCode.js";
 import xss from "xss";
-import { handleValidator } from "../utils/form.js";
-import { signJwt } from "../utils/jwt.js";
 
 import Service from "./user.service.js";
-import { cookieOptions } from "../utils/cookie.js";
 const UserService = new Service();
+
+import ValidatorClass from "../utils/Validator.js";
+const Validator = new ValidatorClass();
+
+import CookieClass from "../utils/Cookie.js";
+const Cookie = new CookieClass();
 
 type Create = {
   username: string;
@@ -26,17 +28,13 @@ export default class UserController {
     };
 
     Object.entries(reqData).forEach((item) => {
-      const errorMessage = handleValidator(
+      const errorMessage = Validator.errorMessage(
         item[0],
         req.body[item[0]],
       );
 
       if (errorMessage.length !== 0)
-        throw new AppError(
-          errorCode.TEST,
-          errorMessage,
-          400,
-        );
+        throw new AppError(errorMessage, 400);
 
       reqData[item[0] as keyof Create] = xss(
         req.body[item[0]],
@@ -45,7 +43,6 @@ export default class UserController {
 
     if (reqData.password !== reqData.password2)
       throw new AppError(
-        errorCode.TEST,
         "passwords not matching",
         400,
       );
@@ -54,11 +51,11 @@ export default class UserController {
       reqData,
     );
 
-    const jwt = signJwt(user);
+    const jwt = Cookie.signJwt(user);
 
     res
       .status(200)
-      .cookie("user", jwt, cookieOptions)
+      .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
 }

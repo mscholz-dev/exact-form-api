@@ -4,11 +4,7 @@ import {
   Response,
   NextFunction,
 } from "express";
-
-type MongoError = {
-  code: number;
-  keyPattern: {};
-};
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/index.js";
 
 const errorHandler = (
   err: {
@@ -23,25 +19,23 @@ const errorHandler = (
   // console.log(err);
 
   if (
-    err.name === "MongoServerError" &&
-    (err as MongoError).code === 11000
+    err instanceof
+      PrismaClientKnownRequestError &&
+    err.code === "P2002"
   ) {
-    const mongoError = err as MongoError;
-
     let errorMessage = "";
 
-    if (
-      mongoError.keyPattern.hasOwnProperty(
-        "username",
-      )
-    ) {
-      errorMessage = "username already exists";
-    } else if (
-      mongoError.keyPattern.hasOwnProperty(
-        "email",
-      )
-    ) {
-      errorMessage = "email already exists";
+    switch (err?.meta?.target) {
+      case "user_username_key":
+        errorMessage = "username already exists";
+        break;
+
+      case "user_email_key":
+        errorMessage = "email already exists";
+        break;
+
+      default:
+        break;
     }
 
     return res.status(400).json({

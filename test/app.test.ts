@@ -1,6 +1,5 @@
-// import connectDB from "../src/config/db.js";
-// import UserServiceClass from "../src/user/user.service.js";
-// const UserService = new UserServiceClass();
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 // contact
 import "./user/user.create.test.js";
@@ -12,6 +11,6 @@ beforeEach(async () => {
 });
 
 // reset test db
-afterEach(async () => {
-  // await UserService.deleteAll();
+afterAll(async () => {
+  await prisma.user.deleteMany();
 });

@@ -140,35 +140,35 @@ describe(route, () => {
     expect(res.statusCode).toBe(200);
   });
 
-  // it("it should throw: username already exists", async () => {
-  //   const res = await request(app)
-  //     .post(route)
-  //     .send({
-  //       username: data.username,
-  //       email: data.email,
-  //       password: data.password,
-  //       password2: data.password,
-  //     });
+  it("it should throw: username already exists", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+      });
 
-  //   expect(res.statusCode).toBe(400);
-  //   expect(res.body.message).toBe(
-  //     "username already exists",
-  //   );
-  // });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "username already exists",
+    );
+  });
 
-  // it("it should throw: email already exists", async () => {
-  //   const res = await request(app)
-  //     .post(route)
-  //     .send({
-  //       username: `${data.username}2`,
-  //       email: data.email,
-  //       password: data.password,
-  //       password2: data.password,
-  //     });
+  it("it should throw: email already exists", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: `${data.username}2`,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+      });
 
-  //   expect(res.statusCode).toBe(400);
-  //   expect(res.body.message).toBe(
-  //     "email already exists",
-  //   );
-  // });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "email already exists",
+    );
+  });
 });

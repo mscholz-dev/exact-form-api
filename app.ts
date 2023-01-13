@@ -1,15 +1,15 @@
 //config
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "test"
+      ? ".env.test"
+      : ".env",
+});
 import http from "http";
-import express, {
-  Request,
-  Response,
-  NextFunction,
-} from "express";
+import express from "express";
 const app = express();
 const server = http.createServer(app);
-import connectDB from "./src/config/db.js";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -21,11 +21,6 @@ import errorHandler from "./src/utils/errorHandler.js";
 // express router
 import userRouter from "./src/user/user.route.js";
 
-// init DB
-if (process.env.NODE_ENV !== "test") {
-  const db = await connectDB();
-  console.log(`MongoDB connected to: ${db}`);
-}
 // bodyparser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

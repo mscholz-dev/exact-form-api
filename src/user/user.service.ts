@@ -1,5 +1,7 @@
 import argon from "argon2";
-import userModel from "./user.model.js";
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 type Create = {
   username: string;
@@ -15,10 +17,12 @@ export default class UserService {
   }: Create) {
     const hash = await argon.hash(password);
 
-    return await userModel.create({
-      username: username,
-      email: email,
-      password: hash,
+    return await prisma.user.create({
+      data: {
+        username: username,
+        email: email,
+        password: hash,
+      },
     });
   }
 }

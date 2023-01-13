@@ -1,7 +1,48 @@
-import RegexClass from "./Regex.js";
+import Validator from "./Validator.js";
+import RegexClass from "../utils/Regex.js";
+import AppError from "../utils/AppError.js";
+
+// class
 const Regex = new RegexClass();
 
-export default class Validator {
+type UserSchema = {
+  username: string;
+  email: string;
+  password: string;
+  password2: string;
+};
+
+export default class UserValidator extends Validator {
+  inspectUserData(data: object): UserSchema {
+    const schema = {
+      username: "",
+      email: "",
+      password: "",
+      password2: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    this.checkPasswords(schema);
+
+    return schema;
+  }
+
+  checkPasswords({
+    password,
+    password2,
+  }: UserSchema) {
+    if (password !== password2)
+      throw new AppError(
+        "passwords not matching",
+        400,
+      );
+  }
+
   errorMessage(
     id: string,
     value: string,

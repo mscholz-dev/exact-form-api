@@ -1,4 +1,4 @@
-export default {
+const jestConfig = {
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: "..",
   testEnvironment: "node",
@@ -8,6 +8,7 @@ export default {
   },
   preset: "ts-jest",
   verbose: true,
-  forceExit: true,
   clearMocks: true,
 };
+
+export default jestConfig;

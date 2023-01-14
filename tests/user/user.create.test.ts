@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/user";
 
-describe(route, () => {
+describe(`POST: ${route}`, () => {
   it("it should throw: username required", async () => {
     const res = await request(app).post(route);
     expect(res.statusCode).toBe(400);

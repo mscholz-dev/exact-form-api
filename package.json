@@ -11,7 +11,7 @@
     "build": "npx tsc",
     "start": "node dist/app.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist/app.js\"",
-    "test": "jest --no-cache --watchAll --verbose --coverage --config ./dist/test/config/jest.config.js"
+    "test": "jest --no-cache --watchAll --verbose --coverage --config ./dist/tests/config/jest.config.js"
   },
   "repository": {
     "type": "git",

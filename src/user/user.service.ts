@@ -1,20 +1,18 @@
 import argon from "argon2";
-
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
-type Create = {
-  username: string;
-  email: string;
-  password: string;
-};
+// types
+import { TUserCreate } from "src/validator/type";
+
+// classes
+const prisma = new PrismaClient();
 
 export default class UserService {
   async create({
     username,
     email,
     password,
-  }: Create) {
+  }: TUserCreate) {
     const hash = await argon.hash(password);
 
     return await prisma.user.create({

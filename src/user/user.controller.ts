@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-
-import Service from "./user.service.js";
-const UserService = new Service();
-
+import UserServiceClass from "./user.service.js";
 import UserValidatorClass from "../validator/UserValidator.js";
-const UserValidator = new UserValidatorClass();
-
 import CookieClass from "../utils/Cookie.js";
+
+// classes
+const UserService = new UserServiceClass();
+const UserValidator = new UserValidatorClass();
 const Cookie = new CookieClass();
 
 export default class UserController {

@@ -135,8 +135,6 @@ describe(route, () => {
         password2: data.password,
       });
 
-    console.log(res.error);
-
     expect(res.statusCode).toBe(200);
   });
 

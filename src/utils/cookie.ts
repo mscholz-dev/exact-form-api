@@ -2,10 +2,8 @@ import { CookieOptions } from "express-serve-static-core";
 import AppError from "./AppError.js";
 import jwt from "jsonwebtoken";
 
-type SignJwt = {
-  username: string;
-  email: string;
-};
+// types
+import { TSignJwt } from "src/validator/type.js";
 
 export default class Cookie {
   cookieOptions(): CookieOptions {
@@ -20,7 +18,7 @@ export default class Cookie {
     };
   }
 
-  signJwt({ username, email }: SignJwt) {
+  signJwt({ username, email }: TSignJwt) {
     if (!process.env.JWT_SECRET)
       throw new AppError(
         "process.env.JWT_SECRET not defined",

@@ -5,12 +5,13 @@ import express, {
 const router = express.Router();
 import multer from "multer";
 const upload = multer();
-
-import Controller from "./user.controller.js";
-const UserController = new Controller();
 import tryCatch from "../utils/tryCatch.js";
+import UserControllerClass from "./user.controller.js";
 
-// create
+// classes
+const UserController = new UserControllerClass();
+
+// route: create
 router.route("/").post(
   upload.fields([
     { name: "username", maxCount: 1 },

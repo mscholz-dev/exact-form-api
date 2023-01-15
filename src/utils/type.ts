@@ -9,7 +9,7 @@ export type TSignJwt = {
   email: string;
 };
 
-export type TCreateUserData = {
+export type TUserCreateData = {
   username: string;
   email: string;
   password: string;
@@ -21,4 +21,14 @@ export type TInspectData = {
   email?: string;
   password?: string;
   password2?: string;
+};
+
+export type TUserConnectData = {
+  email: string;
+  password: string;
+};
+
+export type TUserConnect = {
+  email: string;
+  password: string;
 };

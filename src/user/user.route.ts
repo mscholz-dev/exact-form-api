@@ -12,7 +12,7 @@ import UserControllerClass from "./user.controller.js";
 const UserController = new UserControllerClass();
 
 // route: create
-router.route("/").post(
+router.route("/create").post(
   upload.fields([
     { name: "username", maxCount: 1 },
     { name: "email", maxCount: 1 },
@@ -21,6 +21,17 @@ router.route("/").post(
   ]),
   tryCatch(async (req: Request, res: Response) =>
     UserController.create(req, res),
+  ),
+);
+
+// route: connect
+router.route("/connect").post(
+  upload.fields([
+    { name: "email", maxCount: 1 },
+    { name: "password", maxCount: 1 },
+  ]),
+  tryCatch(async (req: Request, res: Response) =>
+    UserController.connect(req, res),
   ),
 );
 

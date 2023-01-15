@@ -1,5 +1,5 @@
-import AppError from "../utils/AppError.js";
-import SecurityClass from "../utils/Security.js";
+import AppError from "./AppError.js";
+import SecurityClass from "./Security.js";
 
 // types
 import { TInspectData } from "./type.js";

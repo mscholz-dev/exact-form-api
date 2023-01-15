@@ -3,7 +3,7 @@ import AppError from "./AppError.js";
 import jwt from "jsonwebtoken";
 
 // types
-import { TSignJwt } from "src/validator/type.js";
+import { TSignJwt } from "src/utils/type.js";
 
 export default class Cookie {
   cookieOptions(): CookieOptions {

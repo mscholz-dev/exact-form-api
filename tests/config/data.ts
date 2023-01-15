@@ -1,4 +1,4 @@
-export const data = {
+const data = {
   username: "mscholz.dev",
   email: "mscholz.dev@gmail.com",
   password: "Azerty5!",

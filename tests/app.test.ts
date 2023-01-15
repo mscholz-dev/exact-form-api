@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// contact
+// user
 import "./user/user.create.test.js";
+import "./user/user.connect.test.js";
 
 // connect to test db
 beforeEach(async () => {

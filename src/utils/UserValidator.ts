@@ -1,15 +1,20 @@
 import Validator from "./Validator.js";
-import RegexClass from "../utils/Regex.js";
-import AppError from "../utils/AppError.js";
+import RegexClass from "./Regex.js";
+import AppError from "./AppError.js";
 
 // types
-import { TCreateUserData } from "./type.js";
+import {
+  TUserCreateData,
+  TUserConnectData,
+} from "./type.js";
 
 // classes
 const Regex = new RegexClass();
 
 export default class UserValidator extends Validator {
-  inspectUserData(data: object): TCreateUserData {
+  inspectCreateData(
+    data: object,
+  ): TUserCreateData {
     const schema = {
       username: "",
       email: "",
@@ -28,10 +33,27 @@ export default class UserValidator extends Validator {
     return schema;
   }
 
+  inspectConnectData(
+    data: object,
+  ): TUserConnectData {
+    const schema = {
+      email: "",
+      password: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   checkPasswords({
     password,
     password2,
-  }: TCreateUserData) {
+  }: TUserCreateData) {
     if (password !== password2)
       throw new AppError(
         "passwords not matching",

@@ -20,6 +20,7 @@ import errorHandler from "./src/utils/errorHandler.js";
 
 // express router
 import userRouter from "./src/user/user.route.js";
+import contactRouter from "./src/contact/contact.route.js";
 
 // bodyparser
 app.use(express.urlencoded({ extended: true }));
@@ -60,6 +61,7 @@ app.use(helmet());
 
 // api routes
 app.use("/api/user", userRouter);
+app.use("/api/contact", contactRouter);
 
 // return error
 app.use(errorHandler);

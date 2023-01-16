@@ -1,12 +1,12 @@
 import Validator from "./Validator.js";
-import RegexClass from "./Regex.js";
-import AppError from "./AppError.js";
+import RegexClass from "../Regex.js";
+import AppError from "../AppError.js";
 
 // types
 import {
   TUserCreateData,
   TUserConnectData,
-} from "./type.js";
+} from "../type.js";
 
 // classes
 const Regex = new RegexClass();
@@ -94,26 +94,6 @@ export default class UserValidator extends Validator {
         if (!value) return "password2 required";
         if (value.length > 60)
           return "password2 too long";
-        return "";
-
-      // lastName
-      case "lastName":
-        if (!value) return "lastName required";
-        if (value.length > 60)
-          return "lastName too long";
-        return "";
-
-      // firstName
-      case "firstName":
-        if (!value) return "firstName required";
-        if (value.length > 60)
-          return "firstName too long";
-        return "";
-
-      // phone
-      case "phone":
-        if (value && !Regex.phone(value))
-          return "phone invalid";
         return "";
 
       // message

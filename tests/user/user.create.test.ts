@@ -49,6 +49,20 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: email invalid", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: "invalid email",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "email invalid",
+    );
+  });
+
   it("it should throw: password required", async () => {
     const res = await request(app)
       .post(route)

@@ -9,7 +9,7 @@ const Regex = new RegexClass();
 
 export default class ContactValidator extends Validator {
   inspectContactData(
-    data: object,
+    data: TContactContactData,
   ): TContactContactData {
     const schema = {
       lastName: "",
@@ -19,13 +19,21 @@ export default class ContactValidator extends Validator {
       message: "",
     };
 
+    data = {
+      ...data,
+      phone: this.formatPhone(data.phone || ""),
+    };
+
     this.inspectData(
       schema,
       data,
       this.errorMessage,
     );
 
-    return schema;
+    return {
+      ...schema,
+      phone: this.formatPhone(schema.phone),
+    };
   }
 
   errorMessage(

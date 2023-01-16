@@ -13,7 +13,7 @@ const Regex = new RegexClass();
 
 export default class UserValidator extends Validator {
   inspectCreateData(
-    data: object,
+    data: TUserCreateData,
   ): TUserCreateData {
     const schema = {
       username: "",
@@ -34,7 +34,7 @@ export default class UserValidator extends Validator {
   }
 
   inspectConnectData(
-    data: object,
+    data: TUserConnectData,
   ): TUserConnectData {
     const schema = {
       email: "",

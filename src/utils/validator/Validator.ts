@@ -28,4 +28,11 @@ export default class Validator {
         );
     });
   }
+
+  formatPhone(string: string): string {
+    return string
+      .replace("+33", "0")
+      .split(" ")
+      .join("");
+  }
 }

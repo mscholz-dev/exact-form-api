@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 import "./user/user.create.test.js";
 import "./user/user.connect.test.js";
 
+// contact
+import "./contact/contact.contact.test.js";
+
 // connect to test db
 beforeEach(async () => {
   // delete cache for every test

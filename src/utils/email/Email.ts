@@ -46,7 +46,7 @@ export default class Email {
     );
   }
 
-  contactTemplate({
+  async contactTemplate({
     headTitle,
     lastName,
     firstName,
@@ -54,13 +54,13 @@ export default class Email {
     phone,
     message,
   }: TContactTemplate) {
-    const file = fs
+    const fileAdmin = fs
       .readFileSync(
-        `./src/utils/email/contact.html`,
+        `./src/utils/email/contact.admin.html`,
       )
       .toString();
 
-    const fileHtml = file
+    const fileHtmlAdmin = fileAdmin
       .replace("$headTitle", headTitle)
       .replace("$lastName", lastName)
       .replace("$firstName", firstName)
@@ -68,10 +68,30 @@ export default class Email {
       .replace("$phone", phone || "non renseigné")
       .replace("$message", message);
 
-    return this.send(
+    await this.send(
       process.env.MAILER_USER || "",
-      "Contact Form Test",
-      fileHtml,
+      headTitle,
+      fileHtmlAdmin,
+    );
+
+    const fileClient = fs
+      .readFileSync(
+        `./src/utils/email/contact.client.html`,
+      )
+      .toString();
+
+    const fileHtmlClient = fileClient
+      .replace("$headTitle", headTitle)
+      .replace("$lastName", lastName)
+      .replace("$firstName", firstName)
+      .replace("$email", email)
+      .replace("$phone", phone || "non renseigné")
+      .replace("$message", message);
+
+    await this.send(
+      email,
+      headTitle,
+      fileHtmlClient,
     );
   }
 }

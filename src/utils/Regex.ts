@@ -7,6 +7,6 @@ export default class Regex {
   }
 
   phone(string: string): boolean {
-    return new RegExp("[0-9]{10}").test(string);
+    return new RegExp("^[0-9]{10}$").test(string);
   }
 }

@@ -8,13 +8,12 @@ import "./user/user.connect.test.js";
 // contact
 import "./contact/contact.contact.test.js";
 
-// connect to test db
 beforeEach(async () => {
   // delete cache for every test
   jest.resetModules();
 });
 
-// reset test db
 afterAll(async () => {
+  // reset test db
   await prisma.user.deleteMany();
 });

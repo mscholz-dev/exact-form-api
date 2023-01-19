@@ -30,10 +30,7 @@ export default class ContactValidator extends Validator {
       this.errorMessage,
     );
 
-    return {
-      ...schema,
-      phone: this.formatPhone(schema.phone),
-    };
+    return schema;
   }
 
   errorMessage(

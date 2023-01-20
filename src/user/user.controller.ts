@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UserServiceClass from "./user.service.js";
 import UserValidatorClass from "../utils/validator/UserValidator.js";
-import CookieClass from "../utils/Cookie.js";
+import CookieClass from "../utils/cookie.js";
 
 // classes
 const UserService = new UserServiceClass();

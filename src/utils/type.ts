@@ -39,6 +39,7 @@ export type TContactContactData = {
   email: string;
   phone: string;
   message: string;
+  locale: "fr" | "en";
 };
 
 export type TContactTemplate = {
@@ -48,4 +49,5 @@ export type TContactTemplate = {
   email: string;
   phone: string;
   message: string;
+  locale: "fr" | "en";
 };

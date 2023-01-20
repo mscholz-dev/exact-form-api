@@ -1,5 +1,6 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
+import AppError from "../AppError.js";
 
 // types
 import { TContactTemplate } from "../type.js";
@@ -53,10 +54,31 @@ export default class Email {
     email,
     phone,
     message,
+    locale,
   }: TContactTemplate) {
+    let emptyPhone = "";
+
+    switch (locale) {
+      case "fr":
+        emptyPhone = "non renseigné";
+        break;
+
+      case "en":
+        emptyPhone = "not specified";
+        break;
+
+      default:
+        if (!locale)
+          throw new AppError(
+            "locale required",
+            400,
+          );
+        throw new AppError("locale invalid", 400);
+    }
+
     const fileAdmin = fs
       .readFileSync(
-        `./src/utils/email/contact.admin.html`,
+        `./src/utils/email/${locale}/contact.admin.html`,
       )
       .toString();
 
@@ -65,7 +87,7 @@ export default class Email {
       .replace("$lastName", lastName)
       .replace("$firstName", firstName)
       .replace("$email", email)
-      .replace("$phone", phone || "non renseigné")
+      .replace("$phone", phone || emptyPhone)
       .replace("$message", message);
 
     await this.send(
@@ -76,7 +98,7 @@ export default class Email {
 
     const fileClient = fs
       .readFileSync(
-        `./src/utils/email/contact.client.html`,
+        `./src/utils/email/${locale}/contact.client.html`,
       )
       .toString();
 
@@ -85,7 +107,7 @@ export default class Email {
       .replace("$lastName", lastName)
       .replace("$firstName", firstName)
       .replace("$email", email)
-      .replace("$phone", phone || "non renseigné")
+      .replace("$phone", phone || emptyPhone)
       .replace("$message", message);
 
     await this.send(

@@ -133,7 +133,7 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should send an email without phone", async () => {
+  it("it should throw: locale required", async () => {
     const res = await request(app)
       .post(route)
       .send({
@@ -143,10 +143,44 @@ describe(`POST: ${route}`, () => {
         phone: "",
         message: data.message,
       });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale required",
+    );
+  });
+
+  it("it should throw: locale invalid", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        lastName: data.lastName,
+        firstName: data.firstName,
+        email: data.email,
+        phone: "",
+        message: data.message,
+        locale: "invalid",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale invalid",
+    );
+  });
+
+  it("it should send a french email without phone", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        lastName: data.lastName,
+        firstName: data.firstName,
+        email: data.email,
+        phone: "",
+        message: data.message,
+        locale: data.localeFr,
+      });
     expect(res.statusCode).toBe(200);
   });
 
-  it("it should send an email with phone", async () => {
+  it("it should send an english email with phone", async () => {
     const res = await request(app)
       .post(route)
       .send({
@@ -155,6 +189,7 @@ describe(`POST: ${route}`, () => {
         email: data.email,
         phone: data.phone,
         message: data.message,
+        locale: data.localeEn,
       });
     expect(res.statusCode).toBe(200);
   });

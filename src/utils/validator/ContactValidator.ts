@@ -17,6 +17,7 @@ export default class ContactValidator extends Validator {
       email: "",
       phone: "",
       message: "",
+      locale: "",
     };
 
     data = {
@@ -30,7 +31,7 @@ export default class ContactValidator extends Validator {
       this.errorMessage,
     );
 
-    return schema;
+    return schema as TContactContactData;
   }
 
   errorMessage(
@@ -72,6 +73,13 @@ export default class ContactValidator extends Validator {
         if (!value) return "message required";
         if (value.length > 10_000)
           return "message too long";
+        return "";
+
+      // locale
+      case "locale":
+        if (!value) return "locale required";
+        if (value !== "fr" && value !== "en")
+          return "locale invalid";
         return "";
 
       // default

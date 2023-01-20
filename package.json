@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "prebuild": "rm -rf ./dist",
-    "prestart": "rm -rf ./dist",
     "predev": "rm -rf ./dist",
     "build": "tsc",
     "start": "node dist/app.js",

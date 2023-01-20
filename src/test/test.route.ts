@@ -4,19 +4,18 @@ import express, {
 } from "express";
 const router = express.Router();
 import tryCatch from "../utils/tryCatch.js";
-import ContactControllerClass from "./contact.controller.js";
+import TestControllerClass from "./test.controller.js";
 
 // classes
-const ContactController =
-  new ContactControllerClass();
+const TestController = new TestControllerClass();
 
-// route: contact
+// route: reset
 router
-  .route("/contact")
+  .route("/reset")
   .post(
     tryCatch(
       async (req: Request, res: Response) =>
-        ContactController.contact(req, res),
+        TestController.reset(req, res),
     ),
   );
 

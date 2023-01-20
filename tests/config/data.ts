@@ -6,6 +6,8 @@ const data = {
   phone: "0649495137",
   password: "Azerty5!",
   message: "Je suis un message",
+  localeFr: "fr",
+  localeEn: "en",
   string61:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit odio.",
   string256:

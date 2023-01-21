@@ -1,11 +1,13 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
 import AppError from "../AppError.js";
+import ip from "ip";
 
 // types
 import {
   TContactContactData,
   TUserCreateData,
+  TNewIP,
 } from "../type.js";
 
 export default class Email {
@@ -176,6 +178,44 @@ export default class Email {
       .replace("$headTitle", headTitle)
       .replace("$username", username)
       .replace("$email", email);
+
+    await this.send(
+      email,
+      headTitle,
+      fileHtmlClient,
+    );
+  }
+
+  async newIP({ email, locale }: TNewIP) {
+    let headTitle = "";
+
+    switch (locale) {
+      case "fr":
+        headTitle = "NOUVELLE CONNEXION INCONNUE";
+        break;
+
+      case "en":
+        headTitle = "UNKNOWN NEW CONNECTION";
+        break;
+
+      default:
+        if (!locale)
+          throw new AppError(
+            "locale required",
+            400,
+          );
+        throw new AppError("locale invalid", 400);
+    }
+
+    const fileClient = fs
+      .readFileSync(
+        `./src/utils/email/${locale}/ip/new-ip.client.html`,
+      )
+      .toString();
+
+    const fileHtmlClient = fileClient
+      .replace("$headTitle", headTitle)
+      .replace("$ip", ip.address());
 
     await this.send(
       email,

@@ -42,6 +42,7 @@ export default class UserValidator extends Validator {
     const schema = {
       email: "",
       password: "",
+      locale: "",
     };
 
     this.inspectData(
@@ -50,7 +51,7 @@ export default class UserValidator extends Validator {
       this.errorMessage,
     );
 
-    return schema;
+    return schema as TUserConnectData;
   }
 
   checkPasswords({

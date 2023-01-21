@@ -8,13 +8,21 @@ datasource db {
 }
 
 model user {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  username   String @unique
-  email      String @unique
-  role       role @default(CLIENT)
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  username   String    @unique
+  email      String    @unique
+  role       role      @default(CLIENT)
   password   String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  user_ip    user_ip[]
+}
+
+model user_ip {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  number  String
+  user    user   @relation(fields: [user_id], references: [id])
+  user_id String @db.ObjectId
 }
 
 enum role {

@@ -27,11 +27,13 @@ export type TInspectData = {
 export type TUserConnectData = {
   email: string;
   password: string;
+  locale: "fr" | "en";
 };
 
 export type TUserConnect = {
   email: string;
   password: string;
+  locale: "fr" | "en";
 };
 
 export type TContactContactData = {
@@ -40,5 +42,10 @@ export type TContactContactData = {
   email: string;
   phone: string;
   message: string;
+  locale: "fr" | "en";
+};
+
+export type TNewIP = {
+  email: string;
   locale: "fr" | "en";
 };

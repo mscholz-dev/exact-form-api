@@ -177,8 +177,8 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: `fr.${data.username}`,
-        email: `fr.${data.email}`,
+        username: data.username,
+        email: data.email,
         password: data.password,
         password2: data.password,
         locale: data.localeFr,
@@ -205,8 +205,8 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: `fr.${data.username}`,
-        email: `fr.${data.email}`,
+        username: data.username,
+        email: data.email,
         password: data.password,
         password2: data.password,
         locale: data.localeFr,
@@ -222,8 +222,8 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: `fr.${data.username}2`,
-        email: `fr.${data.email}`,
+        username: `${data.username}2`,
+        email: data.email,
         password: data.password,
         password2: data.password,
         locale: data.localeFr,

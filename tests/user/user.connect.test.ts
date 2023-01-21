@@ -56,12 +56,40 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: locale required", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: data.password,
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale required",
+    );
+  });
+
+  it("it should throw: locale invalid", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: data.password,
+        locale: "invalid locale",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale invalid",
+    );
+  });
+
   it("it should throw: user not found", async () => {
     const res = await request(app)
       .post(route)
       .send({
         email: "user.not.found@gmail.com",
         password: data.password,
+        locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -73,8 +101,9 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        email: `fr.${data.email}`,
+        email: data.email,
         password: "bad password",
+        locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -82,12 +111,13 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should connect an user", async () => {
+  it("it should connect a fr user", async () => {
     const res = await request(app)
       .post(route)
       .send({
-        email: `fr.${data.email}`,
+        email: data.email,
         password: data.password,
+        locale: data.localeFr,
       });
     expect(res.statusCode).toBe(200);
   });

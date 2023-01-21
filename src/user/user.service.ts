@@ -93,6 +93,7 @@ export default class UserService {
       },
       select: { id: true },
     });
+    console.log("add ip");
   }
 
   async verifyIP(id: string) {

@@ -14,10 +14,7 @@ export default class ContactController {
         req.body,
       );
 
-    await Email.contactTemplate({
-      headTitle: "Contact",
-      ...schema,
-    });
+    await Email.contactTemplate(schema);
 
     res.status(200).end();
   }

@@ -14,6 +14,7 @@ export type TUserCreateData = {
   email: string;
   password: string;
   password2: string;
+  locale: "fr" | "en";
 };
 
 export type TInspectData = {
@@ -34,16 +35,6 @@ export type TUserConnect = {
 };
 
 export type TContactContactData = {
-  lastName: string;
-  firstName: string;
-  email: string;
-  phone: string;
-  message: string;
-  locale: "fr" | "en";
-};
-
-export type TContactTemplate = {
-  headTitle: string;
   lastName: string;
   firstName: string;
   email: string;

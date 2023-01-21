@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import UserServiceClass from "./user.service.js";
 import UserValidatorClass from "../utils/validator/UserValidator.js";
 import CookieClass from "../utils/Cookie.js";
+import EmailClass from "../utils/email/Email.js";
 
 // classes
 const UserService = new UserServiceClass();
 const UserValidator = new UserValidatorClass();
 const Cookie = new CookieClass();
+const Email = new EmailClass();
 
 export default class UserController {
   async create(req: Request, res: Response) {
@@ -14,6 +16,8 @@ export default class UserController {
       UserValidator.inspectCreateData(req.body);
 
     const user = await UserService.create(schema);
+
+    await Email.signUpTemplate(schema);
 
     const jwt = Cookie.signJwt(user);
 

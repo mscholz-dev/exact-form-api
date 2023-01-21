@@ -123,6 +123,39 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: locale required", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale required",
+    );
+  });
+
+  it("it should throw: locale invalid", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+        locale: "invalid locale",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "locale invalid",
+    );
+  });
+
   it("it should throw: passwords not matching", async () => {
     const res = await request(app)
       .post(route)
@@ -131,6 +164,7 @@ describe(`POST: ${route}`, () => {
         email: data.email,
         password: data.password,
         password2: "bad password",
+        locale: data.localeFr,
       });
 
     expect(res.statusCode).toBe(400);
@@ -139,14 +173,29 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should create an user", async () => {
+  it("it should create a fr user", async () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: data.username,
-        email: data.email,
+        username: `fr.${data.username}`,
+        email: `fr.${data.email}`,
         password: data.password,
         password2: data.password,
+        locale: data.localeFr,
+      });
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("it should create an en user", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: `en.${data.username}`,
+        email: `en.${data.email}`,
+        password: data.password,
+        password2: data.password,
+        locale: data.localeEn,
       });
 
     expect(res.statusCode).toBe(200);
@@ -156,10 +205,11 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: data.username,
-        email: data.email,
+        username: `fr.${data.username}`,
+        email: `fr.${data.email}`,
         password: data.password,
         password2: data.password,
+        locale: data.localeFr,
       });
 
     expect(res.statusCode).toBe(400);
@@ -172,10 +222,11 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        username: `${data.username}2`,
-        email: data.email,
+        username: `fr.${data.username}2`,
+        email: `fr.${data.email}`,
         password: data.password,
         password2: data.password,
+        locale: data.localeFr,
       });
 
     expect(res.statusCode).toBe(400);

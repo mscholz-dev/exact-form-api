@@ -73,7 +73,7 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        email: data.email,
+        email: `fr.${data.email}`,
         password: "bad password",
       });
     expect(res.statusCode).toBe(400);
@@ -86,7 +86,7 @@ describe(`POST: ${route}`, () => {
     const res = await request(app)
       .post(route)
       .send({
-        email: data.email,
+        email: `fr.${data.email}`,
         password: data.password,
       });
     expect(res.statusCode).toBe(200);

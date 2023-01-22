@@ -20,7 +20,4 @@ beforeEach(async () => {
   jest.resetModules();
 });
 
-afterAll(async () => {
-  // reset test db
-  await request(app).post(resetRoute);
-});
+afterAll(async () => {});

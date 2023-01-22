@@ -19,10 +19,27 @@ model user {
 }
 
 model user_ip {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  ip      String
-  user    user   @relation(fields: [user_id], references: [id])
-  user_id String @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  ip         String
+  user       user     @relation(fields: [user_id], references: [id])
+  user_id    String   @db.ObjectId
+  created_at DateTime @default(now())
+}
+
+model contact {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  last_name     String
+  first_name    String
+  email         String
+  message       String
+  contact_phone contact_phone?
+}
+
+model contact_phone {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  phone      String
+  contact    contact @relation(fields: [contact_id], references: [id])
+  contact_id String  @unique @db.ObjectId
 }
 
 enum role {

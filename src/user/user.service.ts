@@ -15,12 +15,7 @@ const Email = new EmailClass();
 
 export default class UserService {
   async create(
-    {
-      username,
-      email,
-      password,
-      locale,
-    }: TUserCreate,
+    { username, email, password }: TUserCreate,
     ip: string,
   ) {
     const hash = await argon.hash(password);
@@ -78,7 +73,6 @@ export default class UserService {
         user.id,
         ip,
       );
-      console.log("isNewIPi", isNewIP);
 
       if (isNewIP) {
         this.addIP(user.id, ip);
@@ -104,13 +98,9 @@ export default class UserService {
       },
       select: { id: true },
     });
-
-    console.log("add ip and send mail");
   }
 
   async verifyIP(id: string, ip: string) {
-    console.log("verif ip");
-
     const allIP = await prisma.user_ip.findMany({
       where: { user_id: id },
       select: { ip: true },

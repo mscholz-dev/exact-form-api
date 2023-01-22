@@ -38,13 +38,7 @@ export default class UserService {
       },
     });
 
-    if (ip)
-      await this.addIP(
-        user.id,
-        ip,
-        user.email,
-        locale,
-      );
+    if (ip) await this.addIP(user.id, ip);
 
     return user;
   }
@@ -86,24 +80,23 @@ export default class UserService {
       );
       console.log("isNewIPi", isNewIP);
 
-      if (isNewIP)
-        await this.addIP(
-          user.id,
+      if (isNewIP) {
+        this.addIP(user.id, ip);
+
+        await Email.newIP(
+          {
+            email,
+            locale,
+          },
           ip,
-          user.email,
-          locale,
         );
+      }
     }
 
     return user;
   }
 
-  async addIP(
-    id: string,
-    ip: string,
-    email: string,
-    locale: "fr" | "en",
-  ) {
+  async addIP(id: string, ip: string) {
     await prisma.user_ip.create({
       data: {
         ip,
@@ -111,14 +104,6 @@ export default class UserService {
       },
       select: { id: true },
     });
-
-    await Email.newIP(
-      {
-        email,
-        locale,
-      },
-      ip,
-    );
 
     console.log("add ip and send mail");
   }

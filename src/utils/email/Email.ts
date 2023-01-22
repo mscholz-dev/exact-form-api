@@ -1,7 +1,6 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
 import AppError from "../AppError.js";
-import ip from "ip";
 
 // types
 import {
@@ -186,7 +185,10 @@ export default class Email {
     );
   }
 
-  async newIP({ email, locale }: TNewIP) {
+  async newIP(
+    { email, locale }: TNewIP,
+    ip: string,
+  ) {
     let headTitle = "";
 
     switch (locale) {
@@ -215,7 +217,7 @@ export default class Email {
 
     const fileHtmlClient = fileClient
       .replace("$headTitle", headTitle)
-      .replace("$ip", ip.address());
+      .replace("$ip", ip);
 
     await this.send(
       email,

@@ -2,6 +2,7 @@ export type TUserCreate = {
   username: string;
   email: string;
   password: string;
+  locale: "fr" | "en";
 };
 
 export type TSignJwt = {

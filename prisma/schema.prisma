@@ -20,7 +20,7 @@ model user {
 
 model user_ip {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  number  String
+  ip      String
   user    user   @relation(fields: [user_id], references: [id])
   user_id String @db.ObjectId
 }

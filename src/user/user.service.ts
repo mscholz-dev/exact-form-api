@@ -1,6 +1,5 @@
 import argon from "argon2";
 import { PrismaClient } from "@prisma/client";
-import ip from "ip";
 import EmailClass from "../utils/email/Email.js";
 
 // types
@@ -15,11 +14,15 @@ const prisma = new PrismaClient();
 const Email = new EmailClass();
 
 export default class UserService {
-  async create({
-    username,
-    email,
-    password,
-  }: TUserCreate) {
+  async create(
+    {
+      username,
+      email,
+      password,
+      locale,
+    }: TUserCreate,
+    ip: string,
+  ) {
     const hash = await argon.hash(password);
 
     const user = await prisma.user.create({
@@ -35,16 +38,21 @@ export default class UserService {
       },
     });
 
-    await this.addIP(user.id);
+    if (ip)
+      await this.addIP(
+        user.id,
+        ip,
+        user.email,
+        locale,
+      );
 
     return user;
   }
 
-  async connect({
-    email,
-    password,
-    locale,
-  }: TUserConnect) {
+  async connect(
+    { email, password, locale }: TUserConnect,
+    ip: string,
+  ) {
     const user = await prisma.user.findUnique({
       where: {
         email: email,
@@ -71,45 +79,60 @@ export default class UserService {
         400,
       );
 
-    const isNewIP = await this.verifyIP(user.id);
+    if (ip) {
+      const isNewIP = await this.verifyIP(
+        user.id,
+        ip,
+      );
+      console.log("isNewIPi", isNewIP);
 
-    console.log("isNewIPi", isNewIP);
-
-    if (isNewIP) {
-      await this.addIP(user.id);
-
-      await Email.newIP({
-        email: user.email,
-        locale,
-      });
+      if (isNewIP)
+        await this.addIP(
+          user.id,
+          ip,
+          user.email,
+          locale,
+        );
     }
 
     return user;
   }
 
-  async addIP(id: string) {
+  async addIP(
+    id: string,
+    ip: string,
+    email: string,
+    locale: "fr" | "en",
+  ) {
     await prisma.user_ip.create({
       data: {
-        number: ip.address() as string,
+        ip,
         user_id: id,
       },
       select: { id: true },
     });
-    console.log("add ip", ip.address());
+
+    await Email.newIP(
+      {
+        email,
+        locale,
+      },
+      ip,
+    );
+
+    console.log("add ip and send mail");
   }
 
-  async verifyIP(id: string) {
-    console.log("verif ip", ip.address());
+  async verifyIP(id: string, ip: string) {
+    console.log("verif ip");
 
     const allIP = await prisma.user_ip.findMany({
       where: { user_id: id },
-      select: { number: true },
+      select: { ip: true },
     });
 
-    const iP = ip.address();
-
-    for (const { number } of allIP) {
-      if (number === iP) return false;
+    for (const item of allIP) {
+      if (item.ip === ip) return false;
     }
 
     return true;

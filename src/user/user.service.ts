@@ -73,6 +73,8 @@ export default class UserService {
 
     const isNewIP = await this.verifyIP(user.id);
 
+    console.log("isNewIPi", isNewIP);
+
     if (isNewIP) {
       await this.addIP(user.id);
 
@@ -93,10 +95,12 @@ export default class UserService {
       },
       select: { id: true },
     });
-    console.log("add ip");
+    console.log("add ip", ip.address());
   }
 
   async verifyIP(id: string) {
+    console.log("verif ip", ip.address());
+
     const allIP = await prisma.user_ip.findMany({
       where: { user_id: id },
       select: { number: true },

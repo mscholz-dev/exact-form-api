@@ -3,7 +3,7 @@ import UserServiceClass from "./user.service.js";
 import UserValidatorClass from "../utils/validator/UserValidator.js";
 import CookieClass from "../utils/Cookie.js";
 import EmailClass from "../utils/email/Email.js";
-import SecurityClass from "src/utils/Security.js";
+import SecurityClass from "../utils/Security.js";
 
 // classes
 const UserService = new UserServiceClass();

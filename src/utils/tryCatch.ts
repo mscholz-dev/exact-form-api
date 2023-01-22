@@ -12,7 +12,7 @@ const tryCatch =
     next: NextFunction,
   ) => {
     try {
-      await controller(req, res);
+      await controller(req, res, next);
     } catch (error) {
       return next(error);
     }

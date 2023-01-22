@@ -22,6 +22,7 @@ import errorHandler from "./src/utils/errorHandler.js";
 import userRouter from "./src/user/user.route.js";
 import contactRouter from "./src/contact/contact.route.js";
 import testRouter from "./src/test/test.route.js";
+import authRouter from "./src/auth/auth.route.js";
 
 // bodyparser
 app.use(express.urlencoded({ extended: true }));
@@ -64,6 +65,7 @@ app.use(helmet());
 app.use("/api/user", userRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/test", testRouter);
+app.use("/api/auth", authRouter);
 
 // return error
 app.use(errorHandler);

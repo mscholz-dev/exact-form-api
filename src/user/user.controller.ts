@@ -26,7 +26,10 @@ export default class UserController {
 
     await Email.signUpTemplate(schema);
 
-    const jwt = Cookie.signJwt(user);
+    const jwt = Cookie.signJwt({
+      ...user,
+      role: "CLIENT",
+    });
 
     res
       .status(200)

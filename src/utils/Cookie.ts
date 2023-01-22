@@ -18,7 +18,7 @@ export default class Cookie {
     };
   }
 
-  signJwt({ username, email }: TSignJwt) {
+  signJwt({ username, email, role }: TSignJwt) {
     if (!process.env.JWT_SECRET)
       throw new AppError(
         "process.env.JWT_SECRET not defined",
@@ -29,6 +29,7 @@ export default class Cookie {
       JSON.stringify({
         username,
         email,
+        role,
       }),
       process.env.JWT_SECRET,
       {},

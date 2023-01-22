@@ -51,6 +51,7 @@ export default class UserService {
         username: true,
         email: true,
         password: true,
+        role: true,
       },
     });
 

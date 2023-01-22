@@ -8,6 +8,7 @@ export type TUserCreate = {
 export type TSignJwt = {
   username: string;
   email: string;
+  role: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
 };
 
 export type TUserCreateData = {
@@ -50,3 +51,10 @@ export type TNewIP = {
   email: string;
   locale: "fr" | "en";
 };
+
+// export type TAuthMiddleware = {
+//   isAuth: boolean;
+//   username?: string;
+//   email?: string;
+//   role?: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
+// };

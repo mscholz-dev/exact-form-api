@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app.js";
 
-const resetRoute = "/api/test/reset";
+const resetRoute = "/api/test/new-db";
 
 // user
 import "./user/user.create.test.js";
@@ -12,12 +12,10 @@ import "./contact/contact.contact.test.js";
 
 beforeAll(async () => {
   // reset test db
-  await request(app).post(resetRoute);
+  await request(app).get(resetRoute);
 });
 
 beforeEach(async () => {
   // delete cache for every test
   jest.resetModules();
 });
-
-afterAll(async () => {});

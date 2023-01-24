@@ -36,7 +36,7 @@ export default class UserValidator extends Validator {
     return schema as TUserCreateData;
   }
 
-  inspectConnectData(
+  inspectConnectionData(
     data: TUserConnectData,
   ): TUserConnectData {
     const schema = {

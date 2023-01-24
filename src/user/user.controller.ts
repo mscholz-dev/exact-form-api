@@ -24,7 +24,7 @@ export default class UserController {
       ip,
     );
 
-    await Email.signUpTemplate(schema);
+    await Email.userCreateTemplate(schema);
 
     const jwt = Cookie.signJwt({
       ...user,
@@ -37,13 +37,15 @@ export default class UserController {
       .end();
   }
 
-  async connect(req: Request, res: Response) {
+  async connection(req: Request, res: Response) {
     const ip = Security.getIP(req);
 
     const schema =
-      UserValidator.inspectConnectData(req.body);
+      UserValidator.inspectConnectionData(
+        req.body,
+      );
 
-    const user = await UserService.connect(
+    const user = await UserService.connection(
       schema,
       ip,
     );

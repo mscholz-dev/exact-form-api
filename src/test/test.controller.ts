@@ -5,8 +5,8 @@ import TestServiceClass from "./test.service.js";
 const TestService = new TestServiceClass();
 
 export default class TestController {
-  async reset(req: Request, res: Response) {
-    await TestService.reset();
+  async newDB(req: Request, res: Response) {
+    await TestService.newDB();
 
     res.status(200).end();
   }

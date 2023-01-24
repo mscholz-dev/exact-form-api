@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
 // types
-import { TContactContactData } from "src/utils/type";
+import { TContactContactData } from "../utils/type";
 
 // classes
 const prisma = new PrismaClient();
 
 export default class ContactService {
-  async contact({
+  async create({
     lastName,
     firstName,
     email,

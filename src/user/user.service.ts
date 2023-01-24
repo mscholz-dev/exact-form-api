@@ -38,7 +38,7 @@ export default class UserService {
     return user;
   }
 
-  async connect(
+  async connection(
     { email, password, locale }: TUserConnect,
     ip: string,
   ) {
@@ -78,7 +78,7 @@ export default class UserService {
       if (isNewIP) {
         this.addIP(user.id, ip);
 
-        await Email.newIP(
+        await Email.userNewIp(
           {
             email,
             locale,

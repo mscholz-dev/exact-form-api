@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../../app.js";
 import data from "../config/data.js";
 
-const route = "/api/contact/contact";
+const route = "/api/contact";
 
 describe(`POST: ${route}`, () => {
   it("it should throw: lastName required", async () => {

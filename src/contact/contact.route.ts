@@ -10,13 +10,13 @@ import ContactControllerClass from "./contact.controller.js";
 const ContactController =
   new ContactControllerClass();
 
-// route: contact
+// route: create
 router
-  .route("/contact")
+  .route("/")
   .post(
     tryCatch(
       async (req: Request, res: Response) =>
-        ContactController.contact(req, res),
+        ContactController.create(req, res),
     ),
   );
 

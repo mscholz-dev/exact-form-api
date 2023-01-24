@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../../app.js";
 import data from "../config/data.js";
 
-const route = "/api/user/create";
+const route = "/api/user";
 
 describe(`POST: ${route}`, () => {
   it("it should throw: username required", async () => {

@@ -11,7 +11,7 @@ const UserController = new UserControllerClass();
 
 // route: create
 router
-  .route("/create")
+  .route("/")
   .post(
     tryCatch(
       async (req: Request, res: Response) =>
@@ -19,13 +19,13 @@ router
     ),
   );
 
-// route: connect
+// route: connection
 router
-  .route("/connect")
+  .route("/connection")
   .post(
     tryCatch(
       async (req: Request, res: Response) =>
-        UserController.connect(req, res),
+        UserController.connection(req, res),
     ),
   );
 

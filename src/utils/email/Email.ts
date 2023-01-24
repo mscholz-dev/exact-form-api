@@ -51,7 +51,7 @@ export default class Email {
     );
   }
 
-  async contactTemplate({
+  async contactCreateTemplate({
     lastName,
     firstName,
     email,
@@ -82,13 +82,13 @@ export default class Email {
         throw new AppError("locale invalid", 400);
     }
 
-    const fileAdmin = fs
+    const fileCompany = fs
       .readFileSync(
-        `./src/utils/email/fr/contact/contact.admin.html`,
+        `./src/utils/email/fr/contact/contact.company.html`,
       )
       .toString();
 
-    const fileHtmlAdmin = fileAdmin
+    const fileHtmlCompany = fileCompany
       .replace("$headTitle", headTitle)
       .replace("$lastName", lastName)
       .replace("$firstName", firstName)
@@ -100,7 +100,7 @@ export default class Email {
     await this.send(
       process.env.MAILER_USER || "",
       headTitle,
-      fileHtmlAdmin,
+      fileHtmlCompany,
     );
 
     const fileClient = fs
@@ -124,7 +124,7 @@ export default class Email {
     );
   }
 
-  async signUpTemplate({
+  async userCreateTemplate({
     username,
     email,
     locale,
@@ -149,13 +149,13 @@ export default class Email {
         throw new AppError("locale invalid", 400);
     }
 
-    const fileAdmin = fs
+    const fileCompany = fs
       .readFileSync(
-        `./src/utils/email/fr/signup/signup.admin.html`,
+        `./src/utils/email/fr/signup/signup.company.html`,
       )
       .toString();
 
-    const fileHtmlAdmin = fileAdmin
+    const fileHtmlCompany = fileCompany
       .replace("$headTitle", headTitle)
       .replace("$username", username)
       .replace("$email", email)
@@ -164,7 +164,7 @@ export default class Email {
     await this.send(
       process.env.MAILER_USER || "",
       headTitle,
-      fileHtmlAdmin,
+      fileHtmlCompany,
     );
 
     const fileClient = fs
@@ -185,7 +185,7 @@ export default class Email {
     );
   }
 
-  async newIP(
+  async userNewIp(
     { email, locale }: TNewIP,
     ip: string,
   ) {

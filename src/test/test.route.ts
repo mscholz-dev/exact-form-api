@@ -9,13 +9,13 @@ import TestControllerClass from "./test.controller.js";
 // classes
 const TestController = new TestControllerClass();
 
-// route: reset
+// route: new-db
 router
-  .route("/reset")
-  .post(
+  .route("/new-db")
+  .get(
     tryCatch(
       async (req: Request, res: Response) =>
-        TestController.reset(req, res),
+        TestController.newDB(req, res),
     ),
   );
 

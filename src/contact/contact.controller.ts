@@ -10,15 +10,15 @@ const Email = new EmailClass();
 const ContactService = new ContactServiceClass();
 
 export default class ContactController {
-  async contact(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const schema =
       ContactValidator.inspectContactData(
         req.body,
       );
 
-    await ContactService.contact(schema);
+    await ContactService.create(schema);
 
-    await Email.contactTemplate(schema);
+    await Email.contactCreateTemplate(schema);
 
     res.status(200).end();
   }

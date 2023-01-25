@@ -30,13 +30,3 @@ router
   );
 
 export default router;
-
-// import multer from "multer";
-// const upload = multer();
-//
-// upload.fields([
-//   { name: "username", maxCount: 1 },
-//   { name: "email", maxCount: 1 },
-//   { name: "password", maxCount: 1 },
-//   { name: "password2", maxCount: 1 },
-// ]),

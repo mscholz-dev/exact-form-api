@@ -8,9 +8,6 @@ import tryCatch from "../utils/tryCatch.js";
 import AuthControllerClass from "./auth.controller.js";
 import AuthMiddlewareClass from "./auth.middleware.js";
 
-// types
-// import {TAuthMiddleware} from "../utils/type.js";
-
 // classes
 const AuthController = new AuthControllerClass();
 const AuthMiddleware = new AuthMiddlewareClass();

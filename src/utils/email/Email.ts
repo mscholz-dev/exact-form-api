@@ -39,7 +39,7 @@ export default class Email {
           });
 
         const info = await transporter.sendMail({
-          from: process.env.MAILER_USER,
+          from: process.env.MAILER_USER as string,
           to: emailDest,
           subject: `EXACT FORM • ${emailSubject}`,
           text: "",
@@ -98,7 +98,7 @@ export default class Email {
       .replace("$locale", locale);
 
     await this.send(
-      process.env.MAILER_USER || "",
+      process.env.MAILER_USER as string,
       headTitle,
       fileHtmlCompany,
     );
@@ -162,7 +162,7 @@ export default class Email {
       .replace("$locale", locale);
 
     await this.send(
-      process.env.MAILER_USER || "",
+      process.env.MAILER_USER as string,
       headTitle,
       fileHtmlCompany,
     );

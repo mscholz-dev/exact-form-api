@@ -5,7 +5,7 @@ export type TUserCreate = {
   locale: "fr" | "en";
 };
 
-export type TSignJwt = {
+export type TCookie = {
   username: string;
   email: string;
   role: "CLIENT" | "ADMIN" | "SUPER_ADMIN";

@@ -5,9 +5,11 @@ import {
 } from "express";
 import AppError from "../utils/AppError.js";
 import CookieClass from "../utils/Cookie.js";
+import AuthServiceClass from "./auth.service.js";
 
 // classes
 const Cookie = new CookieClass();
+const AuthService = new AuthServiceClass();
 
 export default class AuthMiddleware {
   async index(
@@ -17,13 +19,37 @@ export default class AuthMiddleware {
   ) {
     const userCookie = req.cookies.user;
 
+    // no user cookie
     if (!userCookie)
-      return res.status(200).json({
-        isAuth: false,
-        reason: "user cookie not found",
-      });
+      throw new AppError(
+        "user cookie not found",
+        401,
+      );
 
-    // TODO: here
+    // cookie invalid
+    if (!Cookie.verifyJwt(userCookie))
+      throw new AppError(
+        "user cookie invalid",
+        401,
+      );
+
+    // get cookie data
+    const { email } =
+      Cookie.decodedJwt(userCookie);
+
+    // user data in db
+    const user =
+      await AuthService.getUserCookieData(email);
+
+    // user not found
+    if (!user)
+      throw new AppError("user not found", 401);
+
+    // other route controllers can access to it
+    req.cookies.userJwt = user;
+
+    // update updated_at in db
+    await AuthService.updateUserDate(email);
 
     next();
   }

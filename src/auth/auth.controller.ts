@@ -1,17 +1,25 @@
 import { Request, Response } from "express";
-// import AuthServiceClass from "./auth.service.js";
 import CookieClass from "../utils/Cookie.js";
-import AuthValidatorClass from "../utils/validator/AuthValidator.js";
+
+// types
+import { TCookie } from "../utils/type.js";
 
 // classes
-// const AuthService = new AuthServiceClass();
 const Cookie = new CookieClass();
-const AuthValidator = new AuthValidatorClass();
 
 export default class AuthController {
   async index(req: Request, res: Response) {
-    console.log("test");
-    // validate for prevent hacked cookies
-    // const schema = AuthValidator.inspectCookieData()
+    // get cookie data already validate by db call
+    const userCookie: TCookie =
+      req.cookies.userJwt;
+
+    // update user cookie
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .json(userCookie)
+      .end();
   }
 }

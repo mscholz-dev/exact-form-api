@@ -16,8 +16,6 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log(err);
-
   if (
     err instanceof
       PrismaClientKnownRequestError &&
@@ -48,6 +46,8 @@ const errorHandler = (
       message: err.message,
     });
   }
+
+  console.log(err);
 
   return res
     .status(500)

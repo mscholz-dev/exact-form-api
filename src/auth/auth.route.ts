@@ -13,7 +13,7 @@ const AuthController = new AuthControllerClass();
 const AuthMiddleware = new AuthMiddlewareClass();
 
 // route: index
-router.route("/").post(
+router.route("/").get(
   tryCatch(
     async (
       req: Request,

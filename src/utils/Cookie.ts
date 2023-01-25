@@ -1,9 +1,8 @@
 import { CookieOptions } from "express-serve-static-core";
-import AppError from "./AppError.js";
 import jwt from "jsonwebtoken";
 
 // types
-import { TSignJwt } from "./type.js";
+import { TCookie } from "./type.js";
 
 export default class Cookie {
   cookieOptions(): CookieOptions {
@@ -14,25 +13,43 @@ export default class Cookie {
       sameSite: "lax",
       secure: true,
       httpOnly: true,
-      domain: process.env.BASE_URL_FRONT,
+      domain: "localhost",
     };
   }
 
-  signJwt({ username, email, role }: TSignJwt) {
-    if (!process.env.JWT_SECRET)
-      throw new AppError(
-        "process.env.JWT_SECRET not defined",
-        400,
-      );
-
+  signJwt({ username, email, role }: TCookie) {
     return jwt.sign(
       JSON.stringify({
         username,
         email,
         role,
       }),
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET as string,
       {},
     );
+  }
+
+  verifyJwt(cookie: string): boolean {
+    let isValid = true;
+
+    jwt.verify(
+      cookie,
+      process.env.JWT_SECRET as string,
+      (err) => (isValid = !err),
+    );
+
+    return isValid;
+  }
+
+  decodedJwt(cookie: string): TCookie {
+    let decoded = {};
+
+    jwt.verify(
+      cookie,
+      process.env.JWT_SECRET as string,
+      (__, data) => (decoded = data as TCookie),
+    );
+
+    return decoded as TCookie;
   }
 }

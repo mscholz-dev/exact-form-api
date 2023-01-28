@@ -52,9 +52,10 @@ export type TNewIP = {
   locale: "fr" | "en";
 };
 
-// export type TAuthMiddleware = {
-//   isAuth: boolean;
-//   username?: string;
-//   email?: string;
-//   role?: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
-// };
+export type TUserUpdateData = {
+  username: string;
+  oldPassword: string;
+  newPassword: string;
+  newPassword2: string;
+  locale: "fr" | "en";
+};

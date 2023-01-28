@@ -6,6 +6,7 @@ const resetRoute = "/api/test/new-db";
 // user
 import "./user/user.create.test.js";
 import "./user/user.connect.test.js";
+import "./user/user.update.test.js";
 
 // contact
 import "./contact/contact.contact.test.js";

@@ -5,6 +5,9 @@ import CookieClass from "../utils/Cookie.js";
 import EmailClass from "../utils/email/Email.js";
 import SecurityClass from "../utils/Security.js";
 
+// types
+import { TCookie } from "../utils/type.js";
+
 // classes
 const UserService = new UserServiceClass();
 const UserValidator = new UserValidatorClass();
@@ -51,6 +54,31 @@ export default class UserController {
     );
 
     const jwt = Cookie.signJwt(user);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
+
+  async update(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookie =
+      req.cookies.userJwt;
+
+    const schema =
+      UserValidator.inspectUpdateData(req.body);
+
+    const username = await UserService.update(
+      schema,
+      userCookie.username,
+    );
+
+    const jwt = Cookie.signJwt({
+      username,
+      email: userCookie.email,
+      role: userCookie.role,
+    });
 
     res
       .status(200)

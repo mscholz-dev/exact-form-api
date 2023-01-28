@@ -6,6 +6,7 @@ import AppError from "../AppError.js";
 import {
   TUserCreateData,
   TUserConnectData,
+  TUserUpdateData,
 } from "../type.js";
 
 // classes
@@ -54,6 +55,29 @@ export default class UserValidator extends Validator {
     return schema as TUserConnectData;
   }
 
+  inspectUpdateData(
+    data: TUserUpdateData,
+  ): TUserUpdateData {
+    const schema = {
+      username: "",
+      oldPassword: "",
+      newPassword: "",
+      newPassword2: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    this.checkChangePasswords(
+      schema as TUserUpdateData,
+    );
+
+    return schema as TUserUpdateData;
+  }
+
   checkPasswords({
     password,
     password2,
@@ -61,6 +85,32 @@ export default class UserValidator extends Validator {
     if (password !== password2)
       throw new AppError(
         "passwords not matching",
+        400,
+      );
+  }
+
+  checkChangePasswords({
+    oldPassword,
+    newPassword,
+    newPassword2,
+  }: TUserUpdateData) {
+    if (!oldPassword) return;
+
+    if (!newPassword)
+      throw new AppError(
+        "newPassword required",
+        400,
+      );
+
+    if (!newPassword2)
+      throw new AppError(
+        "newPassword2 required",
+        400,
+      );
+
+    if (newPassword !== newPassword2)
+      throw new AppError(
+        "newPasswords not matching",
         400,
       );
   }
@@ -98,6 +148,24 @@ export default class UserValidator extends Validator {
         if (!value) return "password2 required";
         if (value.length > 60)
           return "password2 too long";
+        return "";
+
+      // oldPassword
+      case "oldPassword":
+        if (value.length > 60)
+          return "oldPassword too long";
+        return "";
+
+      // newPassword
+      case "newPassword":
+        if (value.length > 60)
+          return "newPassword too long";
+        return "";
+
+      // newPassword2
+      case "newPassword2":
+        if (value.length > 60)
+          return "newPassword2 too long";
         return "";
 
       // message

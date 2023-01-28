@@ -6,6 +6,7 @@ import EmailClass from "../utils/email/Email.js";
 import {
   TUserCreate,
   TUserConnect,
+  TUserUpdateData,
 } from "../utils/type.js";
 import AppError from "../utils/AppError.js";
 
@@ -89,6 +90,72 @@ export default class UserService {
     }
 
     return user;
+  }
+
+  async update(
+    {
+      username,
+      oldPassword,
+      newPassword,
+    }: TUserUpdateData,
+    cookieUsername: string,
+  ) {
+    if (!oldPassword) {
+      await prisma.user.update({
+        where: {
+          username: cookieUsername,
+        },
+        data: {
+          username,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      return username;
+    }
+
+    const userPassword =
+      await prisma.user.findUnique({
+        where: {
+          username: cookieUsername,
+        },
+        select: {
+          password: true,
+        },
+      });
+
+    if (!userPassword)
+      throw new AppError("user not found", 400);
+
+    const passwordMatch = await argon.verify(
+      userPassword.password,
+      oldPassword,
+    );
+
+    if (!passwordMatch)
+      throw new AppError(
+        "oldPassword incorrect",
+        400,
+      );
+
+    const hash = await argon.hash(newPassword);
+
+    await prisma.user.update({
+      where: {
+        username: cookieUsername,
+      },
+      data: {
+        username,
+        password: hash,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return username;
   }
 
   async addIP(id: string, ip: string) {

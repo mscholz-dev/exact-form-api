@@ -9,6 +9,7 @@ const jestConfig = {
   preset: "ts-jest",
   verbose: true,
   clearMocks: true,
+  testTimeout: 10_000,
 };
 
 export default jestConfig;

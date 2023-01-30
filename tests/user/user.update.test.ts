@@ -16,7 +16,9 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: user cookie invalid", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}!`]);
+      .set("Cookie", [
+        `user=${data.validFrJwt}!`,
+      ]);
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toBe(
       "user cookie invalid",
@@ -38,7 +40,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: username required", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`]);
+      .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
       "username required",
@@ -48,7 +50,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: username too long", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({ username: data.string61 });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -59,7 +61,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: oldPassword too long", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.string61,
@@ -73,7 +75,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: newPassword required", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.password,
@@ -87,7 +89,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: newPassword too long", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.password,
@@ -102,7 +104,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: newPassword2 required", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.password,
@@ -117,7 +119,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: newPassword2 too long", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.password,
@@ -133,7 +135,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: newPasswords not matching", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: data.password,
@@ -150,7 +152,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: username already exists", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `en.${data.username}`,
         oldPassword: data.password,
@@ -167,7 +169,7 @@ describe(`PUT: ${route}`, () => {
   it("it should throw: oldPassword incorrect", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
         oldPassword: "password incorrect",
@@ -184,7 +186,7 @@ describe(`PUT: ${route}`, () => {
   it("it should update a fr user with new username and new password", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `fr.${data.username}`,
         oldPassword: data.password,
@@ -193,19 +195,24 @@ describe(`PUT: ${route}`, () => {
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrUpdateOneJwt);
   });
 
   it("it should update a fr user with new username", async () => {
     const res = await request(app)
       .put(route)
-      .set("Cookie", [`user=${data.validJwt}`])
+      .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `fr2.${data.username}`,
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
         locale: data.localeFr,
       });
-    // console.log(res.headers["set-cookie"]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrUpdateTwoJwt);
   });
 });

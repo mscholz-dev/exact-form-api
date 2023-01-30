@@ -185,6 +185,9 @@ describe(`POST: ${route}`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should create an en user", async () => {
@@ -199,6 +202,9 @@ describe(`POST: ${route}`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validEnJwt);
   });
 
   it("it should throw: username already exists", async () => {

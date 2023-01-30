@@ -31,14 +31,35 @@ const randomUserJwt = Cookie.signJwt({
   role: data.client,
 } as TCookie);
 
-const validJwt = Cookie.signJwt({
+const validFrJwt = Cookie.signJwt({
   username: data.username,
   email: data.email,
   role: data.client,
 } as TCookie);
 
+const validFrUpdateOneJwt = Cookie.signJwt({
+  username: `fr.${data.username}`,
+  email: data.email,
+  role: data.client,
+} as TCookie);
+
+const validFrUpdateTwoJwt = Cookie.signJwt({
+  username: `fr2.${data.username}`,
+  email: data.email,
+  role: data.client,
+} as TCookie);
+
+const validEnJwt = Cookie.signJwt({
+  username: `en.${data.username}`,
+  email: `en.${data.email}`,
+  role: data.client,
+} as TCookie);
+
 export default {
   ...data,
-  validJwt,
+  validFrJwt,
+  validFrUpdateOneJwt,
+  validFrUpdateTwoJwt,
+  validEnJwt,
   randomUserJwt,
 };

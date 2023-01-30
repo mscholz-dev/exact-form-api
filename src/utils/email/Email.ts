@@ -225,4 +225,50 @@ export default class Email {
       fileHtmlClient,
     );
   }
+
+  async userCreateEmailTokenTemplate(
+    email: string,
+    locale: string,
+    token: string,
+  ) {
+    let headTitle = "";
+
+    switch (locale) {
+      case "fr":
+        headTitle =
+          "DEMANDE DE CHANGEMENT D'EMAIL";
+        break;
+
+      case "en":
+        headTitle = "EMAIL CHANGE REQUEST";
+        break;
+
+      default:
+        if (!locale)
+          throw new AppError(
+            "locale required",
+            400,
+          );
+        throw new AppError("locale invalid", 400);
+    }
+
+    const fileClient = fs
+      .readFileSync(
+        `./src/utils/email/${locale}/token/change-email.client.html`,
+      )
+      .toString();
+
+    const fileHtmlClient = fileClient
+      .replace("$headTitle", headTitle)
+      .replace(
+        "$link",
+        `${process.env.BASE_URL_FRONT}/change-email/${token}`,
+      );
+
+    await this.send(
+      email,
+      headTitle,
+      fileHtmlClient,
+    );
+  }
 }

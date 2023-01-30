@@ -101,7 +101,7 @@ export default class UserService {
     cookieUsername: string,
   ) {
     if (!oldPassword) {
-      await prisma.user.update({
+      const user = await prisma.user.update({
         where: {
           username: cookieUsername,
         },
@@ -110,10 +110,13 @@ export default class UserService {
         },
         select: {
           id: true,
+          username: true,
+          email: true,
+          role: true,
         },
       });
 
-      return username;
+      return user;
     }
 
     const userPassword =
@@ -142,7 +145,7 @@ export default class UserService {
 
     const hash = await argon.hash(newPassword);
 
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: {
         username: cookieUsername,
       },
@@ -152,10 +155,82 @@ export default class UserService {
       },
       select: {
         id: true,
+        username: true,
+        email: true,
+        role: true,
       },
     });
 
-    return username;
+    return user;
+  }
+
+  async createEmailToken(
+    token: string,
+    email: string,
+  ) {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+      },
+    });
+
+    if (!user)
+      throw new AppError("user not found", 400);
+
+    const userEmailToken =
+      await prisma.user_token.findMany({
+        where: {
+          AND: [
+            {
+              user_id: user.id,
+            },
+            {
+              type: "CHANGE_EMAIL",
+            },
+            {
+              used: false,
+            },
+          ],
+        },
+        select: {
+          created_at: true,
+          used: true,
+        },
+      });
+
+    if (userEmailToken) {
+      const now = new Date().getTime();
+      const nowMinusOne = new Date(
+        now - 60 * 60 * 24 * 1000,
+      );
+
+      for (const { created_at } of userEmailToken)
+        if (nowMinusOne < created_at)
+          throw new AppError(
+            "token already exists",
+            400,
+          );
+    }
+
+    await prisma.user_token.create({
+      data: {
+        user_id: user.id,
+        type: "CHANGE_EMAIL",
+        token,
+        used: false,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return user;
   }
 
   async addIP(id: string, ip: string) {

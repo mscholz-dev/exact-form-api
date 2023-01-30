@@ -24,6 +24,7 @@ export type TInspectData = {
   email?: string;
   password?: string;
   password2?: string;
+  locale?: string;
 };
 
 export type TUserConnectData = {
@@ -57,5 +58,9 @@ export type TUserUpdateData = {
   oldPassword: string;
   newPassword: string;
   newPassword2: string;
+  locale: "fr" | "en";
+};
+
+export type TUserCreateEmailTokenData = {
   locale: "fr" | "en";
 };

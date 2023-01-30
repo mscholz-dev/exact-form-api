@@ -69,16 +69,47 @@ export default class UserController {
     const schema =
       UserValidator.inspectUpdateData(req.body);
 
-    const username = await UserService.update(
+    const user = await UserService.update(
       schema,
       userCookie.username,
     );
 
-    const jwt = Cookie.signJwt({
-      username,
-      email: userCookie.email,
-      role: userCookie.role,
-    });
+    const jwt = Cookie.signJwt(user);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
+
+  async createEmailToken(
+    req: Request,
+    res: Response,
+  ) {
+    // get cookie data already validate by db call
+    const userCookie: TCookie =
+      req.cookies.userJwt;
+
+    const { locale } =
+      UserValidator.inspectCreateEmailTokenData(
+        req.body,
+      );
+
+    const token = Security.createUUID();
+
+    const user =
+      await UserService.createEmailToken(
+        token,
+        userCookie.email,
+      );
+
+    await Email.userCreateEmailTokenTemplate(
+      userCookie.email,
+      locale,
+      token,
+    );
+
+    const jwt = Cookie.signJwt(user);
 
     res
       .status(200)

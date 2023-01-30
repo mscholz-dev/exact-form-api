@@ -7,6 +7,7 @@ import {
   TUserCreateData,
   TUserConnectData,
   TUserUpdateData,
+  TUserCreateEmailTokenData,
 } from "../type.js";
 
 // classes
@@ -76,6 +77,22 @@ export default class UserValidator extends Validator {
     );
 
     return schema as TUserUpdateData;
+  }
+
+  inspectCreateEmailTokenData(
+    data: TUserCreateEmailTokenData,
+  ) {
+    const schema = {
+      locale: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    return schema as TUserCreateEmailTokenData;
   }
 
   checkPasswords({

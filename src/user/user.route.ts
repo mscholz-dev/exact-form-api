@@ -33,7 +33,6 @@ router
   );
 
 // route: update
-// add middleware id user
 router.route("/").put(
   tryCatch(
     async (
@@ -44,6 +43,20 @@ router.route("/").put(
   ),
   tryCatch(async (req: Request, res: Response) =>
     UserController.update(req, res),
+  ),
+);
+
+// route: create email token
+router.route("/email").post(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    UserController.createEmailToken(req, res),
   ),
 );
 

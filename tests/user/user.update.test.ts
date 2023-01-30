@@ -215,4 +215,21 @@ describe(`PUT: ${route}`, () => {
       res.headers["set-cookie"][0],
     ).toContain(data.validFrUpdateTwoJwt);
   });
+
+  it("it should update a fr user with default username and default password", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: data.username,
+        oldPassword: `${data.password}.new`,
+        newPassword: data.password,
+        newPassword2: data.password,
+        locale: data.localeFr,
+      });
+    expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
+  });
 });

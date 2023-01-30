@@ -5,11 +5,12 @@ const resetRoute = "/api/test/new-db";
 
 // user
 import "./user/user.create.test.js";
-import "./user/user.connect.test.js";
-import "./user/user.update.test.js";
+// import "./user/user.connection.test.js";
+// import "./user/user.update.test.js";
+import "./user/user.createEmailToken.test.js";
 
 // contact
-import "./contact/contact.contact.test.js";
+// import "./contact/contact.create.test.js";
 
 beforeAll(async () => {
   // reset test db

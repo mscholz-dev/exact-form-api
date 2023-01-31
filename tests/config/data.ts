@@ -9,6 +9,7 @@ const Cookie = new CookieClass();
 const data = {
   username: "mscholz.dev",
   email: "mscholz.dev@gmail.com",
+  email2: "scholzmorgan16@yahoo.fr",
   lastName: "Scholz",
   firstName: "Morgan",
   phone: "0649495137",
@@ -49,6 +50,12 @@ const validFrUpdateTwoJwt = Cookie.signJwt({
   role: data.client,
 } as TCookie);
 
+const validFrUpdateEmailJwt = Cookie.signJwt({
+  username: data.username,
+  email: data.email2,
+  role: data.client,
+} as TCookie);
+
 const validEnJwt = Cookie.signJwt({
   username: `en.${data.username}`,
   email: `en.${data.email}`,
@@ -60,6 +67,7 @@ export default {
   validFrJwt,
   validFrUpdateOneJwt,
   validFrUpdateTwoJwt,
+  validFrUpdateEmailJwt,
   validEnJwt,
   randomUserJwt,
 };

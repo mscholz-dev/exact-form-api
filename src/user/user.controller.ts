@@ -116,4 +116,25 @@ export default class UserController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async updateEmail(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookie =
+      req.cookies.userJwt;
+
+    const schema =
+      UserValidator.inspectUpdateEmailData(
+        req.body,
+        userCookie.email,
+      );
+
+    const user = await UserService.updateEmail(
+      schema,
+      userCookie.email,
+    );
+
+    // const jwt = Cookie.signJwt(user);
+
+    res.status(200).end();
+  }
 }

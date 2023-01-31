@@ -64,3 +64,8 @@ export type TUserUpdateData = {
 export type TUserCreateEmailTokenData = {
   locale: "fr" | "en";
 };
+
+export type TUserUpdateEmailData = {
+  token: string;
+  locale: "fr" | "en";
+};

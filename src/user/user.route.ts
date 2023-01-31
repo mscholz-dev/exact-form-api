@@ -60,4 +60,18 @@ router.route("/email").post(
   ),
 );
 
+// route: update email with token
+router.route("/email").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    UserController.updateEmail(req, res),
+  ),
+);
+
 export default router;

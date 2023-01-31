@@ -8,6 +8,7 @@ import {
   TUserConnectData,
   TUserUpdateData,
   TUserCreateEmailTokenData,
+  TUserUpdateEmailData,
 } from "../type.js";
 
 // classes
@@ -95,6 +96,38 @@ export default class UserValidator extends Validator {
     return schema as TUserCreateEmailTokenData;
   }
 
+  inspectUpdateEmailData(
+    data: TUserUpdateEmailData,
+    email: string,
+  ) {
+    const schema = {
+      newEmail: "",
+      newEmail2: "",
+      token: "",
+      locale: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    if (schema.newEmail !== schema.newEmail2)
+      throw new AppError(
+        "emails not matching",
+        400,
+      );
+
+    if (email === schema.newEmail)
+      throw new AppError(
+        "newEmail must be different",
+        400,
+      );
+
+    return schema as TUserUpdateEmailData;
+  }
+
   checkPasswords({
     password,
     password2,
@@ -153,6 +186,24 @@ export default class UserValidator extends Validator {
           return "email invalid";
         return "";
 
+      // newEmail
+      case "newEmail":
+        if (!value) return "newEmail required";
+        if (value.length > 255)
+          return "newEmail too long";
+        if (!Regex.email(value))
+          return "newEmail invalid";
+        return "";
+
+      // newEmail2
+      case "newEmail2":
+        if (!value) return "newEmail2 required";
+        if (value.length > 255)
+          return "newEmail2 too long";
+        if (!Regex.email(value))
+          return "newEmail2 invalid";
+        return "";
+
       // password
       case "password":
         if (!value) return "password required";
@@ -197,6 +248,11 @@ export default class UserValidator extends Validator {
         if (!value) return "locale required";
         if (value !== "fr" && value !== "en")
           return "locale invalid";
+        return "";
+
+      // token
+      case "token":
+        if (!value) return "token required";
         return "";
 
       // default

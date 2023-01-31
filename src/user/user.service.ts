@@ -7,6 +7,7 @@ import {
   TUserCreate,
   TUserConnect,
   TUserUpdateData,
+  TUserUpdateEmailData,
 } from "../utils/type.js";
 import AppError from "../utils/AppError.js";
 
@@ -230,6 +231,61 @@ export default class UserService {
     });
 
     return user;
+  }
+
+  async updateEmail(
+    { token }: TUserUpdateEmailData,
+    email: string,
+  ) {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!user)
+      throw new AppError("user not found", 400);
+
+    const now = new Date().getTime();
+    const nowMinusOne = new Date(
+      now - 60 * 60 * 24 * 1000,
+    );
+
+    const userEmailToken =
+      await prisma.user_token.findFirst({
+        where: {
+          AND: [
+            {
+              user_id: user.id,
+            },
+            {
+              type: "CHANGE_EMAIL",
+            },
+            {
+              used: false,
+            },
+            {
+              token,
+            },
+            {
+              created_at: {
+                lt: nowMinusOne,
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+        },
+      });
+
+    if (!userEmailToken)
+      throw new AppError("token not found", 400);
+
+    console.log(userEmailToken);
   }
 
   async addIP(id: string, ip: string) {

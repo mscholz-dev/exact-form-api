@@ -6,7 +6,10 @@ import EmailClass from "../utils/email/Email.js";
 import SecurityClass from "../utils/Security.js";
 
 // types
-import { TCookie } from "../utils/type.js";
+import {
+  TCookie,
+  TCookieMiddleware,
+} from "../utils/type.js";
 
 // classes
 const UserService = new UserServiceClass();
@@ -63,18 +66,21 @@ export default class UserController {
 
   async update(req: Request, res: Response) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     const schema =
       UserValidator.inspectUpdateData(req.body);
 
-    const user = await UserService.update(
+    await UserService.update(
       schema,
-      userCookie.username,
+      userCookie.id,
     );
 
-    const jwt = Cookie.signJwt(user);
+    const jwt = Cookie.signJwt({
+      ...userCookie,
+      username: schema.username,
+    });
 
     res
       .status(200)
@@ -87,7 +93,7 @@ export default class UserController {
     res: Response,
   ) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     const { locale } =
@@ -97,11 +103,10 @@ export default class UserController {
 
     const token = Security.createUUID();
 
-    const user =
-      await UserService.createEmailToken(
-        token,
-        userCookie.email,
-      );
+    await UserService.createEmailToken(
+      token,
+      userCookie.id,
+    );
 
     await Email.userCreateEmailTokenTemplate(
       userCookie.email,
@@ -109,7 +114,7 @@ export default class UserController {
       token,
     );
 
-    const jwt = Cookie.signJwt(user);
+    const jwt = Cookie.signJwt(userCookie);
 
     res
       .status(200)
@@ -119,7 +124,7 @@ export default class UserController {
 
   async updateEmail(req: Request, res: Response) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     const schema =
@@ -130,7 +135,7 @@ export default class UserController {
 
     await UserService.updateEmail(
       schema,
-      userCookie.email,
+      userCookie.id,
     );
 
     await Email.userUpdateEmailTemplate(schema);

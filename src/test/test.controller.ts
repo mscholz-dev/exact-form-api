@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import TestServiceClass from "./test.service.js";
 
 // types
-import { TCookie } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/type.js";
 
 // classes
 const TestService = new TestServiceClass();
@@ -19,11 +19,11 @@ export default class TestController {
     res: Response,
   ) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     const token = await TestService.getTokenEmail(
-      userCookie.email,
+      userCookie.id,
     );
 
     res.status(200).json({ token }).end();

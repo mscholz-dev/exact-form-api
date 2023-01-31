@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../utils/AppError.js";
 
 // types
-import { TCookie } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/type.js";
 
 // classes
 const prisma = new PrismaClient();
@@ -10,12 +10,13 @@ const prisma = new PrismaClient();
 export default class AuthService {
   async getUserCookieData(
     email: string,
-  ): Promise<TCookie | null> {
+  ): Promise<TCookieMiddleware | null> {
     return await prisma.user.findUnique({
       where: {
         email,
       },
       select: {
+        id: true,
         email: true,
         username: true,
         role: true,
@@ -36,22 +37,7 @@ export default class AuthService {
     return;
   }
 
-  async hasEmailToken(
-    token: string,
-    email: string,
-  ) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!user)
-      throw new AppError("user not found", 400);
-
+  async hasEmailToken(token: string, id: string) {
     const now = new Date().getTime();
     const nowMinusOne = new Date(
       now - 60 * 60 * 24 * 1000,
@@ -62,7 +48,7 @@ export default class AuthService {
         where: {
           AND: [
             {
-              user_id: user.id,
+              user_id: id,
             },
             {
               type: "CHANGE_EMAIL",

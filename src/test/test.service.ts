@@ -16,19 +16,7 @@ export default class TestService {
     await prisma.contact.deleteMany();
   }
 
-  async getTokenEmail(email: string) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!user)
-      throw new AppError("user not found", 400);
-
+  async getTokenEmail(id: string) {
     const now = new Date().getTime();
     const nowMinusOne = new Date(
       now - 60 * 60 * 24 * 1000,
@@ -39,7 +27,7 @@ export default class TestService {
         where: {
           AND: [
             {
-              user_id: user.id,
+              user_id: id,
             },
             {
               type: "CHANGE_EMAIL",

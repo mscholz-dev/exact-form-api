@@ -99,31 +99,28 @@ export default class UserService {
       oldPassword,
       newPassword,
     }: TUserUpdateData,
-    cookieUsername: string,
+    id: string,
   ) {
     if (!oldPassword) {
-      const user = await prisma.user.update({
+      await prisma.user.update({
         where: {
-          username: cookieUsername,
+          id,
         },
         data: {
           username,
         },
         select: {
           id: true,
-          username: true,
-          email: true,
-          role: true,
         },
       });
 
-      return user;
+      return;
     }
 
     const userPassword =
       await prisma.user.findUnique({
         where: {
-          username: cookieUsername,
+          id,
         },
         select: {
           password: true,
@@ -146,9 +143,9 @@ export default class UserService {
 
     const hash = await argon.hash(newPassword);
 
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: {
-        username: cookieUsername,
+        id,
       },
       data: {
         username,
@@ -156,40 +153,22 @@ export default class UserService {
       },
       select: {
         id: true,
-        username: true,
-        email: true,
-        role: true,
       },
     });
 
-    return user;
+    return;
   }
 
   async createEmailToken(
     token: string,
-    email: string,
+    id: string,
   ) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        role: true,
-      },
-    });
-
-    if (!user)
-      throw new AppError("user not found", 400);
-
     const userEmailToken =
       await prisma.user_token.findMany({
         where: {
           AND: [
             {
-              user_id: user.id,
+              user_id: id,
             },
             {
               type: "CHANGE_EMAIL",
@@ -220,7 +199,7 @@ export default class UserService {
 
     await prisma.user_token.create({
       data: {
-        user_id: user.id,
+        user_id: id,
         type: "CHANGE_EMAIL",
         token,
         used: false,
@@ -230,25 +209,13 @@ export default class UserService {
       },
     });
 
-    return user;
+    return;
   }
 
   async updateEmail(
     { newEmail, token }: TUserUpdateEmailData,
-    email: string,
+    id: string,
   ) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!user)
-      throw new AppError("user not found", 400);
-
     const now = new Date().getTime();
     const nowMinusOne = new Date(
       now - 60 * 60 * 24 * 1000,
@@ -259,7 +226,7 @@ export default class UserService {
         where: {
           AND: [
             {
-              user_id: user.id,
+              user_id: id,
             },
             {
               type: "CHANGE_EMAIL",
@@ -299,10 +266,13 @@ export default class UserService {
 
     await prisma.user.update({
       where: {
-        id: user.id,
+        id: id,
       },
       data: {
         email: newEmail,
+      },
+      select: {
+        id: true,
       },
     });
 

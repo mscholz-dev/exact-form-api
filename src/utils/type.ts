@@ -11,6 +11,13 @@ export type TCookie = {
   role: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
 };
 
+export type TCookieMiddleware = {
+  id: string;
+  username: string;
+  email: string;
+  role: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
+};
+
 export type TUserCreateData = {
   username: string;
   email: string;

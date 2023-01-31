@@ -3,7 +3,7 @@ import CookieClass from "../utils/Cookie.js";
 import AuthServiceClass from "./auth.service.js";
 
 // types
-import { TCookie } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/type.js";
 import AppError from "../utils/AppError.js";
 
 // classes
@@ -13,7 +13,7 @@ const AuthService = new AuthServiceClass();
 export default class AuthController {
   async index(req: Request, res: Response) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     // update user cookie
@@ -22,7 +22,11 @@ export default class AuthController {
     res
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
-      .json(userCookie)
+      .json({
+        email: userCookie.email,
+        username: userCookie.username,
+        role: userCookie.role,
+      })
       .end();
   }
 
@@ -31,14 +35,14 @@ export default class AuthController {
     res: Response,
   ) {
     // get cookie data already validate by db call
-    const userCookie: TCookie =
+    const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
     const token = req.params.token;
 
     await AuthService.hasEmailToken(
       token,
-      userCookie.email,
+      userCookie.id,
     );
 
     // update user cookie
@@ -47,7 +51,11 @@ export default class AuthController {
     res
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
-      .json(userCookie)
+      .json({
+        email: userCookie.email,
+        username: userCookie.username,
+        role: userCookie.role,
+      })
       .end();
   }
 }

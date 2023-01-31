@@ -60,6 +60,8 @@ export default class Email {
     message,
     locale,
   }: TContactContactData) {
+    if (process.env.NODE_ENV !== "prod") return;
+
     let headTitle = "";
     let emptyPhone = "";
 
@@ -130,6 +132,8 @@ export default class Email {
     email,
     locale,
   }: TUserCreateData) {
+    if (process.env.NODE_ENV !== "prod") return;
+
     let headTitle = "";
 
     switch (locale) {
@@ -190,6 +194,8 @@ export default class Email {
     { email, locale }: TNewIP,
     ip: string,
   ) {
+    if (process.env.NODE_ENV !== "prod") return;
+
     let headTitle = "";
 
     switch (locale) {
@@ -232,6 +238,8 @@ export default class Email {
     locale: string,
     token: string,
   ) {
+    if (process.env.NODE_ENV !== "prod") return;
+
     let headTitle = "";
 
     switch (locale) {
@@ -277,6 +285,8 @@ export default class Email {
     locale,
     newEmail,
   }: TUserUpdateEmailData) {
+    if (process.env.NODE_ENV !== "prod") return;
+
     let headTitle = "";
 
     switch (locale) {

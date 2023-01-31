@@ -4,13 +4,10 @@ import data from "../config/data.js";
 
 const route = "/api/auth/token/email";
 
-// get token
-const token = "test";
-
 describe(`GET: ${route}`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).get(
-      `${route}/${token}`,
+      `${route}/token`,
     );
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toBe(
@@ -20,7 +17,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should throw: user cookie invalid", async () => {
     const res = await request(app)
-      .get(`${route}/${token}`)
+      .get(`${route}/token`)
       .set("Cookie", [
         `user=${data.validFrJwt}!`,
       ]);
@@ -32,7 +29,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should throw: user not found", async () => {
     const res = await request(app)
-      .get(`${route}/${token}`)
+      .get(`${route}/token`)
       .set("Cookie", [
         `user=${data.randomUserJwt}`,
       ]);
@@ -44,7 +41,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should throw: token not found", async () => {
     const res = await request(app)
-      .get(`${route}/token-random`)
+      .get(`${route}/token`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -53,6 +50,12 @@ describe(`GET: ${route}`, () => {
   });
 
   it("it should send username, email and role", async () => {
+    const {
+      body: { token },
+    } = await request(app)
+      .get("/api/test/user/token/email")
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+
     const res = await request(app)
       .get(`${route}/${token}`)
       .set("Cookie", [`user=${data.validFrJwt}`]);

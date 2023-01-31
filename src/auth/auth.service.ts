@@ -75,7 +75,7 @@ export default class AuthService {
             },
             {
               created_at: {
-                lt: nowMinusOne,
+                gt: nowMinusOne,
               },
             },
           ],

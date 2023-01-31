@@ -2,8 +2,6 @@ import request from "supertest";
 import app from "../../app.js";
 import data from "../config/data.js";
 
-const token = "test";
-
 const route = "/api/user/email";
 
 describe(`PUT: ${route}`, () => {
@@ -131,7 +129,7 @@ describe(`PUT: ${route}`, () => {
       .send({
         newEmail: data.email2,
         newEmail2: data.email2,
-        token: token,
+        token: "token",
       });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -146,7 +144,7 @@ describe(`PUT: ${route}`, () => {
       .send({
         newEmail: data.email2,
         newEmail2: data.email2,
-        token: token,
+        token: "token",
         locale: "invalid locale",
       });
     expect(res.statusCode).toBe(400);
@@ -162,7 +160,7 @@ describe(`PUT: ${route}`, () => {
       .send({
         newEmail: data.email2,
         newEmail2: data.email,
-        token: token,
+        token: "token",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
@@ -178,7 +176,7 @@ describe(`PUT: ${route}`, () => {
       .send({
         newEmail: data.email,
         newEmail2: data.email,
-        token: token,
+        token: "token",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
@@ -203,7 +201,14 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
-  it("it should update email", async () => {
+  it("it should update email and verify if token not usable", async () => {
+    const {
+      body: { token },
+    } = await request(app)
+      .get("/api/test/user/token/email")
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+
+    // update email
     const res = await request(app)
       .put(route)
       .set("Cookie", [`user=${data.validFrJwt}`])
@@ -217,5 +222,22 @@ describe(`PUT: ${route}`, () => {
     expect(
       res.headers["set-cookie"][0],
     ).toContain(data.validFrUpdateEmailJwt);
+
+    // verify token not usable
+    const res2 = await request(app)
+      .put(route)
+      .set("Cookie", [
+        `user=${data.validFrUpdateEmailJwt}`,
+      ])
+      .send({
+        newEmail: data.email,
+        newEmail2: data.email,
+        token: token,
+        locale: data.localeFr,
+      });
+    expect(res2.statusCode).toBe(400);
+    expect(res2.body.message).toBe(
+      "token not found",
+    );
   });
 });

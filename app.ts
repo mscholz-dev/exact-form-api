@@ -64,7 +64,9 @@ app.use(helmet());
 // api routes
 app.use("/api/user", userRouter);
 app.use("/api/contact", contactRouter);
-app.use("/api/test", testRouter);
+
+if (process.env.NODE_ENV === "test")
+  app.use("/api/test", testRouter);
 app.use("/api/auth", authRouter);
 
 // return error

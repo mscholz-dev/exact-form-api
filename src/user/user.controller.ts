@@ -128,13 +128,21 @@ export default class UserController {
         userCookie.email,
       );
 
-    const user = await UserService.updateEmail(
+    await UserService.updateEmail(
       schema,
       userCookie.email,
     );
 
-    // const jwt = Cookie.signJwt(user);
+    await Email.userUpdateEmailTemplate(schema);
 
-    res.status(200).end();
+    const jwt = Cookie.signJwt({
+      ...userCookie,
+      email: schema.newEmail,
+    });
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
   }
 }

@@ -66,6 +66,8 @@ export type TUserCreateEmailTokenData = {
 };
 
 export type TUserUpdateEmailData = {
+  newEmail: string;
+  newEmail2: string;
   token: string;
   locale: "fr" | "en";
 };

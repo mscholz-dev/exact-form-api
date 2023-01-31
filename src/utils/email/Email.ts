@@ -7,6 +7,7 @@ import {
   TContactContactData,
   TUserCreateData,
   TNewIP,
+  TUserUpdateEmailData,
 } from "../type.js";
 
 export default class Email {
@@ -267,6 +268,48 @@ export default class Email {
 
     await this.send(
       email,
+      headTitle,
+      fileHtmlClient,
+    );
+  }
+
+  async userUpdateEmailTemplate({
+    locale,
+    newEmail,
+  }: TUserUpdateEmailData) {
+    let headTitle = "";
+
+    switch (locale) {
+      case "fr":
+        headTitle = "NOUVELLE EMAIL";
+        break;
+
+      case "en":
+        headTitle = "NEW EMAIL";
+        break;
+
+      default:
+        if (!locale)
+          throw new AppError(
+            "locale required",
+            400,
+          );
+        throw new AppError("locale invalid", 400);
+    }
+
+    const fileClient = fs
+      .readFileSync(
+        `./src/utils/email/${locale}/token/new-email.client.html`,
+      )
+      .toString();
+
+    const fileHtmlClient = fileClient.replace(
+      "$headTitle",
+      headTitle,
+    );
+
+    await this.send(
+      newEmail,
       headTitle,
       fileHtmlClient,
     );

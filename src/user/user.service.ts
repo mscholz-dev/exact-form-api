@@ -234,7 +234,7 @@ export default class UserService {
   }
 
   async updateEmail(
-    { token }: TUserUpdateEmailData,
+    { newEmail, token }: TUserUpdateEmailData,
     email: string,
   ) {
     const user = await prisma.user.findUnique({
@@ -272,7 +272,7 @@ export default class UserService {
             },
             {
               created_at: {
-                lt: nowMinusOne,
+                gt: nowMinusOne,
               },
             },
           ],
@@ -285,7 +285,28 @@ export default class UserService {
     if (!userEmailToken)
       throw new AppError("token not found", 400);
 
-    console.log(userEmailToken);
+    await prisma.user_token.update({
+      where: {
+        token,
+      },
+      data: {
+        used: true,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        email: newEmail,
+      },
+    });
+
+    return;
   }
 
   async addIP(id: string, ip: string) {

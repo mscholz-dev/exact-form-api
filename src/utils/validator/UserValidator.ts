@@ -115,7 +115,7 @@ export default class UserValidator extends Validator {
 
     if (schema.newEmail !== schema.newEmail2)
       throw new AppError(
-        "emails not matching",
+        "newEmails not matching",
         400,
       );
 

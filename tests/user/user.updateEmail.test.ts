@@ -153,7 +153,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
-  it("it should throw: emails not matching", async () => {
+  it("it should throw: newEmails not matching", async () => {
     const res = await request(app)
       .put(route)
       .set("Cookie", [`user=${data.validFrJwt}`])
@@ -165,7 +165,7 @@ describe(`PUT: ${route}`, () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
-      "emails not matching",
+      "newEmails not matching",
     );
   });
 

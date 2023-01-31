@@ -200,7 +200,6 @@ export default class UserService {
         },
         select: {
           created_at: true,
-          used: true,
         },
       });
 

@@ -26,4 +26,18 @@ router.route("/").get(
   ),
 );
 
+// route: has email token
+router.route("/token/email/:token").get(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    AuthController.hasEmailToken(req, res),
+  ),
+);
+
 export default router;

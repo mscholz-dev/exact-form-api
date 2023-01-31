@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export default class TestService {
   async newDB() {
     // delete users
+    await prisma.user_token.deleteMany();
     await prisma.user_ip.deleteMany();
     await prisma.user.deleteMany();
 

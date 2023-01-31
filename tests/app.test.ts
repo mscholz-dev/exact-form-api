@@ -9,6 +9,10 @@ import "./user/user.create.test.js";
 // import "./user/user.update.test.js";
 import "./user/user.createEmailToken.test.js";
 
+// auth
+import "./auth/auth.index.test.js";
+import "./auth/auth.hasEmailToken.test.js";
+
 // contact
 // import "./contact/contact.create.test.js";
 

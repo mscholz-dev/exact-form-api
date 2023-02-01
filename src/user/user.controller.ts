@@ -34,8 +34,6 @@ export default class UserController {
       role: "CLIENT",
     });
 
-    console.log("USER SIGNUP", jwt);
-
     res
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())

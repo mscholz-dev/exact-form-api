@@ -20,6 +20,7 @@ export default class Cookie {
       sameSite: "lax",
       secure: true,
       httpOnly: true,
+      domain: process.env.JWT_DOMAIN as string,
     };
   }
 

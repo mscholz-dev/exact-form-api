@@ -82,15 +82,10 @@ export default class UserService {
         400,
       );
 
-    console.log(user);
+    if (!ip) return user;
 
-    if (ip) {
-      const isNewIP = await this.verifyIP(
-        user.id,
-        ip,
-      );
-
-      if (isNewIP) {
+    for (const item of user.user_ip) {
+      if (item.ip !== ip) {
         this.addIP(user.id, ip);
 
         await Email.userNewIp(
@@ -100,6 +95,8 @@ export default class UserService {
           },
           ip,
         );
+
+        return user;
       }
     }
 
@@ -300,18 +297,5 @@ export default class UserService {
       },
       select: { id: true },
     });
-  }
-
-  async verifyIP(id: string, ip: string) {
-    const allIP = await prisma.user_ip.findMany({
-      where: { user_id: id },
-      select: { ip: true },
-    });
-
-    for (const item of allIP) {
-      if (item.ip === ip) return false;
-    }
-
-    return true;
   }
 }

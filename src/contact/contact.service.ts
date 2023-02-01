@@ -14,26 +14,25 @@ export default class ContactService {
     phone,
     message,
   }: TContactContactData) {
-    const contact = await prisma.contact.create({
+    const createPhoneObject = phone
+      ? {
+          create: {
+            phone,
+          },
+        }
+      : {};
+
+    await prisma.contact.create({
       data: {
         last_name: lastName,
         first_name: firstName,
         email,
         message,
+        contact_phone: createPhoneObject,
       },
       select: {
         id: true,
       },
-    });
-
-    if (!phone) return;
-
-    await prisma.contact_phone.create({
-      data: {
-        phone,
-        contact_id: contact.id,
-      },
-      select: { id: true },
     });
   }
 }

@@ -19,6 +19,8 @@ export default class AuthMiddleware {
   ) {
     const userCookie = req.cookies.user;
 
+    console.log("AUTH MIDDLEWARE", req.cookies);
+
     // no user cookie
     if (!userCookie)
       throw new AppError(

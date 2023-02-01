@@ -22,20 +22,26 @@ export default class UserService {
   ) {
     const hash = await argon.hash(password);
 
+    const createIpObject = ip
+      ? {
+          create: {
+            ip,
+          },
+        }
+      : {};
+
     const user = await prisma.user.create({
       data: {
         username: username,
         email: email,
         password: hash,
+        user_ip: createIpObject,
       },
       select: {
-        id: true,
         email: true,
         username: true,
       },
     });
-
-    if (ip) await this.addIP(user.id, ip);
 
     return user;
   }
@@ -54,6 +60,11 @@ export default class UserService {
         email: true,
         password: true,
         role: true,
+        user_ip: {
+          select: {
+            ip: true,
+          },
+        },
       },
     });
 
@@ -70,6 +81,8 @@ export default class UserService {
         "password incorrect",
         400,
       );
+
+    console.log(user);
 
     if (ip) {
       const isNewIP = await this.verifyIP(

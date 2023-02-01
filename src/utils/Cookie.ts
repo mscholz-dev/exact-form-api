@@ -9,9 +9,10 @@ export default class Cookie {
     return {
       // 8 weeks
       maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
-      path: "/",
-      sameSite: "none",
-      secure: false,
+      expires: new Date(
+        new Date().getTime() +
+          1000 * 60 * 60 * 24 * 7 * 8,
+      ),
       httpOnly: true,
     };
   }

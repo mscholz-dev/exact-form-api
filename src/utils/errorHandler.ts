@@ -5,12 +5,17 @@ import {
   NextFunction,
 } from "express";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/index.js";
+import ErrorControllerClass from "../error/error.controller.js";
 
-const errorHandler = (
+// classes
+const ErrorController =
+  new ErrorControllerClass();
+
+const errorHandler = async (
   err: {
-    name?: string;
-    details?: string;
     statusCode?: number;
+    message?: string;
+    stack?: string;
   },
   req: Request,
   res: Response,
@@ -47,7 +52,12 @@ const errorHandler = (
     });
   }
 
-  console.log(err);
+  // store stack error in DB
+  await ErrorController.create(
+    err.stack as string,
+  );
+
+  console.log(err.stack);
 
   return res
     .status(500)

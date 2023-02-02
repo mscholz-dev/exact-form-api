@@ -54,6 +54,12 @@ model contact_phone {
   contact_id String  @unique @db.ObjectId
 }
 
+model error {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  stack      String
+  created_at DateTime @default(now())
+}
+
 enum role {
   CLIENT
   ADMIN

@@ -14,7 +14,7 @@ export default class Cookie {
           1000 * 60 * 60 * 24 * 7 * 8,
       ),
       path: "/",
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
       httpOnly: true,
       domain: process.env.JWT_DOMAIN,

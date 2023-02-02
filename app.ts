@@ -59,7 +59,7 @@ app.use(
 );
 
 // add security headers
-// app.use(helmet());
+app.use(helmet());
 
 // api routes
 app.use("/api/user", userRouter);

@@ -10,10 +10,10 @@ export default class Cookie {
       // 8 weeks
       maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
       path: "/",
-      // sameSite: "none",
+      sameSite: "lax",
       secure: true,
       httpOnly: true,
-      // domain: process.env.JWT_DOMAIN,
+      domain: process.env.JWT_DOMAIN,
     };
   }
 

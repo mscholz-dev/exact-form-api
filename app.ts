@@ -52,7 +52,7 @@ app.use(
     saveUninitialized: true,
     resave: true,
     unset: "destroy",
-    cookie: Cookie.cookieOptions(),
+    // cookie: Cookie.cookieOptions(),
   }),
 );
 

@@ -51,7 +51,9 @@ app.use(
     resave: true,
     unset: "destroy",
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
+      maxAge:
+        new Date().getTime() +
+        1000 * 60 * 60 * 24 * 7 * 8,
       path: "/",
       httpOnly: true,
       secure: true,

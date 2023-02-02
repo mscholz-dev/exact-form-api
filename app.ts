@@ -56,6 +56,7 @@ app.use(
       httpOnly: true,
       secure: true,
       sameSite: "lax",
+      domain: process.env.JWT_DOMAIN,
     },
   }),
 );

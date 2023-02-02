@@ -74,4 +74,18 @@ router.route("/email").put(
   ),
 );
 
+// route: disconnection
+router.route("/disconnection").get(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    UserController.disconnection(req, res),
+  ),
+);
+
 export default router;

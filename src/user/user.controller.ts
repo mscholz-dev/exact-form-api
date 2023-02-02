@@ -147,4 +147,11 @@ export default class UserController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async disconnection(
+    req: Request,
+    res: Response,
+  ) {
+    res.status(200).clearCookie("user").end();
+  }
 }

@@ -5,8 +5,9 @@ export default class LinkHelper {
   ): string {
     // locale: en
     if (locale === "en")
-      return `/${locale}/${pathname}`;
-
+      return `/${locale}${
+        pathname ? `/${pathname}` : ""
+      }`;
     // locale: fr
     switch (pathname) {
       case "signup":
@@ -22,7 +23,9 @@ export default class LinkHelper {
         return "/fr/modifier-email";
 
       default:
-        return `/fr/${pathname}`;
+        return `/fr${
+          pathname ? `/${pathname}` : ""
+        }`;
     }
   }
 }

@@ -14,6 +14,9 @@ export default class TestService {
     // delete contact
     await prisma.contact_phone.deleteMany();
     await prisma.contact.deleteMany();
+
+    // delete error
+    await prisma.error.deleteMany();
   }
 
   async getTokenEmail(id: string) {

@@ -4,7 +4,6 @@ import AuthServiceClass from "./auth.service.js";
 
 // types
 import { TCookieMiddleware } from "../utils/type.js";
-import AppError from "../utils/AppError.js";
 
 // classes
 const Cookie = new CookieClass();

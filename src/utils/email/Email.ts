@@ -1,6 +1,7 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
 import AppError from "../AppError.js";
+import LinkHelperClass from "../LinkHelper.js";
 
 // types
 import {
@@ -9,6 +10,9 @@ import {
   TNewIP,
   TUserUpdateEmailData,
 } from "../type.js";
+
+// classes
+const LinkHelper = new LinkHelperClass();
 
 export default class Email {
   send(
@@ -271,7 +275,12 @@ export default class Email {
       .replace("$headTitle", headTitle)
       .replace(
         "$link",
-        `${process.env.BASE_URL_FRONT}/change-email/${token}`,
+        `${
+          process.env.BASE_URL_FRONT
+        }${LinkHelper.translate(
+          locale,
+          "change-email",
+        )}/${token}`,
       );
 
     await this.send(

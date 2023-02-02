@@ -34,10 +34,10 @@ export default class UserController {
       role: "CLIENT",
     });
 
-    req.session.user = jwt;
-    console.log(req.session);
-
-    res.status(200).end();
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
   }
 
   async connection(req: Request, res: Response) {

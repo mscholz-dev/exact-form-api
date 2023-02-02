@@ -16,14 +16,12 @@ export default class AuthController {
     const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
-    console.log(req.session.user);
-
     // update user cookie
-    // const jwt = Cookie.signJwt(userCookie);
+    const jwt = Cookie.signJwt(userCookie);
 
     res
       .status(200)
-      // .cookie("user", jwt, Cookie.cookieOptions())
+      .cookie("user", jwt, Cookie.cookieOptions())
       .json({
         email: userCookie.email,
         username: userCookie.username,

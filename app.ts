@@ -14,17 +14,6 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import session from "express-session";
-import CookieClass from "./src/utils/Cookie.js";
-
-// classes
-const Cookie = new CookieClass();
-
-declare module "express-session" {
-  interface SessionData {
-    user: string;
-  }
-}
 
 // error
 import errorHandler from "./src/utils/errorHandler.js";
@@ -44,17 +33,6 @@ if (process.env.NODE_ENV !== "test")
   app.use(morgan("dev"));
 
 app.use(express.static("public"));
-
-// session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET as string,
-    saveUninitialized: true,
-    resave: true,
-    unset: "destroy",
-    // cookie: Cookie.cookieOptions(),
-  }),
-);
 
 // cors
 app.use(

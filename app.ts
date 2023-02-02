@@ -52,9 +52,6 @@ app.use(
     unset: "destroy",
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
-      secure: true,
-      sameSite: "none",
-      domain: process.env.JWT_DOMAIN,
     },
   }),
 );

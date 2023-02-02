@@ -51,14 +51,11 @@ app.use(
     resave: true,
     unset: "destroy",
     cookie: {
-      maxAge:
-        new Date().getTime() +
-        1000 * 60 * 60 * 24 * 7 * 8,
+      maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
       path: "/",
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      domain: process.env.JWT_DOMAIN,
     },
   }),
 );

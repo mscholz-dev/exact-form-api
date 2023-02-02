@@ -17,7 +17,10 @@ export default class AuthMiddleware {
     res: Response,
     next: NextFunction,
   ) {
-    const userCookie = req.cookies.user;
+    // TODO: session
+    console.log(req.session);
+
+    const userCookie = req.session.auth;
 
     // no user cookie
     if (!userCookie)

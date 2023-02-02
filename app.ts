@@ -14,6 +14,7 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import session from "express-session";
 
 // error
 import errorHandler from "./src/utils/errorHandler.js";
@@ -33,6 +34,21 @@ if (process.env.NODE_ENV !== "test")
   app.use(morgan("dev"));
 
 app.use(express.static("public"));
+
+// TODO: session
+//Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET as string,
+    saveUninitialized: true,
+    resave: true,
+    unset: "destroy",
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 * 8,
+      secure: true,
+    },
+  }),
+);
 
 // cors
 app.use(

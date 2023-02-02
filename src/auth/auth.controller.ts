@@ -18,9 +18,10 @@ export default class AuthController {
     // update user cookie
     const jwt = Cookie.signJwt(userCookie);
 
+    // TODO: session
     res
       .status(200)
-      .cookie("user", jwt, Cookie.cookieOptions())
+      // .cookie("user", jwt, Cookie.cookieOptions())
       .json({
         email: userCookie.email,
         username: userCookie.username,

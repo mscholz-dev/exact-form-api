@@ -36,6 +36,13 @@ if (process.env.NODE_ENV !== "test")
 app.use(express.static("public"));
 
 // TODO: session
+
+declare module "express-session" {
+  interface Session {
+    auth?: string;
+  }
+}
+
 //Session middleware
 app.use(
   session({

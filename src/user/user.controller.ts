@@ -34,15 +34,10 @@ export default class UserController {
       role: "CLIENT",
     });
 
-    // TODO: session
-    req.session.auth = jwt;
-    req.session.save(() => {
-      res
-        .status(200)
-        .contentType("application/json")
-        // .cookie("user", jwt, Cookie.cookieOptions())
-        .end();
-    });
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
   }
 
   async connection(req: Request, res: Response) {

@@ -158,24 +158,6 @@ export default class Email {
         throw new AppError("locale invalid", 400);
     }
 
-    const fileCompany = fs
-      .readFileSync(
-        `./src/utils/email/fr/signup/signup.company.html`,
-      )
-      .toString();
-
-    const fileHtmlCompany = fileCompany
-      .replace("$headTitle", headTitle)
-      .replace("$username", username)
-      .replace("$email", email)
-      .replace("$locale", locale);
-
-    await this.send(
-      process.env.MAILER_USER as string,
-      headTitle,
-      fileHtmlCompany,
-    );
-
     const fileClient = fs
       .readFileSync(
         `./src/utils/email/${locale}/signup/signup.client.html`,

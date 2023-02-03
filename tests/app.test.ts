@@ -21,6 +21,9 @@ import "./user/user.updateEmail.test.js";
 // contact
 import "./contact/contact.create.test.js";
 
+// error
+import "./error/error.create.test.js";
+
 beforeEach(async () => {
   // delete cache for every test
   jest.resetModules();

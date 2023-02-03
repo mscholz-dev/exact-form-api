@@ -18,6 +18,7 @@ const data = {
   localeFr: "fr",
   localeEn: "en",
   client: "CLIENT",
+  errorStack: "Error stack",
   string61:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit odio.",
   string256:

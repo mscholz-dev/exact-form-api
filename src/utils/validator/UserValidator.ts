@@ -165,7 +165,6 @@ export default class UserValidator extends Validator {
       case "false":
         return false;
       default:
-        console.log(value);
         if (value === "")
           throw new AppError(
             `${id} required`,

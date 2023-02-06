@@ -271,24 +271,24 @@ export default class UserService {
     if (!userEmailToken)
       throw new AppError("token not found", 400);
 
-    await prisma.user_token.update({
-      where: {
-        token,
-      },
-      data: {
-        used: true,
-      },
-      select: {
-        id: true,
-      },
-    });
-
     await prisma.user.update({
       where: {
         id: id,
       },
       data: {
         email: newEmail,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await prisma.user_token.update({
+      where: {
+        token,
+      },
+      data: {
+        used: true,
       },
       select: {
         id: true,

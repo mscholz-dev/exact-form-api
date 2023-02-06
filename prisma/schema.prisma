@@ -11,13 +11,14 @@ model user {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   username   String       @unique
   email      String       @unique
-  role       role         @default(CLIENT)
+  role       user_role    @default(CLIENT)
   password   String
   created_at DateTime     @default(now())
   updated_at DateTime     @default(now())
   market     Boolean
   user_ip    user_ip[]
   user_token user_token[]
+  form_user  form_user[]
 }
 
 model user_ip {
@@ -61,7 +62,40 @@ model error {
   created_at DateTime @default(now())
 }
 
-enum role {
+model form {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  key         String
+  timezone    timezone    @relation(fields: [timezone_id], references: [id])
+  timezone_id String      @db.ObjectId
+  form_user   form_user[]
+  form_item   form_item[]
+}
+
+model form_user {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  user    user      @relation(fields: [user_id], references: [id])
+  user_id String    @db.ObjectId
+  form    form      @relation(fields: [form_id], references: [id])
+  form_id String    @db.ObjectId
+  role    form_role @default(OWNER)
+}
+
+model form_item {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  form    form   @relation(fields: [form_id], references: [id])
+  form_id String @db.ObjectId
+  data    Json
+}
+
+model timezone {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  offset Float
+  form   form[]
+}
+
+enum user_role {
   CLIENT
   ADMIN
   SUPER_ADMIN
@@ -69,4 +103,9 @@ enum role {
 
 enum token {
   CHANGE_EMAIL
+}
+
+enum form_role {
+  CLIENT
+  OWNER
 }

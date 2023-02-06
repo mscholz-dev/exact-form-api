@@ -23,6 +23,7 @@ export default class UserValidator extends Validator {
       email: "",
       password: "",
       password2: "",
+      market: "",
       locale: "",
     };
 
@@ -36,7 +37,14 @@ export default class UserValidator extends Validator {
       schema as TUserCreateData,
     );
 
-    return schema as TUserCreateData;
+    // convert string into boolean
+    return {
+      ...schema,
+      market: this.handleBoolean(
+        "market",
+        schema.market,
+      ),
+    } as TUserCreateData;
   }
 
   inspectConnectionData(
@@ -65,6 +73,7 @@ export default class UserValidator extends Validator {
       oldPassword: "",
       newPassword: "",
       newPassword2: "",
+      market: "",
     };
 
     this.inspectData(
@@ -77,7 +86,14 @@ export default class UserValidator extends Validator {
       schema as TUserUpdateData,
     );
 
-    return schema as TUserUpdateData;
+    // convert string into boolean
+    return {
+      ...schema,
+      market: this.handleBoolean(
+        "market",
+        schema.market,
+      ),
+    } as TUserUpdateData;
   }
 
   inspectCreateEmailTokenData(
@@ -137,6 +153,26 @@ export default class UserValidator extends Validator {
         "passwords not matching",
         400,
       );
+  }
+
+  handleBoolean(
+    id: string,
+    value: boolean | string,
+  ): boolean {
+    switch (value) {
+      case "true":
+        return true;
+      case "false":
+        return false;
+      default:
+        console.log(value);
+        if (value === "")
+          throw new AppError(
+            `${id} required`,
+            400,
+          );
+        throw new AppError(`${id} invalid`, 400);
+    }
   }
 
   checkChangePasswords({
@@ -241,6 +277,10 @@ export default class UserValidator extends Validator {
         if (!value) return "message required";
         if (value.length > 10_000)
           return "message too long";
+        return "";
+
+      // market
+      case "market":
         return "";
 
       // locale

@@ -173,6 +173,41 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: market required", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+        locale: data.localeFr,
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "market required",
+    );
+  });
+
+  it("it should throw: market invalid", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password,
+        market: "market",
+        locale: data.localeFr,
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "market invalid",
+    );
+  });
+
   it("it should create a fr user", async () => {
     const res = await request(app)
       .post(route)
@@ -181,6 +216,7 @@ describe(`POST: ${route}`, () => {
         email: data.email,
         password: data.password,
         password2: data.password,
+        market: "true",
         locale: data.localeFr,
       });
 
@@ -198,6 +234,7 @@ describe(`POST: ${route}`, () => {
         email: `en.${data.email}`,
         password: data.password,
         password2: data.password,
+        market: "true",
         locale: data.localeEn,
       });
 
@@ -215,6 +252,7 @@ describe(`POST: ${route}`, () => {
         email: data.email,
         password: data.password,
         password2: data.password,
+        market: "true",
         locale: data.localeFr,
       });
 
@@ -232,6 +270,7 @@ describe(`POST: ${route}`, () => {
         email: data.email,
         password: data.password,
         password2: data.password,
+        market: "true",
         locale: data.localeFr,
       });
 

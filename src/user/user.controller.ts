@@ -154,4 +154,28 @@ export default class UserController {
   ) {
     res.status(200).clearCookie("user").end();
   }
+
+  async profile(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    // update user cookie
+    const jwt = Cookie.signJwt(userCookie);
+
+    const market = await UserService.getMarket(
+      userCookie.email,
+    );
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .json({
+        email: userCookie.email,
+        username: userCookie.username,
+        role: userCookie.role,
+        market,
+      })
+      .end();
+  }
 }

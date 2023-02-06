@@ -149,6 +149,43 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  it("it should throw: market required", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: `${data.password}.new`,
+        locale: data.localeFr,
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "market required",
+    );
+  });
+
+  it("it should throw: market invalid", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: `${data.password}.new`,
+        locale: data.localeFr,
+        market: "market",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "market invalid",
+    );
+  });
+
   it("it should throw: username already exists", async () => {
     const res = await request(app)
       .put(route)
@@ -158,6 +195,7 @@ describe(`PUT: ${route}`, () => {
         oldPassword: data.password,
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
+        market: "false",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
@@ -175,6 +213,7 @@ describe(`PUT: ${route}`, () => {
         oldPassword: "password incorrect",
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
+        market: "false",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);
@@ -192,6 +231,7 @@ describe(`PUT: ${route}`, () => {
         oldPassword: data.password,
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
+        market: "false",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(200);
@@ -208,6 +248,7 @@ describe(`PUT: ${route}`, () => {
         username: `fr2.${data.username}`,
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
+        market: "false",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(200);
@@ -225,6 +266,7 @@ describe(`PUT: ${route}`, () => {
         oldPassword: `${data.password}.new`,
         newPassword: data.password,
         newPassword2: data.password,
+        market: "false",
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(200);

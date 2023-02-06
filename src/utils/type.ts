@@ -2,6 +2,7 @@ export type TUserCreate = {
   username: string;
   email: string;
   password: string;
+  market: boolean | string;
   locale: "fr" | "en";
 };
 
@@ -23,6 +24,7 @@ export type TUserCreateData = {
   email: string;
   password: string;
   password2: string;
+  market: boolean | string;
   locale: "fr" | "en";
 };
 
@@ -65,6 +67,7 @@ export type TUserUpdateData = {
   oldPassword: string;
   newPassword: string;
   newPassword2: string;
+  market: string | boolean;
   locale: "fr" | "en";
 };
 

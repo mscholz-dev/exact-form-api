@@ -4,6 +4,7 @@ import "./test/test.new-db.test.js";
 // user
 import "./user/user.create.test.js";
 import "./user/user.connection.test.js";
+import "./user/user.profile.test.js";
 import "./user/user.update.test.js";
 import "./user/user.createEmailToken.test.js";
 import "./user/user.disconnection.test.js";

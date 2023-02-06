@@ -88,4 +88,18 @@ router.route("/disconnection").get(
   ),
 );
 
+// route: profile
+router.route("/").get(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    UserController.profile(req, res),
+  ),
+);
+
 export default router;

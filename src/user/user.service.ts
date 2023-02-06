@@ -17,7 +17,12 @@ const Email = new EmailClass();
 
 export default class UserService {
   async create(
-    { username, email, password }: TUserCreate,
+    {
+      username,
+      email,
+      password,
+      market,
+    }: TUserCreate,
     ip: string,
   ) {
     const hash = await argon.hash(password);
@@ -35,6 +40,7 @@ export default class UserService {
         username: username,
         email: email,
         password: hash,
+        market: market as boolean,
         user_ip: createIpObject,
       },
       select: {
@@ -108,6 +114,7 @@ export default class UserService {
       username,
       oldPassword,
       newPassword,
+      market,
     }: TUserUpdateData,
     id: string,
   ) {
@@ -118,6 +125,7 @@ export default class UserService {
         },
         data: {
           username,
+          market: market as boolean,
         },
         select: {
           id: true,
@@ -160,6 +168,7 @@ export default class UserService {
       data: {
         username,
         password: hash,
+        market: market as boolean,
       },
       select: {
         id: true,
@@ -297,5 +306,21 @@ export default class UserService {
       },
       select: { id: true },
     });
+  }
+
+  async getMarket(email: string) {
+    const request = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        market: true,
+      },
+    });
+
+    if (!request)
+      throw new AppError("user not found", 400);
+
+    return request.market;
   }
 }

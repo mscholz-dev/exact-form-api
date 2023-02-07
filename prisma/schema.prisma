@@ -70,22 +70,25 @@ model form {
   timezone_id String      @db.ObjectId
   form_user   form_user[]
   form_item   form_item[]
+  created_at  DateTime    @default(now())
 }
 
 model form_user {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  user    user      @relation(fields: [user_id], references: [id])
-  user_id String    @db.ObjectId
-  form    form      @relation(fields: [form_id], references: [id])
-  form_id String    @db.ObjectId
-  role    form_role @default(OWNER)
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user       user      @relation(fields: [user_id], references: [id])
+  user_id    String    @db.ObjectId
+  form       form      @relation(fields: [form_id], references: [id])
+  form_id    String    @db.ObjectId
+  role       form_role @default(OWNER)
+  created_at DateTime  @default(now())
 }
 
 model form_item {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  form    form   @relation(fields: [form_id], references: [id])
-  form_id String @db.ObjectId
-  data    Json
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  form       form     @relation(fields: [form_id], references: [id])
+  form_id    String   @db.ObjectId
+  data       Json
+  created_at DateTime @default(now())
 }
 
 model timezone {

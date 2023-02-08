@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserServiceClass from "./user.service.js";
-import UserValidatorClass from "../utils/validator/UserValidator.js";
+import UserValidatorClass from "../utils/validators/UserValidator.js";
 import CookieClass from "../utils/Cookie.js";
 import EmailClass from "../utils/email/Email.js";
 import SecurityClass from "../utils/Security.js";

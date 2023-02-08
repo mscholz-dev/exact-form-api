@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ContactValidatorClass from "../utils/validator/ContactValidator.js";
+import ContactValidatorClass from "../utils/validators/ContactValidator.js";
 import EmailClass from "../utils/email/Email.js";
 import ContactServiceClass from "./contact.service.js";
 

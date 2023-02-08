@@ -28,13 +28,7 @@ export type TUserCreateData = {
   locale: "fr" | "en";
 };
 
-export type TInspectData = {
-  username?: string;
-  email?: string;
-  password?: string;
-  password2?: string;
-  locale?: string;
-};
+export type TInspectData = Record<string, any>;
 
 export type TUserConnectData = {
   email: string;

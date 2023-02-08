@@ -75,3 +75,9 @@ export type TUserUpdateEmailData = {
   token: string;
   locale: "fr" | "en";
 };
+
+export type TFormCreateData = {
+  name: string;
+  timezone: string;
+  locale: "fr" | "en";
+};

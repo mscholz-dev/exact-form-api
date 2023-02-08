@@ -23,6 +23,7 @@ import userRouter from "./src/user/user.route.js";
 import contactRouter from "./src/contact/contact.route.js";
 import testRouter from "./src/test/test.route.js";
 import authRouter from "./src/auth/auth.route.js";
+import formRouter from "./src/form/form.route.js";
 
 // bodyparser
 app.use(express.urlencoded({ extended: true }));
@@ -67,7 +68,9 @@ app.use("/api/contact", contactRouter);
 
 if (process.env.NODE_ENV !== "prod")
   app.use("/api/test", testRouter);
+
 app.use("/api/auth", authRouter);
+app.use("/api/form", formRouter);
 
 // return error
 app.use(errorHandler);

@@ -9,6 +9,7 @@ import {
   TUserCreateData,
   TNewIP,
   TUserUpdateEmailData,
+  TFormCreateData,
 } from "../type.js";
 
 // classes
@@ -311,6 +312,53 @@ export default class Email {
 
     await this.send(
       newEmail,
+      headTitle,
+      fileHtmlClient,
+    );
+  }
+
+  async formCreateTemplate(
+    { name, timezone, locale }: TFormCreateData,
+    email: string,
+  ) {
+    if (process.env.NODE_ENV !== "prod") return;
+
+    let headTitle = "";
+
+    switch (locale) {
+      case "fr":
+        headTitle = "NOUVEAU FORMULAIRE";
+        break;
+
+      case "en":
+        headTitle = "NEW FORM";
+        break;
+
+      default:
+        if (!locale)
+          throw new AppError(
+            "locale required",
+            400,
+          );
+        throw new AppError("locale invalid", 400);
+    }
+
+    const fileClient = fs
+      .readFileSync(
+        `./src/utils/email/${locale}/form/new-form.client.html`,
+      )
+      .toString();
+
+    const fileHtmlClient = fileClient
+      .replace("$headTitle", headTitle)
+      .replace("$name", name)
+      .replace(
+        "$timezone",
+        timezone.replace("_", ""),
+      );
+
+    await this.send(
+      email,
       headTitle,
       fileHtmlClient,
     );

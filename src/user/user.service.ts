@@ -1,6 +1,5 @@
 import argon from "argon2";
 import { PrismaClient } from "@prisma/client";
-import EmailClass from "../utils/email/Email.js";
 
 // types
 import {
@@ -13,7 +12,6 @@ import AppError from "../utils/AppError.js";
 
 // classes
 const Prisma = new PrismaClient();
-const Email = new EmailClass();
 
 export default class UserService {
   async create(
@@ -53,7 +51,7 @@ export default class UserService {
   }
 
   async connection(
-    { email, password, locale }: TUserConnect,
+    { email, password }: TUserConnect,
     ip: string,
   ) {
     const user = await Prisma.user.findUnique({
@@ -88,25 +86,17 @@ export default class UserService {
         400,
       );
 
-    if (!ip) return user;
+    if (!ip) return { user, newIp: false };
 
     for (const item of user.user_ip) {
       if (item.ip !== ip) {
         this.addIP(user.id, ip);
 
-        await Email.userNewIp(
-          {
-            email,
-            locale,
-          },
-          ip,
-        );
-
-        return user;
+        return { user, newIp: true };
       }
     }
 
-    return user;
+    return { user, newIp: false };
   }
 
   async update(

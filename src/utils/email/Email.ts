@@ -181,7 +181,7 @@ export default class Email {
     { email, locale }: TNewIP,
     ip: string,
   ) {
-    if (process.env.NODE_ENV !== "prod") return;
+    // if (process.env.NODE_ENV !== "prod") return;
 
     let headTitle = "";
 

@@ -27,8 +27,6 @@ export default class UserController {
       ip,
     );
 
-    await Email.userCreateTemplate(schema);
-
     const jwt = Cookie.signJwt({
       ...user,
       role: "CLIENT",
@@ -38,6 +36,9 @@ export default class UserController {
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
+
+    // send email after request
+    await Email.userCreateTemplate(schema);
   }
 
   async connection(req: Request, res: Response) {
@@ -48,10 +49,8 @@ export default class UserController {
         req.body,
       );
 
-    const user = await UserService.connection(
-      schema,
-      ip,
-    );
+    const { user, newIp } =
+      await UserService.connection(schema, ip);
 
     const jwt = Cookie.signJwt(user);
 
@@ -59,6 +58,17 @@ export default class UserController {
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
+
+    if (!newIp) return;
+
+    // send email after request
+    await Email.userNewIp(
+      {
+        email: user.email,
+        locale: schema.locale,
+      },
+      ip,
+    );
   }
 
   async update(req: Request, res: Response) {
@@ -105,18 +115,19 @@ export default class UserController {
       userCookie.id,
     );
 
-    await Email.userCreateEmailTokenTemplate(
-      userCookie.email,
-      locale,
-      token,
-    );
-
     const jwt = Cookie.signJwt(userCookie);
 
     res
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
+
+    // send email after request
+    await Email.userCreateEmailTokenTemplate(
+      userCookie.email,
+      locale,
+      token,
+    );
   }
 
   async updateEmail(req: Request, res: Response) {
@@ -135,8 +146,6 @@ export default class UserController {
       userCookie.id,
     );
 
-    await Email.userUpdateEmailTemplate(schema);
-
     const jwt = Cookie.signJwt({
       ...userCookie,
       email: schema.newEmail,
@@ -146,6 +155,9 @@ export default class UserController {
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
+
+    // send email after request
+    await Email.userUpdateEmailTemplate(schema);
   }
 
   async disconnection(

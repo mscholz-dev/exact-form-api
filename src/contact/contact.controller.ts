@@ -18,8 +18,9 @@ export default class ContactController {
 
     await ContactService.create(schema);
 
-    await Email.contactCreateTemplate(schema);
-
     res.status(200).end();
+
+    // send email after request
+    await Email.contactCreateTemplate(schema);
   }
 }

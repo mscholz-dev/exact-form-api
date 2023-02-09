@@ -27,16 +27,17 @@ export default class FormController {
       userCookie.id,
     );
 
-    await Email.formCreateTemplate(
-      schema,
-      userCookie.email,
-    );
-
     const jwt = Cookie.signJwt(userCookie);
 
     res
       .status(200)
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
+
+    // send email after request
+    await Email.formCreateTemplate(
+      schema,
+      userCookie.email,
+    );
   }
 }

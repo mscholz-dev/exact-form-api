@@ -2,7 +2,10 @@ import Validator from "./Validator.js";
 import timezone from "../timezone.json" assert { type: "json" };
 
 // types
-import { TFormCreateData } from "../types.js";
+import {
+  TFormCreateData,
+  TFormGetAllQuery,
+} from "../types.js";
 
 export default class FormValidator extends Validator {
   inspectCreateData(
@@ -21,6 +24,22 @@ export default class FormValidator extends Validator {
     );
 
     return schema as TFormCreateData;
+  }
+
+  inspectGetAllData(
+    data: TFormGetAllQuery,
+  ): TFormGetAllQuery {
+    const schema = {
+      page: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    return schema as TFormGetAllQuery;
   }
 
   errorMessage(
@@ -51,6 +70,15 @@ export default class FormValidator extends Validator {
         if (!value) return "locale required";
         if (value !== "fr" && value !== "en")
           return "locale invalid";
+        return "";
+
+      // page
+      case "page":
+        if (!value) return "page required";
+        if (Number(value) <= 0)
+          return "page must be greater than 0";
+        if (isNaN(Number(value)))
+          return "page must be a number";
         return "";
 
       // default

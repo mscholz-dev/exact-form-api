@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import CookieClass from "../utils/Cookie.js";
 import AuthServiceClass from "./auth.service.js";
+import SecurityClass from "../utils/Security.js";
 
 // types
 import { TCookieMiddleware } from "../utils/types.js";
@@ -8,6 +9,7 @@ import { TCookieMiddleware } from "../utils/types.js";
 // classes
 const Cookie = new CookieClass();
 const AuthService = new AuthServiceClass();
+const Security = new SecurityClass();
 
 export default class AuthController {
   async index(req: Request, res: Response) {
@@ -37,7 +39,7 @@ export default class AuthController {
     const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
-    const token = req.params.token;
+    const token = Security.xss(req.params.token);
 
     await AuthService.hasEmailToken(
       token,

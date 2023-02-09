@@ -112,15 +112,19 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should create a fr form", async () => {
-    const res = await request(app)
-      .post(route)
-      .set("Cookie", [`user=${data.validFrJwt}`])
-      .send({
-        name: data.formName,
-        timezone: data.formTimezone,
-        locale: data.localeFr,
-      });
-    expect(res.statusCode).toBe(200);
+  it("it should create 10 fr form", async () => {
+    for (let i = 0; i < 10; i++) {
+      const res = await request(app)
+        .post(route)
+        .set("Cookie", [
+          `user=${data.validFrJwt}`,
+        ])
+        .send({
+          name: `${data.formName}${i}`,
+          timezone: data.formTimezone,
+          locale: data.localeFr,
+        });
+      expect(res.statusCode).toBe(200);
+    }
   });
 });

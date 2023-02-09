@@ -37,11 +37,57 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should return all forms of an user", async () => {
+  it("it should throw: page required", async () => {
     const res = await request(app)
       .get(route)
       .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "page required",
+    );
+  });
+
+  it("it should throw: page must be greater than 0", async () => {
+    const res = await request(app)
+      .get(`${route}?page=-1`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "page must be greater than 0",
+    );
+  });
+
+  it("it should throw: page must be a number", async () => {
+    const res = await request(app)
+      .get(`${route}?page=invalid`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "page must be a number",
+    );
+  });
+
+  it("it should return 8 last forms of an user (page 1)", async () => {
+    const res = await request(app)
+      .get(`${route}?page=1`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
-    //  expect(res.body.)
+    expect(res.body.forms.length).toBe(8);
+    expect(res.body.countAll).toBe(10);
+    expect(res.body.username).toBe(data.username);
+    expect(res.body.email).toBe(data.email);
+    expect(res.body.role).toBe(data.client);
+  });
+
+  it("it should return 2 last forms of an user (page 2)", async () => {
+    const res = await request(app)
+      .get(`${route}?page=2`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.forms.length).toBe(2);
+    expect(res.body.countAll).toBe(10);
+    expect(res.body.username).toBe(data.username);
+    expect(res.body.email).toBe(data.email);
+    expect(res.body.role).toBe(data.client);
   });
 });

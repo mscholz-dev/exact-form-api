@@ -7,7 +7,7 @@ const Prisma = new PrismaClient();
 const Security = new SecurityClass();
 const TestService = new TestServiceClass();
 
-async function main() {
+const seed = async () => {
   // reset DB
   await TestService.newDB();
 
@@ -52,6 +52,24 @@ async function main() {
     },
   });
 
+  // create 19 forms with user1
+  for (let i = 2; i < 20; i++) {
+    await Prisma.form.create({
+      data: {
+        name: `Form ${i} User 1`,
+        timezone: "Europe/Paris",
+        key: Security.createUUID(),
+        form_user: {
+          create: {
+            // form_id is added automatically
+            user_id: user1.id,
+            role: "OWNER",
+          },
+        },
+      },
+    });
+  }
+
   // create form with user2
   const form2User2 = await Prisma.form.create({
     data: {
@@ -69,34 +87,23 @@ async function main() {
   });
 
   // add user1 to form2
-  const form2User1 =
-    await Prisma.form_user.create({
-      data: {
-        form_id: form2User2.id,
-        user_id: user1.id,
-      },
-    });
+  await Prisma.form_user.create({
+    data: {
+      form_id: form2User2.id,
+      user_id: user1.id,
+    },
+  });
 
   // add user2 to form1
-  const form1User2 =
-    await Prisma.form_user.create({
-      data: {
-        form_id: form1User1.id,
-        user_id: user2.id,
-      },
-    });
+  await Prisma.form_user.create({
+    data: {
+      form_id: form1User1.id,
+      user_id: user2.id,
+    },
+  });
+};
 
-  console.log(
-    user1,
-    user2,
-    form1User1,
-    form2User2,
-    form2User1,
-    form1User2,
-  );
-}
-
-main()
+seed()
   .then(async () => {
     await Prisma.$disconnect();
   })

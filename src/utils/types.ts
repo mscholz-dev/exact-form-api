@@ -89,3 +89,7 @@ export type TFormGetAllData = {
   items: number;
   owner: string;
 }[];
+
+export type TFormGetAllQuery = {
+  page: string;
+};

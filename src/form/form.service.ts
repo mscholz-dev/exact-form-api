@@ -36,9 +36,16 @@ export default class FormService {
     return;
   }
 
-  async getAll(id: string) {
-    const forms = await Prisma.form_user.findMany(
-      {
+  async getAll(id: string, currentPage: number) {
+    const data = await Prisma.$transaction([
+      Prisma.form_user.count({
+        where: {
+          user_id: id,
+        },
+      }),
+      Prisma.form_user.findMany({
+        take: 8,
+        skip: (currentPage - 1) * 8,
         where: {
           user_id: id,
         },
@@ -71,16 +78,21 @@ export default class FormService {
         orderBy: {
           created_at: "desc",
         },
-      },
-    );
+      }),
+    ]);
 
     // refacto object structure
-    return forms.map((item) => ({
+    const forms = data[1].map((item) => ({
       name: item.form.name,
       key: item.form.key,
       timezone: item.form.timezone,
       items: item.form._count.form_item,
       owner: item.form.form_user[0].user.username,
     }));
+
+    return {
+      countAll: data[0],
+      forms,
+    };
   }
 }

@@ -3,7 +3,7 @@ import CookieClass from "../utils/Cookie.js";
 import AuthServiceClass from "./auth.service.js";
 
 // types
-import { TCookieMiddleware } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/types.js";
 
 // classes
 const Cookie = new CookieClass();

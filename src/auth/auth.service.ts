@@ -2,16 +2,16 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../utils/AppError.js";
 
 // types
-import { TCookieMiddleware } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/types.js";
 
 // classes
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 
 export default class AuthService {
   async getUserCookieData(
     email: string,
   ): Promise<TCookieMiddleware | null> {
-    return await prisma.user.findUnique({
+    return await Prisma.user.findUnique({
       where: {
         email,
       },
@@ -25,7 +25,7 @@ export default class AuthService {
   }
 
   async updateUserDate(email: string) {
-    await prisma.user.update({
+    await Prisma.user.update({
       where: {
         email,
       },
@@ -44,7 +44,7 @@ export default class AuthService {
     );
 
     const userEmailToken =
-      await prisma.user_token.findFirst({
+      await Prisma.user_token.findFirst({
         where: {
           AND: [
             {

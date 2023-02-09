@@ -2,7 +2,7 @@ import AppError from "../AppError.js";
 import SecurityClass from "../Security.js";
 
 // types
-import { TInspectData } from "../type.js";
+import { TInspectData } from "../types.js";
 
 // classes
 const Security = new SecurityClass();

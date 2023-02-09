@@ -2,7 +2,7 @@ import Validator from "./Validator.js";
 import timezone from "../timezone.json" assert { type: "json" };
 
 // types
-import { TFormCreateData } from "../type.js";
+import { TFormCreateData } from "../types.js";
 
 export default class FormValidator extends Validator {
   inspectCreateData(

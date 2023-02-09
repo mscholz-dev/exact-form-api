@@ -8,11 +8,11 @@ import {
   TUserConnect,
   TUserUpdateData,
   TUserUpdateEmailData,
-} from "../utils/type.js";
+} from "../utils/types.js";
 import AppError from "../utils/AppError.js";
 
 // classes
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 const Email = new EmailClass();
 
 export default class UserService {
@@ -35,7 +35,7 @@ export default class UserService {
         }
       : {};
 
-    const user = await prisma.user.create({
+    const user = await Prisma.user.create({
       data: {
         username: username,
         email: email,
@@ -56,7 +56,7 @@ export default class UserService {
     { email, password, locale }: TUserConnect,
     ip: string,
   ) {
-    const user = await prisma.user.findUnique({
+    const user = await Prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -119,7 +119,7 @@ export default class UserService {
     id: string,
   ) {
     if (!oldPassword) {
-      await prisma.user.update({
+      await Prisma.user.update({
         where: {
           id,
         },
@@ -136,7 +136,7 @@ export default class UserService {
     }
 
     const userPassword =
-      await prisma.user.findUnique({
+      await Prisma.user.findUnique({
         where: {
           id,
         },
@@ -161,7 +161,7 @@ export default class UserService {
 
     const hash = await argon.hash(newPassword);
 
-    await prisma.user.update({
+    await Prisma.user.update({
       where: {
         id,
       },
@@ -183,7 +183,7 @@ export default class UserService {
     id: string,
   ) {
     const userEmailToken =
-      await prisma.user_token.findMany({
+      await Prisma.user_token.findMany({
         where: {
           AND: [
             {
@@ -216,7 +216,7 @@ export default class UserService {
           );
     }
 
-    await prisma.user_token.create({
+    await Prisma.user_token.create({
       data: {
         user_id: id,
         type: "CHANGE_EMAIL",
@@ -241,7 +241,7 @@ export default class UserService {
     );
 
     const userEmailToken =
-      await prisma.user_token.findFirst({
+      await Prisma.user_token.findFirst({
         where: {
           AND: [
             {
@@ -271,7 +271,7 @@ export default class UserService {
     if (!userEmailToken)
       throw new AppError("token not found", 400);
 
-    await prisma.user.update({
+    await Prisma.user.update({
       where: {
         id: id,
       },
@@ -283,7 +283,7 @@ export default class UserService {
       },
     });
 
-    await prisma.user_token.update({
+    await Prisma.user_token.update({
       where: {
         token,
       },
@@ -299,7 +299,7 @@ export default class UserService {
   }
 
   async addIP(id: string, ip: string) {
-    await prisma.user_ip.create({
+    await Prisma.user_ip.create({
       data: {
         ip,
         user_id: id,
@@ -309,7 +309,7 @@ export default class UserService {
   }
 
   async getMarket(email: string) {
-    const request = await prisma.user.findUnique({
+    const request = await Prisma.user.findUnique({
       where: {
         email,
       },

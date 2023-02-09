@@ -10,7 +10,7 @@ import {
   TNewIP,
   TUserUpdateEmailData,
   TFormCreateData,
-} from "../type.js";
+} from "../types.js";
 
 // classes
 const LinkHelper = new LinkHelperClass();

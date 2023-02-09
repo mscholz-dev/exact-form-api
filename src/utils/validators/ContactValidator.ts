@@ -2,7 +2,7 @@ import Validator from "./Validator.js";
 import RegexClass from "../Regex.js";
 
 // types
-import { TContactContactData } from "../type.js";
+import { TContactContactData } from "../types.js";
 
 // classes
 const Regex = new RegexClass();

@@ -9,7 +9,7 @@ import {
   TUserUpdateData,
   TUserCreateEmailTokenData,
   TUserUpdateEmailData,
-} from "../type.js";
+} from "../types.js";
 
 // classes
 const Regex = new RegexClass();

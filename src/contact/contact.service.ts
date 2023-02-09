@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
 // types
-import { TContactContactData } from "../utils/type";
+import { TContactContactData } from "../utils/types";
 
 // classes
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 
 export default class ContactService {
   async create({
@@ -22,7 +22,7 @@ export default class ContactService {
         }
       : {};
 
-    await prisma.contact.create({
+    await Prisma.contact.create({
       data: {
         last_name: lastName,
         first_name: firstName,

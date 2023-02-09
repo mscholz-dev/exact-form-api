@@ -2,7 +2,7 @@ import { CookieOptions } from "express-serve-static-core";
 import jwt from "jsonwebtoken";
 
 // types
-import { TCookie } from "./type.js";
+import { TCookie } from "./types.js";
 
 export default class Cookie {
   cookieOptions(): CookieOptions {

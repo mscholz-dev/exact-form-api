@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import TestServiceClass from "./test.service.js";
 
 // types
-import { TCookieMiddleware } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/types.js";
 
 // classes
 const TestService = new TestServiceClass();

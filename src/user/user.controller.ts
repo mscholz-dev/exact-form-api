@@ -6,7 +6,7 @@ import EmailClass from "../utils/email/Email.js";
 import SecurityClass from "../utils/Security.js";
 
 // types
-import { TCookieMiddleware } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/types.js";
 
 // classes
 const UserService = new UserServiceClass();

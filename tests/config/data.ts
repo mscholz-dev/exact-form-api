@@ -1,7 +1,7 @@
 import CookieClass from "../../src/utils/Cookie.js";
 
 // types
-import { TCookie } from "../../src/utils/type";
+import { TCookie } from "../../src/utils/types";
 
 // classes
 const Cookie = new CookieClass();

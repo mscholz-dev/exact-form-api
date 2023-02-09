@@ -2,27 +2,27 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../utils/AppError.js";
 
 // classes
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 
 export default class TestService {
   async newDB() {
     // delete form_user
-    await prisma.form_user.deleteMany();
+    await Prisma.form_user.deleteMany();
 
     // delete form
-    await prisma.form.deleteMany();
+    await Prisma.form.deleteMany();
 
     // delete users
-    await prisma.user_token.deleteMany();
-    await prisma.user_ip.deleteMany();
-    await prisma.user.deleteMany();
+    await Prisma.user_token.deleteMany();
+    await Prisma.user_ip.deleteMany();
+    await Prisma.user.deleteMany();
 
     // delete contact
-    await prisma.contact_phone.deleteMany();
-    await prisma.contact.deleteMany();
+    await Prisma.contact_phone.deleteMany();
+    await Prisma.contact.deleteMany();
 
     // delete error
-    await prisma.error.deleteMany();
+    await Prisma.error.deleteMany();
   }
 
   async getTokenEmail(id: string) {
@@ -32,7 +32,7 @@ export default class TestService {
     );
 
     const userEmailToken =
-      await prisma.user_token.findFirst({
+      await Prisma.user_token.findFirst({
         where: {
           AND: [
             {

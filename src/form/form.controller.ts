@@ -5,7 +5,7 @@ import CookieClass from "../utils/Cookie.js";
 import EmailClass from "../utils/email/Email.js";
 
 // types
-import { TCookieMiddleware } from "../utils/type.js";
+import { TCookieMiddleware } from "../utils/types.js";
 
 // classes
 const FormService = new FormServiceClass();

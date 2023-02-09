@@ -2,10 +2,10 @@ import { PrismaClient } from "@prisma/client";
 import SecurityClass from "../utils/Security.js";
 
 // types
-import { TFormCreateData } from "../utils/type.js";
+import { TFormCreateData } from "../utils/types.js";
 
 // classes
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 const Security = new SecurityClass();
 
 export default class FormService {
@@ -13,7 +13,7 @@ export default class FormService {
     { name, timezone }: TFormCreateData,
     id: string,
   ): Promise<void> {
-    await prisma.form.create({
+    await Prisma.form.create({
       data: {
         name,
         timezone,

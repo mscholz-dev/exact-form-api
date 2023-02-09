@@ -40,4 +40,27 @@ export default class FormController {
       userCookie.email,
     );
   }
+
+  async getAll(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const forms = await FormService.getAll(
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .json({
+        forms,
+        username: userCookie.username,
+        email: userCookie.email,
+        role: userCookie.role,
+      })
+      .end();
+  }
 }

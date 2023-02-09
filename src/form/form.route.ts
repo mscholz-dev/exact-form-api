@@ -12,7 +12,7 @@ import AuthMiddlewareClass from "../auth/auth.middleware.js";
 const FormController = new FormControllerClass();
 const AuthMiddleware = new AuthMiddlewareClass();
 
-// route: profile
+// route: create
 router.route("/").post(
   tryCatch(
     async (
@@ -23,6 +23,20 @@ router.route("/").post(
   ),
   tryCatch(async (req: Request, res: Response) =>
     FormController.create(req, res),
+  ),
+);
+
+// route: get all form
+router.route("/").get(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.getAll(req, res),
   ),
 );
 

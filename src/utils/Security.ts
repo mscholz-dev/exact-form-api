@@ -1,6 +1,7 @@
 import { Request } from "express";
 import xss from "xss";
 import { randomUUID } from "crypto";
+import argon from "argon2";
 
 export default class Security {
   xss(string: string | undefined) {
@@ -17,5 +18,21 @@ export default class Security {
 
   createUUID() {
     return randomUUID();
+  }
+
+  async createHash(
+    password: string,
+  ): Promise<string> {
+    return await argon.hash(password);
+  }
+
+  async verifyHash(
+    dbPassword: string,
+    formPassword: string,
+  ): Promise<boolean> {
+    return await argon.verify(
+      dbPassword,
+      formPassword,
+    );
   }
 }

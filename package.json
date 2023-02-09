@@ -14,7 +14,8 @@
     "git:deploy": "git checkout prod && git merge main && git push && git checkout main",
     "prisma:db:push:all": "cross-env MONGO_DB_NAME=\"exact_form_test\" npx prisma db push && cross-env MONGO_DB_NAME=\"exact_form_dev\" npx prisma db push && cross-env MONGO_DB_NAME=\"exact_form\" npx prisma db push",
     "prisma:generate:all": "cross-env MONGO_DB_NAME=\"exact_form_test\" npx prisma generate && cross-env MONGO_DB_NAME=\"exact_form_dev\" npx prisma generate && cross-env MONGO_DB_NAME=\"exact_form\" npx prisma generate",
-    "prisma:all": "npm run prisma:db:push:all && npm run prisma:generate:all"
+    "prisma:all": "npm run prisma:db:push:all && npm run prisma:generate:all",
+    "prisma:seed": "node ./dist/prisma/seed.js"
   },
   "repository": {
     "type": "git",

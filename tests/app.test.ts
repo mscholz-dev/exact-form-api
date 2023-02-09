@@ -18,6 +18,7 @@ import "./auth/auth.hasEmailToken.test.js";
 
 // form
 import "./form/form.create.test.js";
+import "./form/form.getAll.test.js";
 
 // user
 import "./user/user.updateEmail.test.js";

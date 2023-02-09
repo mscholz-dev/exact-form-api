@@ -1,5 +1,6 @@
-import argon from "argon2";
 import { PrismaClient } from "@prisma/client";
+import AppError from "../utils/AppError.js";
+import SecurityClass from "../utils/Security.js";
 
 // types
 import {
@@ -8,10 +9,10 @@ import {
   TUserUpdateData,
   TUserUpdateEmailData,
 } from "../utils/types.js";
-import AppError from "../utils/AppError.js";
 
 // classes
 const Prisma = new PrismaClient();
+const Security = new SecurityClass();
 
 export default class UserService {
   async create(
@@ -23,7 +24,9 @@ export default class UserService {
     }: TUserCreate,
     ip: string,
   ) {
-    const hash = await argon.hash(password);
+    const hash = await Security.createHash(
+      password,
+    );
 
     const createIpObject = ip
       ? {
@@ -75,10 +78,11 @@ export default class UserService {
     if (!user)
       throw new AppError("user not found", 400);
 
-    const passwordMatch = await argon.verify(
-      user.password,
-      password,
-    );
+    const passwordMatch =
+      await Security.verifyHash(
+        user.password,
+        password,
+      );
 
     if (!passwordMatch)
       throw new AppError(
@@ -138,10 +142,11 @@ export default class UserService {
     if (!userPassword)
       throw new AppError("user not found", 400);
 
-    const passwordMatch = await argon.verify(
-      userPassword.password,
-      oldPassword,
-    );
+    const passwordMatch =
+      await Security.verifyHash(
+        userPassword.password,
+        oldPassword,
+      );
 
     if (!passwordMatch)
       throw new AppError(
@@ -149,7 +154,9 @@ export default class UserService {
         400,
       );
 
-    const hash = await argon.hash(newPassword);
+    const hash = await Security.createHash(
+      newPassword,
+    );
 
     await Prisma.user.update({
       where: {

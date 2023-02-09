@@ -81,3 +81,11 @@ export type TFormCreateData = {
   timezone: string;
   locale: "fr" | "en";
 };
+
+export type TFormGetAllData = {
+  name: string;
+  key: string;
+  timezone: string;
+  items: number;
+  owner: string;
+}[];

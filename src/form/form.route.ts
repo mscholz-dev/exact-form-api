@@ -40,4 +40,14 @@ router.route("/").get(
   ),
 );
 
+// route: create a form item
+router
+  .route("/:key")
+  .post(
+    tryCatch(
+      async (req: Request, res: Response) =>
+        FormController.createItem(req, res),
+    ),
+  );
+
 export default router;

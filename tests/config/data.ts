@@ -21,6 +21,11 @@ const data = {
   errorStack: "Error stack",
   formName: "Wobinit Contact Form",
   formTimezone: "Europe/Paris",
+  formItem1: {
+    data1: "1",
+    data2: "2",
+    data3: "3",
+  },
   string61:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit odio.",
   string256:

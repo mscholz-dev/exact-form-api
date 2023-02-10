@@ -72,4 +72,16 @@ export default class FormController {
       })
       .end();
   }
+
+  async createItem(req: Request, res: Response) {
+    const schema =
+      FormValidator.inspectCreateItemData(
+        req.params.key,
+        req.body,
+      );
+
+    await FormService.createItem(schema);
+
+    res.status(200).end();
+  }
 }

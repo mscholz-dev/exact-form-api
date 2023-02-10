@@ -37,7 +37,7 @@ describe(`GET: ${route}`, () => {
     );
   });
 
-  it("it should throw: user not found", async () => {
+  it("it should send email token", async () => {
     const res = await request(app)
       .get(route)
       .set("Cookie", [`user=${data.validFrJwt}`]);

@@ -29,6 +29,16 @@ export default class Validator {
     });
   }
 
+  secureObjectData(
+    data: TInspectData,
+  ): TInspectData {
+    for (const item in data) {
+      data[item] = Security.xss(data[item]);
+    }
+
+    return data;
+  }
+
   formatPhone(string: string): string {
     return string
       .replace("+33", "0")

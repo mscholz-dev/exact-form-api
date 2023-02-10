@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import AppError from "src/utils/AppError.js";
+import AppError from "../utils/AppError.js";
 import SecurityClass from "../utils/Security.js";
 
 // types
 import {
   TFormCreateData,
-  TFormGetAllData,
+  TFormCreateItemData,
 } from "../utils/types.js";
 
 // classes
@@ -94,5 +94,33 @@ export default class FormService {
       countAll: data[0],
       forms,
     };
+  }
+
+  async createItem(
+    schema: TFormCreateItemData,
+  ): Promise<void> {
+    const formId = await Prisma.form.findFirst({
+      where: {
+        key: schema.key,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!formId?.id)
+      throw new AppError("key not found", 400);
+
+    await Prisma.form_item.create({
+      data: {
+        form_id: formId.id,
+        data: schema.data,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return;
   }
 }

@@ -12,7 +12,7 @@ export default class TestController {
   async newDB(req: Request, res: Response) {
     await TestService.newDB();
 
-    // run seeders only for cypress test
+    // run seeders only in dev
     if (process.env.NODE_ENV === "dev")
       await seed();
 

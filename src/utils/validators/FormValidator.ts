@@ -5,7 +5,9 @@ import timezone from "../timezone.json" assert { type: "json" };
 import {
   TFormCreateData,
   TFormGetAllQuery,
+  TFormCreateItemData,
 } from "../types.js";
+import AppError from "../AppError.js";
 
 export default class FormValidator extends Validator {
   inspectCreateData(
@@ -40,6 +42,32 @@ export default class FormValidator extends Validator {
     );
 
     return schema as TFormGetAllQuery;
+  }
+
+  inspectCreateItemData(
+    key: string,
+    data: object,
+  ) {
+    const schema = {
+      key: "",
+    };
+
+    this.inspectData(
+      schema,
+      { key },
+      this.errorMessage,
+    );
+
+    if (!Object.keys(data).length)
+      throw new AppError("data required", 400);
+
+    const secureData =
+      this.secureObjectData(data);
+
+    return {
+      key: schema.key,
+      data: secureData,
+    } as TFormCreateItemData;
   }
 
   errorMessage(
@@ -79,6 +107,10 @@ export default class FormValidator extends Validator {
           return "page must be greater than 0";
         if (isNaN(Number(value)))
           return "page must be a number";
+        return "";
+
+      // key
+      case "key":
         return "";
 
       // default

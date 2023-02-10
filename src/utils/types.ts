@@ -93,3 +93,8 @@ export type TFormGetAllData = {
 export type TFormGetAllQuery = {
   page: string;
 };
+
+export type TFormCreateItemData = {
+  key: string;
+  data: object;
+};

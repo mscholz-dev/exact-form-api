@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import TestServiceClass from "./test.service.js";
+import SeedClass from "../utils/Seed.js";
 
 // types
 import { TCookieMiddleware } from "../utils/types.js";
-import seed from "../../prisma/seed.js";
 
 // classes
 const TestService = new TestServiceClass();
+const Seed = new SeedClass();
 
 export default class TestController {
   async newDB(req: Request, res: Response) {
@@ -14,7 +15,7 @@ export default class TestController {
 
     // run seeders only in dev
     if (process.env.NODE_ENV === "dev")
-      await seed();
+      await Seed.execute();
 
     res.status(200).end();
   }

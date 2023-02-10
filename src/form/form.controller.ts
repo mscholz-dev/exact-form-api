@@ -84,4 +84,40 @@ export default class FormController {
 
     res.status(200).end();
   }
+
+  async getSpecificForm(
+    req: Request,
+    res: Response,
+  ) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectGetSpecificForm(
+        req.params.key,
+        req.query,
+      );
+
+    const data =
+      await FormService.getSpecificForm(
+        schema.key,
+        Number(schema.page),
+      );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .json({
+        name: data.name,
+        items: data.items,
+        countAll: data.countAll,
+        username: userCookie.username,
+        email: userCookie.email,
+        role: userCookie.role,
+      })
+      .end();
+  }
 }

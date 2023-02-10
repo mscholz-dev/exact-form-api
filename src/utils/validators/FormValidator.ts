@@ -1,13 +1,14 @@
 import Validator from "./Validator.js";
 import timezone from "../timezone.json" assert { type: "json" };
+import AppError from "../AppError.js";
 
 // types
 import {
   TFormCreateData,
   TFormGetAllQuery,
   TFormCreateItemData,
+  TFormGetSpecificFormData,
 } from "../types.js";
-import AppError from "../AppError.js";
 
 export default class FormValidator extends Validator {
   inspectCreateData(
@@ -61,6 +62,12 @@ export default class FormValidator extends Validator {
     if (!Object.keys(data).length)
       throw new AppError("data required", 400);
 
+    if (data["created_at" as keyof object])
+      throw new AppError(
+        "key created_at is forbidden",
+        400,
+      );
+
     const secureData =
       this.secureObjectData(data);
 
@@ -68,6 +75,24 @@ export default class FormValidator extends Validator {
       key: schema.key,
       data: secureData,
     } as TFormCreateItemData;
+  }
+
+  inspectGetSpecificForm(
+    key: string,
+    { page }: { page?: number },
+  ): TFormGetSpecificFormData {
+    const schema = {
+      key: "",
+      page: "",
+    };
+
+    this.inspectData(
+      schema,
+      { key, page },
+      this.errorMessage,
+    );
+
+    return schema;
   }
 
   errorMessage(

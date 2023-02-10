@@ -40,6 +40,20 @@ router.route("/").get(
   ),
 );
 
+// route: get a specific form
+router.route("/:key").get(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.getSpecificForm(req, res),
+  ),
+);
+
 // route: create a form item
 router
   .route("/:key")

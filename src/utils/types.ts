@@ -1,3 +1,5 @@
+import type { Prisma } from "@prisma/client";
+
 export type TUserCreate = {
   username: string;
   email: string;
@@ -97,4 +99,18 @@ export type TFormGetAllQuery = {
 export type TFormCreateItemData = {
   key: string;
   data: object;
+};
+
+export type TFormGetSpecificFormReturn = {
+  items: {
+    data: Prisma.JsonValue;
+    created_at: Date;
+  }[];
+  countAll: number;
+  name: string;
+};
+
+export type TFormGetSpecificFormData = {
+  key: string;
+  page: string;
 };

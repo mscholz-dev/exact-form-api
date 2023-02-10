@@ -6,6 +6,7 @@ import SecurityClass from "../utils/Security.js";
 import {
   TFormCreateData,
   TFormCreateItemData,
+  TFormGetSpecificFormReturn,
 } from "../utils/types.js";
 
 // classes
@@ -122,5 +123,54 @@ export default class FormService {
     });
 
     return;
+  }
+
+  async getSpecificForm(
+    key: string,
+    currentPage: number,
+  ): Promise<TFormGetSpecificFormReturn> {
+    const formId = await Prisma.form.findFirst({
+      where: {
+        key,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (!formId?.id)
+      throw new AppError("key not found", 400);
+
+    const data = await Prisma.$transaction([
+      Prisma.form_item.count({
+        where: {
+          form_id: formId.id,
+        },
+      }),
+      Prisma.form_item.findMany({
+        take: 8,
+        skip: (currentPage - 1) * 8,
+        where: {
+          form_id: formId.id,
+        },
+        select: {
+          created_at: true,
+          data: true,
+        },
+      }),
+    ]);
+
+    // refacto object structure
+    const items = data[1].map((item) => ({
+      created_at: item.created_at,
+      data: item.data,
+    }));
+
+    return {
+      countAll: data[0],
+      items,
+      name: formId.name,
+    };
   }
 }

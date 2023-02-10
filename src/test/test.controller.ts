@@ -3,6 +3,7 @@ import TestServiceClass from "./test.service.js";
 
 // types
 import { TCookieMiddleware } from "../utils/types.js";
+import seed from "../../prisma/seed.js";
 
 // classes
 const TestService = new TestServiceClass();
@@ -10,6 +11,10 @@ const TestService = new TestServiceClass();
 export default class TestController {
   async newDB(req: Request, res: Response) {
     await TestService.newDB();
+
+    // run seeders only for cypress test
+    if (process.env.NODE_ENV === "dev")
+      await seed();
 
     res.status(200).end();
   }

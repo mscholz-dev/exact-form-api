@@ -6,23 +6,16 @@ const Prisma = new PrismaClient();
 
 export default class TestService {
   async newDB() {
-    // delete form_user
-    await Prisma.form_user.deleteMany();
-
-    // delete form
-    await Prisma.form.deleteMany();
-
-    // delete users
-    await Prisma.user_token.deleteMany();
-    await Prisma.user_ip.deleteMany();
-    await Prisma.user.deleteMany();
-
-    // delete contact
-    await Prisma.contact_phone.deleteMany();
-    await Prisma.contact.deleteMany();
-
-    // delete error
-    await Prisma.error.deleteMany();
+    await Prisma.$transaction([
+      Prisma.form_user.deleteMany(),
+      Prisma.form.deleteMany(),
+      Prisma.user_token.deleteMany(),
+      Prisma.user_ip.deleteMany(),
+      Prisma.user.deleteMany(),
+      Prisma.contact_phone.deleteMany(),
+      Prisma.contact.deleteMany(),
+      Prisma.error.deleteMany(),
+    ]);
   }
 
   async getTokenEmail(id: string) {

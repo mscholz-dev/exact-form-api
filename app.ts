@@ -38,7 +38,8 @@ if (process.env.NODE_ENV !== "test")
 // cors
 app.use(
   cors({
-    origin: process.env.BASE_URL_FRONT,
+    // disable cors domain restriction
+    origin: true,
     credentials: true,
     methods: [
       "GET",

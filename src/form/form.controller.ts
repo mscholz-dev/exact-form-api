@@ -112,6 +112,7 @@ export default class FormController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .json({
         name: data.name,
+        timezone: data.timezone,
         items: data.items,
         countAll: data.countAll,
         username: userCookie.username,

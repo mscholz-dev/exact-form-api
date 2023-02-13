@@ -108,6 +108,7 @@ export type TFormGetSpecificFormReturn = {
   }[];
   countAll: number;
   name: string;
+  timezone: string;
 };
 
 export type TFormGetSpecificFormData = {

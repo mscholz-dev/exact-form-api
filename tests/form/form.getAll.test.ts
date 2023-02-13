@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`POST: ${route}`, () => {
+describe(`GET: ${route}`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).get(route);
     expect(res.statusCode).toBe(401);
@@ -85,6 +85,18 @@ describe(`POST: ${route}`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
     expect(res.body.forms.length).toBe(2);
+    expect(res.body.countAll).toBe(10);
+    expect(res.body.username).toBe(data.username);
+    expect(res.body.email).toBe(data.email);
+    expect(res.body.role).toBe(data.client);
+  });
+
+  it("it should return 0 forms of an user (page 3)", async () => {
+    const res = await request(app)
+      .get(`${route}?page=3`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.forms.length).toBe(0);
     expect(res.body.countAll).toBe(10);
     expect(res.body.username).toBe(data.username);
     expect(res.body.email).toBe(data.email);

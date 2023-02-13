@@ -7,6 +7,7 @@ const Prisma = new PrismaClient();
 export default class TestService {
   async newDB() {
     await Prisma.$transaction([
+      Prisma.form_item.deleteMany(),
       Prisma.form_user.deleteMany(),
       Prisma.form.deleteMany(),
       Prisma.user_token.deleteMany(),

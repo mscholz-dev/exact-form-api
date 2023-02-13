@@ -136,6 +136,7 @@ export default class FormService {
       select: {
         id: true,
         name: true,
+        timezone: true,
       },
     });
 
@@ -149,8 +150,8 @@ export default class FormService {
         },
       }),
       Prisma.form_item.findMany({
-        take: 8,
-        skip: (currentPage - 1) * 8,
+        take: 50,
+        skip: (currentPage - 1) * 50,
         where: {
           form_id: formId.id,
         },
@@ -171,6 +172,7 @@ export default class FormService {
       countAll: data[0],
       items,
       name: formId.name,
+      timezone: formId.timezone,
     };
   }
 }

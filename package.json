@@ -10,7 +10,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist/app.js\"",
-    "test": "cross-env MONGO_DB_NAME=\"exact_form_test\" cross-env NODE_ENV=test npx prisma generate && cross-env MONGO_DB_NAME=\"exact_form_test\" cross-env NODE_ENV=test npx jest --no-cache --verbose --coverage --detectOpenHandles --config ./dist/tests/config/jest.config.js",
+    "test": "npx prisma generate && npx jest --no-cache --verbose --coverage --detectOpenHandles --config ./dist/tests/config/jest.config.js",
     "git:deploy": "git checkout prod && git merge main && git push && git checkout main",
     "prisma:db:push:all": "cross-env MONGO_DB_NAME=\"exact_form_test\" npx prisma db push && cross-env MONGO_DB_NAME=\"exact_form_dev\" npx prisma db push && cross-env MONGO_DB_NAME=\"exact_form\" npx prisma db push",
     "prisma:generate:all": "cross-env MONGO_DB_NAME=\"exact_form_test\" npx prisma generate && cross-env MONGO_DB_NAME=\"exact_form_dev\" npx prisma generate && cross-env MONGO_DB_NAME=\"exact_form\" npx prisma generate",

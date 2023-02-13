@@ -68,6 +68,7 @@ export default class Seed {
             data3: { key1: 1, key2: "key2Value" },
             data4: false,
             data5: ["array1", "array2"],
+            data6: '<script>alert("ok")</script>',
           },
         },
       });

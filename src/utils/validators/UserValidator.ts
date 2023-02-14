@@ -181,15 +181,159 @@ export default class UserValidator extends Validator {
   }: TUserUpdateData) {
     if (!oldPassword) return;
 
+    if (
+      !Regex.passwordAtLeastOneUppercase(
+        oldPassword,
+      )
+    )
+      throw new AppError(
+        "oldPassword must contain one upper case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneLowercase(
+        oldPassword,
+      )
+    )
+      throw new AppError(
+        "oldPassword must contain one lower case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneDigit(oldPassword)
+    )
+      throw new AppError(
+        "oldPassword must contain one digit",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneSpecialCharacter(
+        oldPassword,
+      )
+    )
+      throw new AppError(
+        "oldPassword must contain one special character",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastHeightCharacters(
+        oldPassword,
+      )
+    )
+      throw new AppError(
+        "oldPassword must contain 8 characters",
+        400,
+      );
+
     if (!newPassword)
       throw new AppError(
         "newPassword required",
         400,
       );
 
+    if (
+      !Regex.passwordAtLeastOneUppercase(
+        newPassword,
+      )
+    )
+      throw new AppError(
+        "newPassword must contain one upper case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneLowercase(
+        newPassword,
+      )
+    )
+      throw new AppError(
+        "newPassword must contain one lower case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneDigit(newPassword)
+    )
+      throw new AppError(
+        "newPassword must contain one digit",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneSpecialCharacter(
+        newPassword,
+      )
+    )
+      throw new AppError(
+        "newPassword must contain one special character",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastHeightCharacters(
+        newPassword,
+      )
+    )
+      throw new AppError(
+        "newPassword must contain 8 characters",
+        400,
+      );
+
     if (!newPassword2)
       throw new AppError(
         "newPassword2 required",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneUppercase(
+        newPassword2,
+      )
+    )
+      throw new AppError(
+        "newPassword2 must contain one upper case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneLowercase(
+        newPassword2,
+      )
+    )
+      throw new AppError(
+        "newPassword2 must contain one lower case",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneDigit(newPassword2)
+    )
+      throw new AppError(
+        "newPassword2 must contain one digit",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastOneSpecialCharacter(
+        newPassword2,
+      )
+    )
+      throw new AppError(
+        "newPassword2 must contain one special character",
+        400,
+      );
+
+    if (
+      !Regex.passwordAtLeastHeightCharacters(
+        newPassword2,
+      )
+    )
+      throw new AppError(
+        "newPassword2 must contain 8 characters",
         400,
       );
 
@@ -269,7 +413,7 @@ export default class UserValidator extends Validator {
             value,
           )
         )
-          return "password must containt 8 characters";
+          return "password must contain 8 characters";
         return "";
 
       // password2
@@ -302,7 +446,7 @@ export default class UserValidator extends Validator {
             value,
           )
         )
-          return "password2 must containt 8 characters";
+          return "password2 must contain 8 characters";
         return "";
 
       // oldPassword

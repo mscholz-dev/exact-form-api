@@ -72,6 +72,81 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  it("it should throw: oldPassword must contain one upper case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: "a",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "oldPassword must contain one upper case",
+    );
+  });
+
+  it("it should throw: oldPassword must contain one lower case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: "A",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "oldPassword must contain one lower case",
+    );
+  });
+
+  it("it should throw: oldPassword must contain one digit", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: "Aa",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "oldPassword must contain one digit",
+    );
+  });
+
+  it("it should throw: oldPassword must contain one special character", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: "Aa1",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "oldPassword must contain one special character",
+    );
+  });
+
+  it("it should throw: oldPassword must contain 8 characters", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: "Aa1$",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "oldPassword must contain 8 characters",
+    );
+  });
+
   it("it should throw: newPassword required", async () => {
     const res = await request(app)
       .put(route)
@@ -98,6 +173,86 @@ describe(`PUT: ${route}`, () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
       "newPassword too long",
+    );
+  });
+
+  it("it should throw: newPassword must contain one upper case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: "a",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword must contain one upper case",
+    );
+  });
+
+  it("it should throw: newPassword must contain one lower case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: "A",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword must contain one lower case",
+    );
+  });
+
+  it("it should throw: newPassword must contain one digit", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: "Aa",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword must contain one digit",
+    );
+  });
+
+  it("it should throw: newPassword must contain one special character", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: "Aa1",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword must contain one special character",
+    );
+  });
+
+  it("it should throw: newPassword must contain 8 characters", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: "Aa1$",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword must contain 8 characters",
     );
   });
 
@@ -129,6 +284,91 @@ describe(`PUT: ${route}`, () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
       "newPassword2 too long",
+    );
+  });
+
+  it("it should throw: newPassword2 must contain one upper case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: "a",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword2 must contain one upper case",
+    );
+  });
+
+  it("it should throw: newPassword2 must contain one lower case", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: "A",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword2 must contain one lower case",
+    );
+  });
+
+  it("it should throw: newPassword2 must contain one digit", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: "Aa",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword2 must contain one digit",
+    );
+  });
+
+  it("it should throw: newPassword2 must contain one special character", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: "Aa1",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword2 must contain one special character",
+    );
+  });
+
+  it("it should throw: newPassword2 must contain 8 characters", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: `${data.username}.new`,
+        oldPassword: data.password,
+        newPassword: `${data.password}.new`,
+        newPassword2: "Aa1$",
+        market: "false",
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "newPassword2 must contain 8 characters",
     );
   });
 
@@ -210,7 +450,7 @@ describe(`PUT: ${route}`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`])
       .send({
         username: `${data.username}.new`,
-        oldPassword: "password incorrect",
+        oldPassword: `${data.password}$`,
         newPassword: `${data.password}.new`,
         newPassword2: `${data.password}.new`,
         market: "false",

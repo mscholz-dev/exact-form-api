@@ -152,7 +152,7 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should throw: password must containt 8 characters", async () => {
+  it("it should throw: password must contain 8 characters", async () => {
     const res = await request(app)
       .post(route)
       .send({
@@ -163,7 +163,7 @@ describe(`POST: ${route}`, () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
-      "password must containt 8 characters",
+      "password must contain 8 characters",
     );
   });
 
@@ -262,7 +262,7 @@ describe(`POST: ${route}`, () => {
     );
   });
 
-  it("it should throw: password2 must containt 8 characters", async () => {
+  it("it should throw: password2 must contain 8 characters", async () => {
     const res = await request(app)
       .post(route)
       .send({
@@ -274,7 +274,7 @@ describe(`POST: ${route}`, () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
-      "password2 must containt 8 characters",
+      "password2 must contain 8 characters",
     );
   });
 

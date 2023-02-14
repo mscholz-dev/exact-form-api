@@ -56,6 +56,76 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: password must contain one upper case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: "a",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one upper case",
+    );
+  });
+
+  it("it should throw: password must contain one lower case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: "A",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one lower case",
+    );
+  });
+
+  it("it should throw: password must contain one digit", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: "Aa",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one digit",
+    );
+  });
+
+  it("it should throw: password must contain one special character", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: "Aa1",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one special character",
+    );
+  });
+
+  it("it should throw: password must contain 8 characters", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        email: data.email,
+        password: "Aa1$",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain 8 characters",
+    );
+  });
+
   it("it should throw: locale required", async () => {
     const res = await request(app)
       .post(route)
@@ -102,7 +172,7 @@ describe(`POST: ${route}`, () => {
       .post(route)
       .send({
         email: data.email,
-        password: "bad password",
+        password: `${data.password}$`,
         locale: data.localeFr,
       });
     expect(res.statusCode).toBe(400);

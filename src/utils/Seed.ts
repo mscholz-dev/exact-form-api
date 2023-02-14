@@ -9,7 +9,7 @@ export default class Seed {
   async execute() {
     // hashed password
     const password = await Security.createHash(
-      "a",
+      "Azerty5!",
     );
 
     // create user1

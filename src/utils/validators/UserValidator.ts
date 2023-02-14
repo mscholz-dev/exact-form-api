@@ -244,6 +244,32 @@ export default class UserValidator extends Validator {
         if (!value) return "password required";
         if (value.length > 60)
           return "password too long";
+        if (
+          !Regex.passwordAtLeastOneUppercase(
+            value,
+          )
+        )
+          return "password must contain one upper case";
+        if (
+          !Regex.passwordAtLeastOneLowercase(
+            value,
+          )
+        )
+          return "password must contain one lower case";
+        if (!Regex.passwordAtLeastOneDigit(value))
+          return "password must contain one digit";
+        if (
+          !Regex.passwordAtLeastOneSpecialCharacter(
+            value,
+          )
+        )
+          return "password must contain one special character";
+        if (
+          !Regex.passwordAtLeastHeightCharacters(
+            value,
+          )
+        )
+          return "password must containt 8 characters";
         return "";
 
       // password2
@@ -251,6 +277,32 @@ export default class UserValidator extends Validator {
         if (!value) return "password2 required";
         if (value.length > 60)
           return "password2 too long";
+        if (
+          !Regex.passwordAtLeastOneUppercase(
+            value,
+          )
+        )
+          return "password2 must contain one upper case";
+        if (
+          !Regex.passwordAtLeastOneLowercase(
+            value,
+          )
+        )
+          return "password2 must contain one lower case";
+        if (!Regex.passwordAtLeastOneDigit(value))
+          return "password2 must contain one digit";
+        if (
+          !Regex.passwordAtLeastOneSpecialCharacter(
+            value,
+          )
+        )
+          return "password2 must contain one special character";
+        if (
+          !Regex.passwordAtLeastHeightCharacters(
+            value,
+          )
+        )
+          return "password2 must containt 8 characters";
         return "";
 
       // oldPassword

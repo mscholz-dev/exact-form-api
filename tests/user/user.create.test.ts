@@ -92,6 +92,81 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: password must contain one upper case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: "a",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one upper case",
+    );
+  });
+
+  it("it should throw: password must contain one lower case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: "A",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one lower case",
+    );
+  });
+
+  it("it should throw: password must contain one digit", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: "Aa",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one digit",
+    );
+  });
+
+  it("it should throw: password must contain one special character", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: "Aa1",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must contain one special character",
+    );
+  });
+
+  it("it should throw: password must containt 8 characters", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: "Aa1$",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password must containt 8 characters",
+    );
+  });
+
   it("it should throw: password2 required", async () => {
     const res = await request(app)
       .post(route)
@@ -120,6 +195,86 @@ describe(`POST: ${route}`, () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
       "password2 too long",
+    );
+  });
+
+  it("it should throw: password2 must contain one upper case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: "a",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password2 must contain one upper case",
+    );
+  });
+
+  it("it should throw: password2 must contain one lower case", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: "A",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password2 must contain one lower case",
+    );
+  });
+
+  it("it should throw: password2 must contain one digit", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: "Aa",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password2 must contain one digit",
+    );
+  });
+
+  it("it should throw: password2 must contain one special character", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: "Aa1",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password2 must contain one special character",
+    );
+  });
+
+  it("it should throw: password2 must containt 8 characters", async () => {
+    const res = await request(app)
+      .post(route)
+      .send({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: "Aa1$",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "password2 must containt 8 characters",
     );
   });
 
@@ -163,7 +318,7 @@ describe(`POST: ${route}`, () => {
         username: data.username,
         email: data.email,
         password: data.password,
-        password2: "bad password",
+        password2: `${data.password}$`,
         locale: data.localeFr,
       });
 

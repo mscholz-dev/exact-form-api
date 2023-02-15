@@ -55,8 +55,6 @@ export default class FormValidator extends Validator {
       key: "",
     };
 
-    // TODO: update testing verif 0, false, array, JSON
-
     const newData: Record<string, string> = {};
 
     // transform data type's into string

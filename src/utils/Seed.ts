@@ -6,6 +6,13 @@ const Prisma = new PrismaClient();
 const Security = new SecurityClass();
 
 export default class Seed {
+  toString(element: any): string {
+    if (typeof element === "object")
+      return JSON.stringify(element);
+
+    return element.toString();
+  }
+
   async execute() {
     // hashed password
     const password = await Security.createHash(
@@ -63,12 +70,22 @@ export default class Seed {
         data: {
           form_id: form1User1.id,
           data: {
-            data1: "AZERTYUIOPQSDFGHJKLMWXCVBN",
-            data2: 2,
-            data3: { key1: 1, key2: "key2Value" },
-            data4: false,
-            data5: ["array1", "array2"],
-            data6: '<script>alert("ok")</script>',
+            data1: this.toString(
+              "AZERTYUIOPQSDFGHJKLMWXCVBN",
+            ),
+            data2: this.toString(0),
+            data3: this.toString({
+              key1: 1,
+              key2: "key2Value",
+            }),
+            data4: this.toString(false),
+            data5: this.toString([
+              "array1",
+              "array2",
+            ]),
+            data6: this.toString(
+              '<script>alert("ok")</script>',
+            ),
           },
         },
       });
@@ -79,12 +96,24 @@ export default class Seed {
         data: {
           form_id: form1User1.id,
           data: {
-            data1: 1,
-            data2: 2,
-            data3: 3,
-            data4: 4,
-            data5: 5,
-            data6: 6,
+            data1: this.toString(
+              Math.round(Math.random() * 100),
+            ),
+            data2: this.toString(
+              Math.round(Math.random() * 100),
+            ),
+            data3: this.toString(
+              Math.round(Math.random() * 100),
+            ),
+            data4: this.toString(
+              Math.round(Math.random() * 100),
+            ),
+            data5: this.toString(
+              Math.round(Math.random() * 100),
+            ),
+            data6: this.toString(
+              Math.round(Math.random() * 100),
+            ),
           },
         },
       });

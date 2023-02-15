@@ -220,14 +220,14 @@ export default class FormService {
         400,
       );
 
-    const itemId = await Prisma.form_item.delete({
-      where: {
-        id,
-      },
-      select: { id: true },
-    });
+    const itemId =
+      await Prisma.form_item.deleteMany({
+        where: {
+          id,
+        },
+      });
 
-    if (!itemId?.id)
+    if (!itemId.count)
       throw new AppError("id not found", 400);
 
     return;

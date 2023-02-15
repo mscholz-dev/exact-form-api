@@ -1,6 +1,7 @@
 import Validator from "./Validator.js";
 import timezone from "../timezone.json" assert { type: "json" };
 import AppError from "../AppError.js";
+import { isValidObjectId } from "mongoose";
 
 // types
 import {
@@ -48,11 +49,24 @@ export default class FormValidator extends Validator {
 
   inspectCreateItemData(
     key: string,
-    data: object,
+    data: Record<string, any>,
   ) {
     const schema = {
       key: "",
     };
+
+    // TODO: update testing verif 0, false, array, JSON
+
+    const newData: Record<string, string> = {};
+
+    // transform data type's into string
+    for (const item in data) {
+      if (typeof data[item] === "object")
+        newData[item] = JSON.stringify(
+          data[item],
+        );
+      else newData[item] = data[item].toString();
+    }
 
     this.inspectData(
       schema,
@@ -70,7 +84,7 @@ export default class FormValidator extends Validator {
       );
 
     const secureData =
-      this.secureObjectData(data);
+      this.secureObjectData(newData);
 
     return {
       key: schema.key,
@@ -158,6 +172,8 @@ export default class FormValidator extends Validator {
 
       // id
       case "id":
+        if (!isValidObjectId(value))
+          return "id invalid";
         return "";
 
       // default

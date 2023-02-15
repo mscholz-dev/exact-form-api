@@ -1,4 +1,5 @@
 import CookieClass from "../../src/utils/Cookie.js";
+import mongoose from "mongoose";
 
 // types
 import { TCookie } from "../../src/utils/types";
@@ -21,6 +22,7 @@ const data = {
   errorStack: "Error stack",
   formName: "Wobinit Contact Form",
   formTimezone: "Europe/Paris",
+  objectId: new mongoose.Types.ObjectId(),
   string61:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit odio.",
   string256:

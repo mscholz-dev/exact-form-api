@@ -22,6 +22,7 @@ import "./form/form.getAll.test.js";
 import "./form/form.createItem.test.js";
 import "./form/form.getSpecificForm.test.js";
 import "./form/form.deleteItem.test.js";
+import "./form/form.deleteManyItem.test.js";
 
 // user
 // import "./user/user.updateEmail.test.js";

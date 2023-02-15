@@ -120,3 +120,8 @@ export type TFormDeleteItemData = {
   key: string;
   id: string;
 };
+
+export type TFormDeleteManyItemData = {
+  key: string;
+  ids: string[];
+};

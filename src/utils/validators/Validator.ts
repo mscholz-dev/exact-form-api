@@ -39,6 +39,16 @@ export default class Validator {
     return data;
   }
 
+  secureArrayData(array: string[]): string[] {
+    const secureArray = [];
+
+    for (const item of array) {
+      secureArray.push(Security.xss(item));
+    }
+
+    return secureArray;
+  }
+
   formatPhone(string: string): string {
     return string
       .replace("+33", "0")

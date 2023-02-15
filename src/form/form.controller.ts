@@ -145,4 +145,31 @@ export default class FormController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async deleteManyItem(
+    req: Request,
+    res: Response,
+  ) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectDeleteManyItemData(
+        req.params.key,
+        req.query,
+      );
+
+    await FormService.deleteManyItem(
+      schema,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
 }

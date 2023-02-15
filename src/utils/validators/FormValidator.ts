@@ -10,6 +10,7 @@ import {
   TFormCreateItemData,
   TFormGetSpecificFormData,
   TFormDeleteItemData,
+  TFormDeleteManyItemData,
 } from "../types.js";
 
 export default class FormValidator extends Validator {
@@ -125,6 +126,44 @@ export default class FormValidator extends Validator {
     return schema;
   }
 
+  inspectDeleteManyItemData(
+    key: string,
+    data: object,
+  ) {
+    const schema: TFormDeleteManyItemData = {
+      key: "",
+      ids: [],
+    };
+
+    this.inspectData(
+      schema,
+      { key },
+      this.errorMessage,
+    );
+
+    // reset ids key type
+    schema.ids = [];
+
+    if (!Object.values(data).length)
+      throw new AppError("query required", 400);
+
+    for (const item in data) {
+      if (data[item as keyof object] !== "true")
+        throw new AppError("query invalid", 400);
+
+      if (!isValidObjectId(item))
+        throw new AppError("id invalid", 400);
+
+      schema.ids.push(item);
+    }
+
+    const secureIds = this.secureArrayData(
+      schema.ids,
+    );
+
+    return { key: schema.key, ids: secureIds };
+  }
+
   errorMessage(
     id: string,
     value: string,
@@ -172,6 +211,10 @@ export default class FormValidator extends Validator {
       case "id":
         if (!isValidObjectId(value))
           return "id invalid";
+        return "";
+
+      // ids
+      case "ids":
         return "";
 
       // default

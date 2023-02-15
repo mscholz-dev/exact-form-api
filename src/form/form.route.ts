@@ -64,6 +64,20 @@ router
     ),
   );
 
+// route: delete many form items
+router.route("/:key/items").delete(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.deleteManyItem(req, res),
+  ),
+);
+
 // route: delete a form item
 router.route("/:key/:id").delete(
   tryCatch(

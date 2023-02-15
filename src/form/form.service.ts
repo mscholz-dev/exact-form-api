@@ -7,6 +7,7 @@ import {
   TFormCreateData,
   TFormCreateItemData,
   TFormDeleteItemData,
+  TFormDeleteManyItemData,
   TFormGetSpecificFormReturn,
 } from "../utils/types.js";
 
@@ -224,6 +225,62 @@ export default class FormService {
       await Prisma.form_item.deleteMany({
         where: {
           id,
+        },
+      });
+
+    if (!itemId.count)
+      throw new AppError("id not found", 400);
+
+    return;
+  }
+
+  async deleteManyItem(
+    { key, ids }: TFormDeleteManyItemData,
+    userId: string,
+  ): Promise<void> {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: userId,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const itemId =
+      await Prisma.form_item.deleteMany({
+        where: {
+          id: {
+            in: ids,
+          },
         },
       });
 

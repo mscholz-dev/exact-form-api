@@ -7,6 +7,7 @@ import EmailClass from "../utils/email/Email.js";
 // types
 import {
   TCookieMiddleware,
+  TFormDeleteItemData,
   TFormGetAllQuery,
 } from "../utils/types.js";
 
@@ -119,6 +120,29 @@ export default class FormController {
         email: userCookie.email,
         role: userCookie.role,
       })
+      .end();
+  }
+
+  async deleteItem(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectDeleteItemData(
+        req.params as TFormDeleteItemData,
+      );
+
+    await FormService.deleteItem(
+      schema,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
 }

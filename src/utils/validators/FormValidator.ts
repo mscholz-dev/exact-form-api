@@ -8,6 +8,7 @@ import {
   TFormGetAllQuery,
   TFormCreateItemData,
   TFormGetSpecificFormData,
+  TFormDeleteItemData,
 } from "../types.js";
 
 export default class FormValidator extends Validator {
@@ -95,6 +96,23 @@ export default class FormValidator extends Validator {
     return schema;
   }
 
+  inspectDeleteItemData(
+    data: TFormDeleteItemData,
+  ) {
+    const schema = {
+      key: "",
+      id: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   errorMessage(
     id: string,
     value: string,
@@ -136,6 +154,10 @@ export default class FormValidator extends Validator {
 
       // key
       case "key":
+        return "";
+
+      // id
+      case "id":
         return "";
 
       // default

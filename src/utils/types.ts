@@ -115,3 +115,8 @@ export type TFormGetSpecificFormData = {
   key: string;
   page: string;
 };
+
+export type TFormDeleteItemData = {
+  key: string;
+  id: string;
+};

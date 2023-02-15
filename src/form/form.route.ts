@@ -64,4 +64,18 @@ router
     ),
   );
 
+// route: delete a form item
+router.route("/:key/:id").delete(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.deleteItem(req, res),
+  ),
+);
+
 export default router;

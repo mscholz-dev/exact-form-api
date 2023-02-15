@@ -6,6 +6,7 @@ import SecurityClass from "../utils/Security.js";
 import {
   TFormCreateData,
   TFormCreateItemData,
+  TFormDeleteItemData,
   TFormGetSpecificFormReturn,
 } from "../utils/types.js";
 
@@ -156,6 +157,7 @@ export default class FormService {
           form_id: formId.id,
         },
         select: {
+          id: true,
           created_at: true,
           data: true,
         },
@@ -164,6 +166,7 @@ export default class FormService {
 
     // refacto object structure
     const items = data[1].map((item) => ({
+      id: item.id,
       created_at: item.created_at,
       data: item.data,
     }));
@@ -174,5 +177,59 @@ export default class FormService {
       name: formId.name,
       timezone: formId.timezone,
     };
+  }
+
+  async deleteItem(
+    { key, id }: TFormDeleteItemData,
+    userId: string,
+  ) {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: userId,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const itemId = await Prisma.form_item.delete({
+      where: {
+        id,
+      },
+      select: { id: true },
+    });
+
+    if (!itemId?.id)
+      throw new AppError("id not found", 400);
+
+    return;
   }
 }

@@ -36,6 +36,16 @@ describe(`POST: ${route}`, () => {
     );
   });
 
+  it("it should throw: key updated_at is forbidden", async () => {
+    const res = await request(app)
+      .post(`${route}/key-invalid`)
+      .send({ updated_at: "test" });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "key updated_at is forbidden",
+    );
+  });
+
   it("it should throw: key not found", async () => {
     const res = await request(app)
       .post(`${route}/key-invalid`)

@@ -99,6 +99,12 @@ export default class FormValidator extends Validator {
         400,
       );
 
+    if (data["updated_at" as keyof object])
+      throw new AppError(
+        "key updated_at is forbidden",
+        400,
+      );
+
     const secureData =
       this.secureObjectData(newData);
 

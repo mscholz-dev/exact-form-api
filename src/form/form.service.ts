@@ -160,6 +160,7 @@ export default class FormService {
         select: {
           id: true,
           created_at: true,
+          updated_at: true,
           data: true,
         },
       }),
@@ -169,6 +170,7 @@ export default class FormService {
     const items = data[1].map((item) => ({
       id: item.id,
       created_at: item.created_at,
+      updated_at: item.updated_at,
       data: item.data,
     }));
 

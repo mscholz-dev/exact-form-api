@@ -164,6 +164,48 @@ export default class FormValidator extends Validator {
     return { key: schema.key, ids: secureIds };
   }
 
+  inspectEditItemData(
+    key: string,
+    id: string,
+    data: Record<string, string>,
+  ) {
+    const schema = {
+      key: "",
+      id: "",
+    };
+
+    const newData: Record<string, string> = {};
+
+    // transform data type's into string
+    for (const item in data) {
+      if (typeof data[item] === "object")
+        newData[item] = JSON.stringify(
+          data[item],
+        );
+      else newData[item] = data[item].toString();
+    }
+
+    this.inspectData(
+      schema,
+      { key, id },
+      this.errorMessage,
+    );
+
+    if (!Object.keys(data).length)
+      throw new AppError("data required", 400);
+
+    if (data["created_at" as keyof object])
+      throw new AppError(
+        "key created_at is forbidden",
+        400,
+      );
+
+    const secureData =
+      this.secureObjectData(newData);
+
+    return { ...schema, data: secureData };
+  }
+
   errorMessage(
     id: string,
     value: string,

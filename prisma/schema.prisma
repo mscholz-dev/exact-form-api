@@ -88,6 +88,7 @@ model form_item {
   form_id    String   @db.ObjectId
   data       Json
   created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
 enum user_role {

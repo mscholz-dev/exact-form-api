@@ -92,4 +92,18 @@ router.route("/:key/:id").delete(
   ),
 );
 
+// route: edit a form item
+router.route("/:key/:id").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.editItem(req, res),
+  ),
+);
+
 export default router;

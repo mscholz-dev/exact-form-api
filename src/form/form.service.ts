@@ -289,4 +289,86 @@ export default class FormService {
 
     return;
   }
+
+  async editItem(
+    {
+      key,
+      id,
+      data,
+    }: {
+      key: string;
+      id: string;
+      data: Record<string, string>;
+    },
+    userId: string,
+  ): Promise<void> {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: userId,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const formItemData =
+      await Prisma.form_item.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          data: true,
+        },
+      });
+
+    if (!formItemData?.data)
+      throw new AppError("id not found", 400);
+
+    // compare string, not array because [] !== [] (compare array instance, not array values)
+    if (
+      Object.keys(data).toString() !==
+      Object.keys(formItemData.data).toString()
+    )
+      throw new AppError("data not equal", 400);
+
+    await Prisma.form_item.update({
+      where: {
+        id,
+      },
+      data: {
+        data,
+        updated_at: new Date(),
+      },
+    });
+
+    return;
+  }
 }

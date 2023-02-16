@@ -60,11 +60,28 @@ export default class FormValidator extends Validator {
 
     // transform data type's into string
     for (const item in data) {
-      if (typeof data[item] === "object")
-        newData[item] = JSON.stringify(
+      if (typeof data[item] === "object") {
+        const stringData = JSON.stringify(
           data[item],
         );
-      else newData[item] = data[item].toString();
+
+        if (stringData.length > 1_000)
+          throw new AppError(
+            "data too long",
+            400,
+          );
+
+        newData[item] = stringData;
+      } else {
+        const stringData = data[item].toString();
+
+        if (stringData.length > 1_000)
+          throw new AppError(
+            "data too long",
+            400,
+          );
+        newData[item] = stringData;
+      }
     }
 
     this.inspectData(
@@ -178,11 +195,28 @@ export default class FormValidator extends Validator {
 
     // transform data type's into string
     for (const item in data) {
-      if (typeof data[item] === "object")
-        newData[item] = JSON.stringify(
+      if (typeof data[item] === "object") {
+        const stringData = JSON.stringify(
           data[item],
         );
-      else newData[item] = data[item].toString();
+
+        if (stringData.length > 1_000)
+          throw new AppError(
+            "data too long",
+            400,
+          );
+
+        newData[item] = stringData;
+      } else {
+        const stringData = data[item].toString();
+
+        if (stringData.length > 1_000)
+          throw new AppError(
+            "data too long",
+            400,
+          );
+        newData[item] = stringData;
+      }
     }
 
     this.inspectData(

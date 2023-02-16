@@ -5,6 +5,17 @@ import data from "../config/data.js";
 const route = "/api/form";
 
 describe(`POST: ${route}`, () => {
+  it("it should throw: data too long", async () => {
+    const res = await request(app)
+      .post(`${route}/key-invalid`)
+      .send({ tooLong: data.string1_001 });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "data too long",
+    );
+  });
+
   it("it should throw: data required", async () => {
     const res = await request(app).post(
       `${route}/key-invalid`,

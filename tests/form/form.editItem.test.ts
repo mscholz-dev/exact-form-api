@@ -39,6 +39,22 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  it("it should throw: data too long", async () => {
+    const key = await request(app)
+      .get(`${route}?page=2`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+
+    const res = await request(app)
+      .put(`${route}/${key.body.forms[1].key}/id`)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({ tooLong: data.string1_001 });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "data too long",
+    );
+  });
+
   it("it should throw: id invalid", async () => {
     const key = await request(app)
       .get(`${route}?page=2`)

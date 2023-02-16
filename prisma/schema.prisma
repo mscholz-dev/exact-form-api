@@ -63,13 +63,13 @@ model error {
 }
 
 model form {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  key         String
-  timezone    String
-  form_user   form_user[]
-  form_item   form_item[]
-  created_at  DateTime    @default(now())
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  key        String
+  timezone   String
+  form_user  form_user[]
+  form_item  form_item[]
+  created_at DateTime    @default(now())
 }
 
 model form_user {
@@ -83,12 +83,38 @@ model form_user {
 }
 
 model form_item {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  form       form     @relation(fields: [form_id], references: [id])
-  form_id    String   @db.ObjectId
-  data       Json
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  id                         String                      @id @default(auto()) @map("_id") @db.ObjectId
+  form                       form                        @relation(fields: [form_id], references: [id])
+  form_id                    String                      @db.ObjectId
+  data                       Json
+  form_item_user_agent       form_item_user_agent?
+  form_item_referer_url      form_item_referer_url?
+  form_item_geo_localisation form_item_geo_localisation?
+  created_at                 DateTime                    @default(now())
+  updated_at                 DateTime                    @default(now())
+}
+
+model form_item_user_agent {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item_id String    @unique @db.ObjectId
+  user_agent   String
+}
+
+model form_item_referer_url {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item_id String    @unique @db.ObjectId
+  referer_url  String
+}
+
+model form_item_geo_localisation {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item_id String    @unique @db.ObjectId
+  city         String
+  region       String
+  country      String
 }
 
 enum user_role {

@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { PrismaClient } from "@prisma/client";
 import AppError from "../utils/AppError.js";
 import SecurityClass from "../utils/Security.js";
@@ -100,6 +101,7 @@ export default class FormService {
   }
 
   async createItem(
+    req: Request,
     schema: TFormCreateItemData,
   ): Promise<void> {
     const formId = await Prisma.form.findFirst({
@@ -114,10 +116,54 @@ export default class FormService {
     if (!formId?.id)
       throw new AppError("key not found", 400);
 
+    // manage user_agent
+    const getUserAgent =
+      Security.getUserAgent(req);
+    const createUserAgent =
+      getUserAgent !== ""
+        ? {
+            create: {
+              user_agent: getUserAgent,
+            },
+          }
+        : {};
+
+    // manage referer_url
+    const getRefererUrl =
+      Security.getRefererUrl(req);
+    const createRefererUrl =
+      getRefererUrl !== ""
+        ? {
+            create: {
+              referer_url: getRefererUrl,
+            },
+          }
+        : {};
+
+    // manage user_geo_location
+    const getUserGeoLocation =
+      await Security.getUserCityRegionCountry(
+        req,
+      );
+    const createGeoLocation =
+      getUserGeoLocation.city !== "" &&
+      getUserGeoLocation.region !== "" &&
+      getUserGeoLocation.country !== ""
+        ? {
+            create: {
+              ...getUserGeoLocation,
+            },
+          }
+        : {};
+
     await Prisma.form_item.create({
       data: {
         form_id: formId.id,
         data: schema.data,
+        form_item_user_agent: createUserAgent,
+        form_item_referer_url: createRefererUrl,
+        form_item_geo_localisation:
+          createGeoLocation,
       },
       select: {
         id: true,
@@ -162,6 +208,19 @@ export default class FormService {
           created_at: true,
           updated_at: true,
           data: true,
+          form_item_user_agent: {
+            select: { user_agent: true },
+          },
+          form_item_referer_url: {
+            select: { referer_url: true },
+          },
+          form_item_geo_localisation: {
+            select: {
+              city: true,
+              region: true,
+              country: true,
+            },
+          },
         },
       }),
     ]);
@@ -171,6 +230,23 @@ export default class FormService {
       id: item.id,
       created_at: item.created_at,
       updated_at: item.updated_at,
+      user_agent:
+        item.form_item_user_agent?.user_agent ||
+        "",
+      referer_url:
+        item.form_item_referer_url?.referer_url ||
+        "",
+      geo_localisation: {
+        city:
+          item.form_item_geo_localisation?.city ||
+          "",
+        region:
+          item.form_item_geo_localisation
+            ?.region || "",
+        country:
+          item.form_item_geo_localisation
+            ?.country || "",
+      },
       data: item.data,
     }));
 

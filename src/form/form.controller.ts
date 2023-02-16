@@ -16,6 +16,7 @@ const FormService = new FormServiceClass();
 const FormValidator = new FormValidatorClass();
 const Cookie = new CookieClass();
 const Email = new EmailClass();
+
 export default class FormController {
   async create(req: Request, res: Response) {
     // get cookie data already validate by db call
@@ -81,7 +82,7 @@ export default class FormController {
         req.body,
       );
 
-    await FormService.createItem(schema);
+    await FormService.createItem(req, schema);
 
     res.status(200).end();
   }

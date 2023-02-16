@@ -125,3 +125,15 @@ export type TFormDeleteManyItemData = {
   key: string;
   ids: string[];
 };
+
+export type TGeoLocation = {
+  city: string;
+  region: string;
+  country_name: string;
+};
+
+export type TGeoLocationReturn = {
+  city: string;
+  region: string;
+  country: string;
+};

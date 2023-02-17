@@ -113,18 +113,37 @@ export default class UserService {
     id: string,
   ) {
     if (!oldPassword) {
-      await Prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          username,
-          market: market as boolean,
-        },
-        select: {
-          id: true,
-        },
-      });
+      const updateUser =
+        await Prisma.user.updateMany({
+          where: {
+            id,
+            // username and market must not be equals to parameters
+            NOT: {
+              AND: [
+                {
+                  username: { equals: username },
+                },
+                {
+                  market: {
+                    equals: market as boolean,
+                  },
+                },
+              ],
+            },
+          },
+          data: {
+            username,
+            market: market as boolean,
+          },
+        });
+
+      // TODO: add front error and disable btn
+
+      if (!updateUser.count)
+        throw new AppError(
+          "username or market must be different",
+          400,
+        );
 
       return;
     }

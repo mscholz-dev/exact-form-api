@@ -514,4 +514,34 @@ describe(`PUT: ${route}`, () => {
       res.headers["set-cookie"][0],
     ).toContain(data.validFrJwt);
   });
+
+  it("it should throw: username or market must be different", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: data.username,
+        market: "false",
+        locale: data.localeFr,
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "username or market must be different",
+    );
+  });
+
+  it("it should update market", async () => {
+    const res = await request(app)
+      .put(route)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        username: data.username,
+        market: "true",
+        locale: data.localeFr,
+      });
+    expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
+  });
 });

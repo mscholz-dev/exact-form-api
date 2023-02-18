@@ -17,13 +17,13 @@ import "./user/user.update.test.js";
 // import "./auth/auth.hasEmailToken.test.js";
 
 // form
-// import "./form/form.create.test.js";
-// import "./form/form.getAll.test.js";
-// import "./form/form.createItem.test.js";
-// import "./form/form.getSpecificForm.test.js";
-// import "./form/form.deleteItem.test.js";
-// import "./form/form.deleteManyItem.test.js";
-// import "./form/form.editItem.test.js";
+import "./form/form.create.test.js";
+import "./form/form.getAll.test.js";
+import "./form/form.createItem.test.js";
+import "./form/form.getSpecificForm.test.js";
+import "./form/form.deleteItem.test.js";
+import "./form/form.deleteManyItem.test.js";
+import "./form/form.editItem.test.js";
 
 // user
 // import "./user/user.updateEmail.test.js";

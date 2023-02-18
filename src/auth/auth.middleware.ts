@@ -48,9 +48,6 @@ export default class AuthMiddleware {
     // other route controllers can access to it
     req.cookies.userJwt = user;
 
-    // update updated_at in db
-    await AuthService.updateUserDate(email);
-
     next();
   }
 }

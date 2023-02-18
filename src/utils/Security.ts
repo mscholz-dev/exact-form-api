@@ -56,6 +56,14 @@ export default class Security {
   ): Promise<TGeoLocationReturn> {
     const ip = this.getIP(req);
 
+    // ip not found
+    if (!ip)
+      return {
+        city: "",
+        region: "",
+        country: "",
+      };
+
     const { data } = await axios.get(
       `https://ipapi.co/${ip}/json`,
     );

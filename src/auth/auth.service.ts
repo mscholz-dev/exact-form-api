@@ -24,19 +24,6 @@ export default class AuthService {
     });
   }
 
-  async updateUserDate(email: string) {
-    await Prisma.user.update({
-      where: {
-        email,
-      },
-      data: {
-        updated_at: new Date(),
-      },
-    });
-
-    return;
-  }
-
   async hasEmailToken(token: string, id: string) {
     const now = new Date().getTime();
     const nowMinusOne = new Date(

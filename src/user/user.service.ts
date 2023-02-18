@@ -134,10 +134,9 @@ export default class UserService {
           data: {
             username,
             market: market as boolean,
+            updated_at: new Date(),
           },
         });
-
-      // TODO: add front error and disable btn
 
       if (!updateUser.count)
         throw new AppError(
@@ -293,6 +292,7 @@ export default class UserService {
       },
       data: {
         email: newEmail,
+        updated_at: new Date(),
       },
       select: {
         id: true,

@@ -437,6 +437,16 @@ export default class FormService {
     )
       throw new AppError("data not equal", 400);
 
+    // verify that a data changed
+    if (
+      Object.values(data).toString() ===
+      Object.values(formItemData.data).toString()
+    )
+      throw new AppError(
+        "data must be different",
+        400,
+      );
+
     await Prisma.form_item.update({
       where: {
         id,

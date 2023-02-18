@@ -220,4 +220,36 @@ describe(`PUT: ${route}`, () => {
 
     expect(res.statusCode).toBe(200);
   });
+
+  it("it should throw: data must be different", async () => {
+    const key = await request(app)
+      .get(`${route}?page=2`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+
+    const items = await request(app)
+      .get(
+        `${route}/${key.body.forms[1].key}?page=1`,
+      )
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+
+    const res = await request(app)
+      .put(
+        `${route}/${key.body.forms[1].key}/${items.body.items[0].id}`,
+      )
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({
+        data0: "udpdate 0",
+        data1: "udpdate 1",
+        data2: "udpdate 2",
+        data3: "udpdate 3",
+        data4: "udpdate 4",
+        data5: "udpdate 5",
+        data6: "udpdate 6",
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "data must be different",
+    );
+  });
 });

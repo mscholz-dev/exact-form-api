@@ -40,10 +40,6 @@ describe(`DELETE: ${route}`, () => {
   });
 
   it("it should throw: owner role required", async () => {
-    const key = await request(app)
-      .get(`${route}?page=2`)
-      .set("Cookie", [`user=${data.validFrJwt}`]);
-
     const res = await request(app)
       .delete(
         `${route}/${data.objectId}/${data.objectId}`,

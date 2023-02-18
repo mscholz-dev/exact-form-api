@@ -246,6 +246,20 @@ export default class FormValidator extends Validator {
     return { ...schema, data: secureData };
   }
 
+  inspectDeleteFormData(key: string) {
+    const schema = {
+      key: "",
+    };
+
+    this.inspectData(
+      schema,
+      { key },
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   errorMessage(
     id: string,
     value: string,

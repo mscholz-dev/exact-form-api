@@ -459,4 +459,61 @@ export default class FormService {
 
     return;
   }
+
+  async deleteForm(key: string, id: string) {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: id,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    // delete form_user and form
+    await Prisma.$transaction([
+      Prisma.form_user.deleteMany({
+        where: {
+          form: {
+            key,
+          },
+        },
+      }),
+      Prisma.form.deleteMany({
+        where: {
+          key,
+        },
+      }),
+    ]);
+
+    return;
+  }
 }

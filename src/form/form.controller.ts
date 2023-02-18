@@ -198,4 +198,27 @@ export default class FormController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async deleteForm(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const { key } =
+      FormValidator.inspectDeleteFormData(
+        req.params.key,
+      );
+
+    await FormService.deleteForm(
+      key,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
 }

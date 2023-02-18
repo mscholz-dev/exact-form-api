@@ -516,4 +516,83 @@ export default class FormService {
 
     return;
   }
+
+  async updateForm(
+    {
+      key,
+      name,
+      timezone,
+    }: {
+      key: string;
+      name: string;
+      timezone: string;
+    },
+    id: string,
+  ) {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: id,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const updateForm =
+      await Prisma.form.updateMany({
+        where: {
+          key,
+          NOT: {
+            AND: [
+              {
+                name: { equals: name },
+              },
+              {
+                timezone: { equals: timezone },
+              },
+            ],
+          },
+        },
+        data: {
+          name,
+          timezone,
+        },
+      });
+
+    if (!updateForm.count)
+      throw new AppError(
+        "name or timezone must be different",
+        400,
+      );
+
+    return;
+  }
 }

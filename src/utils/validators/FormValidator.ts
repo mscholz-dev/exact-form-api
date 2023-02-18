@@ -260,6 +260,28 @@ export default class FormValidator extends Validator {
     return schema;
   }
 
+  inspectUpdateFormData(
+    key: string,
+    {
+      name,
+      timezone,
+    }: { name: string; timezone: string },
+  ) {
+    const schema = {
+      key: "",
+      name: "",
+      timezone: "",
+    };
+
+    this.inspectData(
+      schema,
+      { key, name, timezone },
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   errorMessage(
     id: string,
     value: string,

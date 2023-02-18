@@ -5,7 +5,7 @@ import "./test/test.new-db.test.js";
 import "./user/user.create.test.js";
 // import "./user/user.connection.test.js";
 // import "./user/user.profile.test.js";
-import "./user/user.update.test.js";
+// import "./user/user.update.test.js";
 // import "./user/user.createEmailToken.test.js";
 // import "./user/user.disconnection.test.js";
 
@@ -25,6 +25,7 @@ import "./form/form.deleteItem.test.js";
 import "./form/form.deleteManyItem.test.js";
 import "./form/form.editItem.test.js";
 import "./form/form.deleteForm.test.js";
+import "./form/form.udpateForm.test.js";
 
 // user
 // import "./user/user.updateEmail.test.js";

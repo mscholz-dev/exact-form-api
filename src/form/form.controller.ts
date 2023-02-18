@@ -221,4 +221,28 @@ export default class FormController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async updateForm(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectUpdateFormData(
+        req.params.key,
+        req.body,
+      );
+
+    await FormService.updateForm(
+      schema,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
 }

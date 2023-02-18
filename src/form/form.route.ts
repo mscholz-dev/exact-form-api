@@ -120,4 +120,18 @@ router.route("/:key").delete(
   ),
 );
 
+// route: update a form
+router.route("/:key").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.updateForm(req, res),
+  ),
+);
+
 export default router;

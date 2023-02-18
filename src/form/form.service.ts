@@ -584,6 +584,7 @@ export default class FormService {
         data: {
           name,
           timezone,
+          updated_at: new Date(),
         },
       });
 

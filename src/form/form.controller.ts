@@ -105,6 +105,7 @@ export default class FormController {
       await FormService.getSpecificForm(
         schema.key,
         Number(schema.page),
+        schema.trash,
       );
 
     const jwt = Cookie.signJwt(userCookie);
@@ -132,6 +133,7 @@ export default class FormController {
     const schema =
       FormValidator.inspectDeleteItemData(
         req.params as TFormDeleteItemData,
+        req.query.trash as string,
       );
 
     await FormService.deleteItem(
@@ -158,7 +160,7 @@ export default class FormController {
     const schema =
       FormValidator.inspectDeleteManyItemData(
         req.params.key,
-        req.query,
+        req.query as { trash: string },
       );
 
     await FormService.deleteManyItem(

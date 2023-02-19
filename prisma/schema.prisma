@@ -24,14 +24,14 @@ model user {
 model user_ip {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   ip         String
-  user       user     @relation(fields: [user_id], references: [id])
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String   @db.ObjectId
   created_at DateTime @default(now())
 }
 
 model user_token {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user       user     @relation(fields: [user_id], references: [id])
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String   @db.ObjectId
   type       token    @default(CHANGE_EMAIL)
   token      String   @unique
@@ -52,7 +52,7 @@ model contact {
 model contact_phone {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   phone      String
-  contact    contact @relation(fields: [contact_id], references: [id])
+  contact    contact @relation(fields: [contact_id], references: [id], onDelete: Cascade)
   contact_id String  @unique @db.ObjectId
 }
 
@@ -75,9 +75,9 @@ model form {
 
 model form_user {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  user       user      @relation(fields: [user_id], references: [id])
+  user       user      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String    @db.ObjectId
-  form       form      @relation(fields: [form_id], references: [id])
+  form       form      @relation(fields: [form_id], references: [id], onDelete: Cascade)
   form_id    String    @db.ObjectId
   role       form_role @default(OWNER)
   created_at DateTime  @default(now())
@@ -85,9 +85,10 @@ model form_user {
 
 model form_item {
   id                         String                      @id @default(auto()) @map("_id") @db.ObjectId
-  form                       form                        @relation(fields: [form_id], references: [id])
+  form                       form                        @relation(fields: [form_id], references: [id], onDelete: Cascade)
   form_id                    String                      @db.ObjectId
   data                       Json
+  trash                      Boolean                     @default(false)
   form_item_user_agent       form_item_user_agent?
   form_item_referer_url      form_item_referer_url?
   form_item_geo_localisation form_item_geo_localisation?
@@ -97,21 +98,21 @@ model form_item {
 
 model form_item_user_agent {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item    form_item @relation(fields: [form_item_id], references: [id], onDelete: Cascade)
   form_item_id String    @unique @db.ObjectId
   user_agent   String
 }
 
 model form_item_referer_url {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item    form_item @relation(fields: [form_item_id], references: [id], onDelete: Cascade)
   form_item_id String    @unique @db.ObjectId
   referer_url  String
 }
 
 model form_item_geo_localisation {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  form_item    form_item @relation(fields: [form_item_id], references: [id])
+  form_item    form_item @relation(fields: [form_item_id], references: [id], onDelete: Cascade)
   form_item_id String    @unique @db.ObjectId
   city         String
   region       String

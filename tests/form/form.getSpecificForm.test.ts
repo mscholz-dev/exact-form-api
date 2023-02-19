@@ -69,9 +69,31 @@ describe(`GET: ${route}`, () => {
     );
   });
 
-  it("it should throw: key not found", async () => {
+  it("it should throw: trash required", async () => {
     const res = await request(app)
       .get(`${route}/invalid?page=1`)
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "trash required",
+    );
+  });
+
+  it("it should throw: trash invalid", async () => {
+    const res = await request(app)
+      .get(
+        `${route}/invalid?page=1&trash=invalid`,
+      )
+      .set("Cookie", [`user=${data.validFrJwt}`]);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "trash invalid",
+    );
+  });
+
+  it("it should throw: key not found", async () => {
+    const res = await request(app)
+      .get(`${route}/invalid?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
@@ -86,7 +108,7 @@ describe(`GET: ${route}`, () => {
 
     const res = await request(app)
       .get(
-        `${route}/${key.body.forms[1].key}?page=1`,
+        `${route}/${key.body.forms[1].key}?page=1&trash=false`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
@@ -107,7 +129,7 @@ describe(`GET: ${route}`, () => {
 
     const res = await request(app)
       .get(
-        `${route}/${key.body.forms[1].key}?page=2`,
+        `${route}/${key.body.forms[1].key}?page=2&trash=false`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
@@ -128,7 +150,7 @@ describe(`GET: ${route}`, () => {
 
     const res = await request(app)
       .get(
-        `${route}/${key.body.forms[1].key}?page=3`,
+        `${route}/${key.body.forms[1].key}?page=3&trash=false`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);

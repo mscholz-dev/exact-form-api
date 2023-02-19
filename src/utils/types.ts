@@ -124,6 +124,7 @@ export type TFormDeleteItemData = {
 export type TFormDeleteManyItemData = {
   key: string;
   ids: string[];
+  trash: boolean;
 };
 
 export type TGeoLocation = {

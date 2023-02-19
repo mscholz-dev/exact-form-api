@@ -155,25 +155,6 @@ export default class UserValidator extends Validator {
       );
   }
 
-  handleBoolean(
-    id: string,
-    value: boolean | string,
-  ): boolean {
-    switch (value) {
-      case "true":
-        return true;
-      case "false":
-        return false;
-      default:
-        if (value === "")
-          throw new AppError(
-            `${id} required`,
-            400,
-          );
-        throw new AppError(`${id} invalid`, 400);
-    }
-  }
-
   checkChangePasswords({
     oldPassword,
     newPassword,

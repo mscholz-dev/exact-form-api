@@ -8,9 +8,7 @@ import {
   TFormCreateData,
   TFormGetAllQuery,
   TFormCreateItemData,
-  TFormGetSpecificFormData,
   TFormDeleteItemData,
-  TFormDeleteManyItemData,
 } from "../types.js";
 
 export default class FormValidator extends Validator {
@@ -116,51 +114,74 @@ export default class FormValidator extends Validator {
 
   inspectGetSpecificForm(
     key: string,
-    { page }: { page?: number },
-  ): TFormGetSpecificFormData {
+    {
+      page,
+      trash,
+    }: { page?: number; trash?: string },
+  ) {
     const schema = {
       key: "",
       page: "",
+      trash: "",
     };
 
     this.inspectData(
       schema,
-      { key, page },
+      { key, page, trash },
       this.errorMessage,
     );
 
-    return schema;
+    return {
+      ...schema,
+      trash: this.handleBoolean(
+        "trash",
+        schema.trash,
+      ),
+    };
   }
 
   inspectDeleteItemData(
     data: TFormDeleteItemData,
+    trash: string,
   ) {
     const schema = {
       key: "",
       id: "",
+      trash: "",
     };
 
     this.inspectData(
       schema,
-      data,
+      { ...data, trash },
       this.errorMessage,
     );
 
-    return schema;
+    return {
+      ...schema,
+      trash: this.handleBoolean(
+        "trash",
+        schema.trash,
+      ),
+    };
   }
 
   inspectDeleteManyItemData(
     key: string,
-    data: object,
+    data: object & { trash: string },
   ) {
-    const schema: TFormDeleteManyItemData = {
+    const schema: {
+      ids: string[];
+      key: string;
+      trash: string;
+    } = {
       key: "",
       ids: [],
+      trash: "",
     };
 
     this.inspectData(
       schema,
-      { key },
+      { key, trash: data.trash },
       this.errorMessage,
     );
 
@@ -171,20 +192,32 @@ export default class FormValidator extends Validator {
       throw new AppError("query required", 400);
 
     for (const item in data) {
-      if (data[item as keyof object] !== "true")
-        throw new AppError("query invalid", 400);
+      if (item !== "trash") {
+        if (data[item as keyof object] !== "true")
+          throw new AppError(
+            "query invalid",
+            400,
+          );
 
-      if (!isValidObjectId(item))
-        throw new AppError("id invalid", 400);
+        if (!isValidObjectId(item))
+          throw new AppError("id invalid", 400);
 
-      schema.ids.push(item);
+        schema.ids.push(item);
+      }
     }
 
     const secureIds = this.secureArrayData(
       schema.ids,
     );
 
-    return { key: schema.key, ids: secureIds };
+    return {
+      key: schema.key,
+      ids: secureIds,
+      trash: this.handleBoolean(
+        "trash",
+        schema.trash,
+      ),
+    };
   }
 
   inspectEditItemData(
@@ -333,6 +366,10 @@ export default class FormValidator extends Validator {
 
       // ids
       case "ids":
+        return "";
+
+      // trash
+      case "trash":
         return "";
 
       // default

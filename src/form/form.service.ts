@@ -59,9 +59,9 @@ export default class FormService {
               name: true,
               key: true,
               timezone: true,
-              _count: {
+              form_item: {
                 select: {
-                  form_item: true,
+                  trash: true,
                 },
               },
               form_user: {
@@ -90,7 +90,10 @@ export default class FormService {
       name: item.form.name,
       key: item.form.key,
       timezone: item.form.timezone,
-      items: item.form._count.form_item,
+      // return only form item in inbox, not trash
+      items: item.form.form_item.filter(
+        ({ trash }) => trash === false,
+      ).length,
       owner: item.form.form_user[0].user.username,
     }));
 
@@ -176,6 +179,7 @@ export default class FormService {
   async getSpecificForm(
     key: string,
     currentPage: number,
+    trash: boolean,
   ): Promise<TFormGetSpecificFormReturn> {
     const formId = await Prisma.form.findFirst({
       where: {
@@ -191,10 +195,12 @@ export default class FormService {
     if (!formId?.id)
       throw new AppError("key not found", 400);
 
+    // select with trash value
     const data = await Prisma.$transaction([
       Prisma.form_item.count({
         where: {
           form_id: formId.id,
+          trash: trash,
         },
       }),
       Prisma.form_item.findMany({
@@ -202,6 +208,7 @@ export default class FormService {
         skip: (currentPage - 1) * 50,
         where: {
           form_id: formId.id,
+          trash: trash,
         },
         select: {
           id: true,
@@ -221,6 +228,9 @@ export default class FormService {
               country: true,
             },
           },
+        },
+        orderBy: {
+          created_at: "desc",
         },
       }),
     ]);
@@ -259,7 +269,11 @@ export default class FormService {
   }
 
   async deleteItem(
-    { key, id }: TFormDeleteItemData,
+    {
+      key,
+      id,
+      trash,
+    }: TFormDeleteItemData & { trash: boolean },
     userId: string,
   ) {
     const userRole =
@@ -299,10 +313,33 @@ export default class FormService {
         400,
       );
 
+    // delete permanently ?
+    if (trash) {
+      const itemId =
+        await Prisma.form_item.deleteMany({
+          where: {
+            id,
+            trash: true,
+          },
+        });
+
+      if (!itemId.count)
+        throw new AppError(
+          "delete forbidden outside the trash",
+          400,
+        );
+
+      return;
+    }
+
     const itemId =
-      await Prisma.form_item.deleteMany({
+      await Prisma.form_item.updateMany({
         where: {
           id,
+        },
+        data: {
+          trash: true,
+          updated_at: new Date(),
         },
       });
 
@@ -313,7 +350,7 @@ export default class FormService {
   }
 
   async deleteManyItem(
-    { key, ids }: TFormDeleteManyItemData,
+    { key, ids, trash }: TFormDeleteManyItemData,
     userId: string,
   ): Promise<void> {
     const userRole =
@@ -353,12 +390,43 @@ export default class FormService {
         400,
       );
 
+    // delete permanently ?
+    if (trash) {
+      const itemId =
+        await Prisma.form_item.deleteMany({
+          where: {
+            AND: [
+              {
+                id: {
+                  in: ids,
+                },
+              },
+              {
+                trash: true,
+              },
+            ],
+          },
+        });
+
+      if (!itemId.count)
+        throw new AppError(
+          "delete forbidden outside the trash",
+          400,
+        );
+
+      return;
+    }
+
     const itemId =
-      await Prisma.form_item.deleteMany({
+      await Prisma.form_item.updateMany({
         where: {
           id: {
             in: ids,
           },
+        },
+        data: {
+          trash: true,
+          updated_at: new Date(),
         },
       });
 
@@ -447,15 +515,23 @@ export default class FormService {
         400,
       );
 
-    await Prisma.form_item.update({
-      where: {
-        id,
-      },
-      data: {
-        data,
-        updated_at: new Date(),
-      },
-    });
+    const updateItem =
+      await Prisma.form_item.updateMany({
+        where: {
+          id,
+          trash: false,
+        },
+        data: {
+          data,
+          updated_at: new Date(),
+        },
+      });
+
+    if (!updateItem.count)
+      throw new AppError(
+        "update in trash is forbidden",
+        400,
+      );
 
     return;
   }
@@ -498,21 +574,12 @@ export default class FormService {
         400,
       );
 
-    // delete form_user and form
-    await Prisma.$transaction([
-      Prisma.form_user.deleteMany({
-        where: {
-          form: {
-            key,
-          },
-        },
-      }),
-      Prisma.form.deleteMany({
-        where: {
-          key,
-        },
-      }),
-    ]);
+    // delete  form
+    await Prisma.form.deleteMany({
+      where: {
+        key,
+      },
+    });
 
     return;
   }

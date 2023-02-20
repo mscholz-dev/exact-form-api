@@ -27,6 +27,7 @@ import "./form/form.editItem.test.js";
 import "./form/form.deleteForm.test.js";
 import "./form/form.udpateForm.test.js";
 import "./form/form.recoverItem.test.js";
+import "./form/form.recoverManyItem.test.js";
 
 // user
 // import "./user/user.updateEmail.test.js";

@@ -330,6 +330,45 @@ export default class FormValidator extends Validator {
     return schema;
   }
 
+  inspectRecoverManyItemData(
+    key: string,
+    ids: string[],
+  ) {
+    const schema: { key: string; ids: string[] } =
+      {
+        key: "",
+        ids: [],
+      };
+
+    this.inspectData(
+      schema,
+      { key },
+      this.errorMessage,
+    );
+
+    // reset ids key type
+    schema.ids = [];
+
+    if (ids === undefined || !ids.length)
+      throw new AppError("ids required", 400);
+
+    for (const item of ids) {
+      if (!isValidObjectId(item))
+        throw new AppError("id invalid", 400);
+
+      schema.ids.push(item);
+    }
+
+    const secureIds = this.secureArrayData(
+      schema.ids,
+    );
+
+    return {
+      key: schema.key,
+      ids: secureIds,
+    };
+  }
+
   errorMessage(
     id: string,
     value: string,

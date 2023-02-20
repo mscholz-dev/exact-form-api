@@ -92,6 +92,20 @@ router.route("/:key/:id").delete(
   ),
 );
 
+// route: recover many form items
+router.route("/:key/recover").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.recoverManyItem(req, res),
+  ),
+);
+
 // route: edit a form item
 router.route("/:key/:id").put(
   tryCatch(

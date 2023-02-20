@@ -271,4 +271,32 @@ export default class FormController {
       .cookie("user", jwt, Cookie.cookieOptions())
       .end();
   }
+
+  async recoverManyItem(
+    req: Request,
+    res: Response,
+  ) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectRecoverManyItemData(
+        req.params.key as string,
+        req.body.ids,
+      );
+
+    await FormService.recoverManyItem(
+      schema.key,
+      schema.ids,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
 }

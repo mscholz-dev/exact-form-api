@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`POST: ${route}`, () => {
+describe(`POST: ${route}/:key`, () => {
   it("it should throw: data too long", async () => {
     const res = await request(app)
       .post(`${route}/key-invalid`)
@@ -59,7 +59,7 @@ describe(`POST: ${route}`, () => {
   // add form item to form0
   it("it should create 20 form items for form0", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const send: Record<string, number> = {};

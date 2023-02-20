@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`DELETE: ${route}`, () => {
+describe(`DELETE: ${route}/:key/:id`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).delete(
       `${route}/key/id`,
@@ -79,7 +79,7 @@ describe(`DELETE: ${route}`, () => {
 
   it("it should throw: id invalid", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -94,7 +94,7 @@ describe(`DELETE: ${route}`, () => {
 
   it("it should throw: id not found", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -109,7 +109,7 @@ describe(`DELETE: ${route}`, () => {
 
   it("it should throw: delete forbidden outside the trash", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const items = await request(app)
@@ -133,7 +133,7 @@ describe(`DELETE: ${route}`, () => {
   let itemTrashId = "";
   it("it should set to trash a form item", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     keyItemTrashId = key.body.forms[1].key;

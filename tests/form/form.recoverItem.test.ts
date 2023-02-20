@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`PUT: ${route}/:key/:id/recover`, () => {
+describe(`PUT: ${route}/:key/recover/:id`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).put(
       `${route}/key/recover/id`,
@@ -55,7 +55,7 @@ describe(`PUT: ${route}/:key/:id/recover`, () => {
 
   it("it should throw: id invalid", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -70,7 +70,7 @@ describe(`PUT: ${route}/:key/:id/recover`, () => {
 
   it("it should throw: id not found", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -87,7 +87,7 @@ describe(`PUT: ${route}/:key/:id/recover`, () => {
   let itemRecoverId = "";
   it("it should recover a form item", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     keyItemRecoverId = key.body.forms[0].key;

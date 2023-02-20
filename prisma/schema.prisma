@@ -67,6 +67,7 @@ model form {
   name       String
   key        String
   timezone   String
+  trash      Boolean     @default(false)
   form_user  form_user[]
   form_item  form_item[]
   created_at DateTime    @default(now())

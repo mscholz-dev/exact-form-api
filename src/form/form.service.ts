@@ -40,11 +40,18 @@ export default class FormService {
     return;
   }
 
-  async getAll(id: string, currentPage: number) {
+  async getAll(
+    id: string,
+    currentPage: number,
+    trash: boolean,
+  ) {
     const data = await Prisma.$transaction([
       Prisma.form_user.count({
         where: {
           user_id: id,
+          form: {
+            trash: { equals: trash },
+          },
         },
       }),
       Prisma.form_user.findMany({
@@ -52,6 +59,9 @@ export default class FormService {
         skip: (currentPage - 1) * 8,
         where: {
           user_id: id,
+          form: {
+            trash: { equals: trash },
+          },
         },
         select: {
           form: {

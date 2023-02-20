@@ -50,7 +50,7 @@ export default class FormController {
     const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
-    const { page } =
+    const { page, trash } =
       FormValidator.inspectGetAllData(
         req.query as TFormGetAllQuery,
       );
@@ -58,6 +58,7 @@ export default class FormController {
     const data = await FormService.getAll(
       userCookie.id,
       Number(page),
+      trash as boolean,
     );
 
     const jwt = Cookie.signJwt(userCookie);

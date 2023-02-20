@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`GET: ${route}`, () => {
+describe(`GET: ${route}/:key`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).get(
       `${route}/invalid`,
@@ -103,7 +103,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should return 50 form items (page 1)", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -124,7 +124,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should return 25 form items (page 2)", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -145,7 +145,7 @@ describe(`GET: ${route}`, () => {
 
   it("it should return 0 form items (page 3)", async () => {
     const key = await request(app)
-      .get(`${route}?page=2`)
+      .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)

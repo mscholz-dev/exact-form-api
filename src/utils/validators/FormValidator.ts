@@ -35,6 +35,7 @@ export default class FormValidator extends Validator {
   ): TFormGetAllQuery {
     const schema = {
       page: "",
+      trash: "",
     };
 
     this.inspectData(
@@ -43,7 +44,13 @@ export default class FormValidator extends Validator {
       this.errorMessage,
     );
 
-    return schema as TFormGetAllQuery;
+    return {
+      page: schema.page,
+      trash: this.handleBoolean(
+        "trash",
+        schema.trash,
+      ),
+    };
   }
 
   inspectCreateItemData(

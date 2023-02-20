@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`DELETE: ${route}`, () => {
+describe(`DELETE: ${route}/:key`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).delete(
       `${route}/key`,
@@ -54,7 +54,7 @@ describe(`DELETE: ${route}`, () => {
 
   it("it should delete a form", async () => {
     const key = await request(app)
-      .get(`${route}?page=1`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)

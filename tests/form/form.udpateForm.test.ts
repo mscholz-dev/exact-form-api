@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`PUT: ${route}`, () => {
+describe(`PUT: ${route}/:key`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).put(
       `${route}/key`,
@@ -108,7 +108,7 @@ describe(`PUT: ${route}`, () => {
 
   it("it should update name and timezone of a form", async () => {
     const key = await request(app)
-      .get(`${route}?page=1`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -124,7 +124,7 @@ describe(`PUT: ${route}`, () => {
 
   it("it should throw: name or timezone must be different", async () => {
     const key = await request(app)
-      .get(`${route}?page=1`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -143,7 +143,7 @@ describe(`PUT: ${route}`, () => {
 
   it("it should update name of a form", async () => {
     const key = await request(app)
-      .get(`${route}?page=1`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
@@ -159,7 +159,7 @@ describe(`PUT: ${route}`, () => {
 
   it("it should update timezone of a form", async () => {
     const key = await request(app)
-      .get(`${route}?page=1`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)

@@ -4,7 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/auth/token/email";
 
-describe(`GET: ${route}`, () => {
+describe(`GET: ${route}/:token`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).get(
       `${route}/token`,

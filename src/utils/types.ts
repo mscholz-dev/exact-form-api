@@ -94,6 +94,7 @@ export type TFormGetAllData = {
 
 export type TFormGetAllQuery = {
   page: string;
+  trash: string | boolean;
 };
 
 export type TFormCreateItemData = {

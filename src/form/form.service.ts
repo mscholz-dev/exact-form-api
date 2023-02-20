@@ -663,4 +663,64 @@ export default class FormService {
 
     return;
   }
+
+  async recoverItem(
+    key: string,
+    id: string,
+    userId: string,
+  ) {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: userId,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const itemId =
+      await Prisma.form_item.updateMany({
+        where: {
+          id,
+          trash: true,
+        },
+        data: {
+          trash: false,
+          updated_at: new Date(),
+        },
+      });
+
+    if (!itemId.count)
+      throw new AppError("id not found", 400);
+
+    return;
+  }
 }

@@ -134,4 +134,18 @@ router.route("/:key").put(
   ),
 );
 
+// route: recover a form item
+router.route("/:key/recover/:id").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.recoverItem(req, res),
+  ),
+);
+
 export default router;

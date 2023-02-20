@@ -315,6 +315,21 @@ export default class FormValidator extends Validator {
     return schema;
   }
 
+  inspectRecoverItemData(data: object) {
+    const schema = {
+      key: "",
+      id: "",
+    };
+
+    this.inspectData(
+      schema,
+      data,
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   errorMessage(
     id: string,
     value: string,

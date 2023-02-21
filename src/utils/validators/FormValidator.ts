@@ -286,18 +286,28 @@ export default class FormValidator extends Validator {
     return { ...schema, data: secureData };
   }
 
-  inspectDeleteFormData(key: string) {
+  inspectDeleteFormData(
+    key: string,
+    trash: string,
+  ) {
     const schema = {
       key: "",
+      trash: "",
     };
 
     this.inspectData(
       schema,
-      { key },
+      { key, trash },
       this.errorMessage,
     );
 
-    return schema;
+    return {
+      ...schema,
+      trash: this.handleBoolean(
+        "trash",
+        schema.trash,
+      ),
+    };
   }
 
   inspectUpdateFormData(
@@ -376,6 +386,20 @@ export default class FormValidator extends Validator {
     };
   }
 
+  inspectRecoverFormData(key: string) {
+    const schema = {
+      key: "",
+    };
+
+    this.inspectData(
+      schema,
+      { key },
+      this.errorMessage,
+    );
+
+    return schema;
+  }
+
   errorMessage(
     id: string,
     value: string,
@@ -417,6 +441,7 @@ export default class FormValidator extends Validator {
 
       // key
       case "key":
+        if (!value) return "key required";
         return "";
 
       // id

@@ -134,6 +134,20 @@ router.route("/:key").delete(
   ),
 );
 
+// route: recover a form
+router.route("/recover").put(
+  tryCatch(
+    async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => AuthMiddleware.index(req, res, next),
+  ),
+  tryCatch(async (req: Request, res: Response) =>
+    FormController.recoverForm(req, res),
+  ),
+);
+
 // route: update a form
 router.route("/:key").put(
   tryCatch(

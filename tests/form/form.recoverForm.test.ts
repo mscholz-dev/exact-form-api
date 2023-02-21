@@ -4,10 +4,10 @@ import data from "../config/data.js";
 
 const route = "/api/form";
 
-describe(`DELETE: ${route}/:key`, () => {
+describe(`PUT: ${route}/recover`, () => {
   it("it should throw: user cookie not found", async () => {
-    const res = await request(app).delete(
-      `${route}/key`,
+    const res = await request(app).put(
+      `${route}/recover`,
     );
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toBe(
@@ -17,7 +17,7 @@ describe(`DELETE: ${route}/:key`, () => {
 
   it("it should throw: user cookie invalid", async () => {
     const res = await request(app)
-      .delete(`${route}/key`)
+      .put(`${route}/recover`)
       .set("Cookie", [
         `user=${data.validFrJwt}!`,
       ]);
@@ -29,7 +29,7 @@ describe(`DELETE: ${route}/:key`, () => {
 
   it("it should throw: user not found", async () => {
     const res = await request(app)
-      .delete(`${route}/key`)
+      .put(`${route}/recover`)
       .set("Cookie", [
         `user=${data.randomUserJwt}`,
       ]);
@@ -39,75 +39,52 @@ describe(`DELETE: ${route}/:key`, () => {
     );
   });
 
-  it("it should throw: trash required", async () => {
+  it("it should throw: key required", async () => {
     const res = await request(app)
-      .delete(`${route}/${data.objectId}`)
+      .put(`${route}/recover`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     expect(res.statusCode).toBe(400);
-    expect(res.body.message).toBe(
-      "trash required",
-    );
-  });
-
-  it("it should throw: trash invalid", async () => {
-    const res = await request(app)
-      .delete(
-        `${route}/${data.objectId}?trash=invalid`,
-      )
-      .set("Cookie", [`user=${data.validFrJwt}`]);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body.message).toBe(
-      "trash invalid",
-    );
+    expect(res.body.message).toBe("key required");
   });
 
   it("it should throw: owner role required", async () => {
     const res = await request(app)
-      .delete(
-        `${route}/${data.objectId}?trash=false`,
-      )
-      .set("Cookie", [`user=${data.validFrJwt}`]);
-
+      .put(`${route}/recover`)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({ key: data.objectId });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe(
       "owner role required",
     );
   });
 
-  // TODO: need test with adding user to the form group, DO IT LATER
+  // TODO: cannot test because cannot add another user now, DO IT LATER
 
-  let keyTrash = "";
-  it("it should set to trash 2 forms", async () => {
+  it("it should throw: key not found", async () => {
     const key = await request(app)
       .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
-    keyTrash = key.body.forms[0].key;
-
     const res = await request(app)
-      .delete(
-        `${route}/${key.body.forms[0].key}?trash=false`,
-      )
-      .set("Cookie", [`user=${data.validFrJwt}`]);
-
-    expect(res.statusCode).toBe(200);
-
-    const res2 = await request(app)
-      .delete(
-        `${route}/${key.body.forms[1].key}?trash=false`,
-      )
-      .set("Cookie", [`user=${data.validFrJwt}`]);
-
-    expect(res2.statusCode).toBe(200);
+      .put(`${route}/recover`)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({ key: key.body.forms[0].key });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe(
+      "key not found",
+    );
   });
 
-  it("it should delete in trash a form", async () => {
-    const res = await request(app)
-      .delete(`${route}/${keyTrash}?trash=true`)
+  it("it should recover a form", async () => {
+    const key = await request(app)
+      .get(`${route}?page=1&trash=true`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
+    const res = await request(app)
+      .put(`${route}/recover`)
+      .set("Cookie", [`user=${data.validFrJwt}`])
+      .send({ key: key.body.forms[0].key });
     expect(res.statusCode).toBe(200);
   });
 });

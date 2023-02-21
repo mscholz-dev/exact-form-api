@@ -194,6 +194,7 @@ export default class FormService {
     const formId = await Prisma.form.findFirst({
       where: {
         key,
+        trash: false,
       },
       select: {
         id: true,
@@ -346,6 +347,7 @@ export default class FormService {
       await Prisma.form_item.updateMany({
         where: {
           id,
+          trash: false,
         },
         data: {
           trash: true,
@@ -546,7 +548,11 @@ export default class FormService {
     return;
   }
 
-  async deleteForm(key: string, id: string) {
+  async deleteForm(
+    key: string,
+    id: string,
+    trash: boolean,
+  ) {
     const userRole =
       await Prisma.form_user.findMany({
         where: {
@@ -584,12 +590,42 @@ export default class FormService {
         400,
       );
 
-    // delete  form
-    await Prisma.form.deleteMany({
+    // delete permanenlty ?
+    if (trash) {
+      const itemId = await Prisma.form.deleteMany(
+        {
+          where: {
+            key,
+            trash: true,
+          },
+        },
+      );
+
+      if (!itemId.count)
+        throw new AppError(
+          "delete forbidden outside the trash",
+          400,
+        );
+
+      return;
+    }
+
+    const itemId = await Prisma.form.updateMany({
       where: {
         key,
+        trash: false,
+      },
+      data: {
+        trash: true,
+        updated_at: new Date(),
       },
     });
+
+    if (!itemId.count)
+      throw new AppError(
+        "update in trash is forbidden",
+        400,
+      );
 
     return;
   }
@@ -647,6 +683,7 @@ export default class FormService {
       await Prisma.form.updateMany({
         where: {
           key,
+          trash: false,
           NOT: {
             AND: [
               {
@@ -791,6 +828,61 @@ export default class FormService {
 
     if (!itemId.count)
       throw new AppError("id not found", 400);
+
+    return;
+  }
+
+  async recoverForm(key: string, id: string) {
+    const userRole =
+      await Prisma.form_user.findMany({
+        where: {
+          AND: [
+            {
+              user_id: id,
+            },
+            {
+              role: "OWNER",
+            },
+          ],
+        },
+        select: {
+          form: {
+            select: {
+              key: true,
+            },
+          },
+        },
+      });
+
+    if (!userRole)
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    if (
+      !userRole.some(
+        (item) => key === item.form.key,
+      )
+    )
+      throw new AppError(
+        "owner role required",
+        400,
+      );
+
+    const itemId = await Prisma.form.updateMany({
+      where: {
+        key,
+        trash: true,
+      },
+      data: {
+        trash: false,
+        updated_at: new Date(),
+      },
+    });
+
+    if (!itemId.count)
+      throw new AppError("key not found", 400);
 
     return;
   }

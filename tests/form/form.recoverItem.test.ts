@@ -55,12 +55,12 @@ describe(`PUT: ${route}/:key/recover/:id`, () => {
 
   it("it should throw: id invalid", async () => {
     const key = await request(app)
-      .get(`${route}?page=2&trash=false`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
       .put(
-        `${route}/${key.body.forms[0].key}/recover/id`,
+        `${route}/${key.body.forms[7].key}/recover/id`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
@@ -70,12 +70,12 @@ describe(`PUT: ${route}/:key/recover/:id`, () => {
 
   it("it should throw: id not found", async () => {
     const key = await request(app)
-      .get(`${route}?page=2&trash=false`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     const res = await request(app)
       .put(
-        `${route}/${key.body.forms[0].key}/recover/${data.objectId}`,
+        `${route}/${key.body.forms[7].key}/recover/${data.objectId}`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
@@ -87,14 +87,14 @@ describe(`PUT: ${route}/:key/recover/:id`, () => {
   let itemRecoverId = "";
   it("it should recover a form item", async () => {
     const key = await request(app)
-      .get(`${route}?page=2&trash=false`)
+      .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
-    keyItemRecoverId = key.body.forms[0].key;
+    keyItemRecoverId = key.body.forms[7].key;
 
     const items = await request(app)
       .get(
-        `${route}/${key.body.forms[0].key}?page=1&trash=true`,
+        `${route}/${key.body.forms[7].key}?page=1&trash=true`,
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
 

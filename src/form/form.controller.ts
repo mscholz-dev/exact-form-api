@@ -207,14 +207,16 @@ export default class FormController {
     const userCookie: TCookieMiddleware =
       req.cookies.userJwt;
 
-    const { key } =
+    const { key, trash } =
       FormValidator.inspectDeleteFormData(
         req.params.key,
+        req.query.trash as string,
       );
 
     await FormService.deleteForm(
       key,
       userCookie.id,
+      trash,
     );
 
     const jwt = Cookie.signJwt(userCookie);
@@ -290,6 +292,29 @@ export default class FormController {
     await FormService.recoverManyItem(
       schema.key,
       schema.ids,
+      userCookie.id,
+    );
+
+    const jwt = Cookie.signJwt(userCookie);
+
+    res
+      .status(200)
+      .cookie("user", jwt, Cookie.cookieOptions())
+      .end();
+  }
+
+  async recoverForm(req: Request, res: Response) {
+    // get cookie data already validate by db call
+    const userCookie: TCookieMiddleware =
+      req.cookies.userJwt;
+
+    const schema =
+      FormValidator.inspectRecoverFormData(
+        req.body.key,
+      );
+
+    await FormService.recoverForm(
+      schema.key,
       userCookie.id,
     );
 

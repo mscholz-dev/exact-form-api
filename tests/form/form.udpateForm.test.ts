@@ -120,6 +120,9 @@ describe(`PUT: ${route}/:key`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should throw: name or timezone must be different", async () => {
@@ -155,6 +158,9 @@ describe(`PUT: ${route}/:key`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should update timezone of a form", async () => {
@@ -171,5 +177,8 @@ describe(`PUT: ${route}/:key`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

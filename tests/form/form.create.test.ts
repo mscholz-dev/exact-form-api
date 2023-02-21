@@ -125,6 +125,9 @@ describe(`POST: ${route}`, () => {
           locale: data.localeFr,
         });
       expect(res.statusCode).toBe(200);
+      expect(
+        res.headers["set-cookie"][0],
+      ).toContain(data.validFrJwt);
     }
   });
 });

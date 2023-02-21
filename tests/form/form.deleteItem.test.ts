@@ -152,6 +152,9 @@ describe(`DELETE: ${route}/:key/:id`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should delete a trash form item", async () => {
@@ -161,5 +164,8 @@ describe(`DELETE: ${route}/:key/:id`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

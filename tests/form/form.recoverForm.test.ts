@@ -86,5 +86,8 @@ describe(`PUT: ${route}/recover`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`])
       .send({ key: key.body.forms[0].key });
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

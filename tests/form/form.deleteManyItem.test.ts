@@ -190,6 +190,9 @@ describe(`DELETE: ${route}/:key/items`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should delete permanently the first five form items", async () => {
@@ -199,5 +202,8 @@ describe(`DELETE: ${route}/:key/items`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

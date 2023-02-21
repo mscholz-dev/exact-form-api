@@ -93,6 +93,9 @@ describe(`DELETE: ${route}/:key`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
 
     const res2 = await request(app)
       .delete(
@@ -109,5 +112,8 @@ describe(`DELETE: ${route}/:key`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`]);
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

@@ -92,6 +92,9 @@ describe(`GET: ${route}`, () => {
       .get(`${route}?page=1&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.forms.length).toBe(8);
     expect(res.body.countAll).toBe(10);
     expect(res.body.username).toBe(data.username);
@@ -104,6 +107,9 @@ describe(`GET: ${route}`, () => {
       .get(`${route}?page=2&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.forms.length).toBe(2);
     expect(res.body.countAll).toBe(10);
     expect(res.body.username).toBe(data.username);
@@ -116,6 +122,9 @@ describe(`GET: ${route}`, () => {
       .get(`${route}?page=3&trash=false`)
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.forms.length).toBe(0);
     expect(res.body.countAll).toBe(10);
     expect(res.body.username).toBe(data.username);

@@ -207,6 +207,9 @@ describe(`PUT: ${route}/:key/:id`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should throw: data must be different", async () => {

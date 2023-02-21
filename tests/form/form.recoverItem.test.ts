@@ -106,6 +106,9 @@ describe(`PUT: ${route}/:key/recover/:id`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should throw: id not found", async () => {

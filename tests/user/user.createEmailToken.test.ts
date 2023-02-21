@@ -64,6 +64,9 @@ describe(`POST: ${route}`, () => {
       .set("Cookie", [`user=${data.validFrJwt}`])
       .send({ locale: data.localeFr });
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should throw: token already exists", async () => {

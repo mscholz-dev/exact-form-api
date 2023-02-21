@@ -121,6 +121,9 @@ describe(`PUT: ${route}/:key/recover`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 
   it("it should recover 3 form item", async () => {
@@ -149,5 +152,8 @@ describe(`PUT: ${route}/:key/recover`, () => {
       });
 
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
   });
 });

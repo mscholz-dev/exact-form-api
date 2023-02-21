@@ -112,6 +112,9 @@ describe(`GET: ${route}/:key`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.name).toBe(
       "Wobinit Contact Form0",
     );
@@ -133,6 +136,9 @@ describe(`GET: ${route}/:key`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.name).toBe(
       "Wobinit Contact Form0",
     );
@@ -154,6 +160,9 @@ describe(`GET: ${route}/:key`, () => {
       )
       .set("Cookie", [`user=${data.validFrJwt}`]);
     expect(res.statusCode).toBe(200);
+    expect(
+      res.headers["set-cookie"][0],
+    ).toContain(data.validFrJwt);
     expect(res.body.name).toBe(
       "Wobinit Contact Form0",
     );

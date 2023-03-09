@@ -17,6 +17,7 @@ export default class Cookie {
     };
   }
 
+  // TODO: verifier le algo swap fail
   signJwt({ username, email, role }: TCookie) {
     return jwt.sign(
       JSON.stringify({

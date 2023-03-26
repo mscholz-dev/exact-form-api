@@ -4,7 +4,7 @@ import {
   Response,
   NextFunction,
 } from "express";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/index.js";
+import { Prisma } from "@prisma/client";
 import ErrorControllerClass from "../error/error.controller.js";
 
 // classes
@@ -23,7 +23,7 @@ const errorHandler = async (
 ) => {
   if (
     err instanceof
-      PrismaClientKnownRequestError &&
+      Prisma.PrismaClientKnownRequestError &&
     err.code === "P2002"
   ) {
     let errorMessage = "";

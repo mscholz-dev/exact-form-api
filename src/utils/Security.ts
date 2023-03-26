@@ -5,10 +5,7 @@ import argon from "argon2";
 import axios from "axios";
 
 // types
-import {
-  TGeoLocation,
-  TGeoLocationReturn,
-} from "../utils/types.js";
+import { TGeoLocationReturn } from "../utils/types.js";
 
 export default class Security {
   xss(string: string | undefined) {
@@ -20,7 +17,8 @@ export default class Security {
 
     if (!ip) return "";
 
-    return (ip as string).split(",")[0];
+    // prevent spoofing
+    return this.xss((ip as string).split(",")[0]);
   }
 
   createUUID() {
@@ -44,11 +42,13 @@ export default class Security {
   }
 
   getUserAgent(req: Request): string {
-    return req.get("User-Agent") || "";
+    // prevent spoofing
+    return this.xss(req.get("User-Agent") || "");
   }
 
   getRefererUrl(req: Request): string {
-    return req.get("url") || "";
+    // prevent spoofing
+    return this.xss(req.get("url") || "");
   }
 
   async getUserCityRegionCountry(
@@ -68,10 +68,11 @@ export default class Security {
       `https://ipapi.co/${ip}/json`,
     );
 
+    // prevent spoofing
     return {
-      city: data.city || "",
-      region: data.region || "",
-      country: data.country_name || "",
+      city: this.xss(data.city || ""),
+      region: this.xss(data.region || ""),
+      country: this.xss(data.country_name || ""),
     };
   }
 }

@@ -29,7 +29,6 @@ export default class UserController {
 
     const jwt = Cookie.signJwt({
       ...user,
-      role: "CLIENT",
     });
 
     res
@@ -86,7 +85,6 @@ export default class UserController {
 
     const jwt = Cookie.signJwt({
       ...userCookie,
-      username: schema.username,
     });
 
     res
@@ -147,7 +145,6 @@ export default class UserController {
     );
 
     const jwt = Cookie.signJwt({
-      ...userCookie,
       email: schema.newEmail,
     });
 

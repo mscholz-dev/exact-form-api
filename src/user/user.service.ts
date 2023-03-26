@@ -46,7 +46,6 @@ export default class UserService {
       },
       select: {
         email: true,
-        username: true,
       },
     });
 
@@ -63,10 +62,8 @@ export default class UserService {
       },
       select: {
         id: true,
-        username: true,
         email: true,
         password: true,
-        role: true,
         user_ip: {
           select: {
             ip: true,

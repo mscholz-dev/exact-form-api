@@ -9,9 +9,7 @@ export type TUserCreate = {
 };
 
 export type TCookie = {
-  username: string;
   email: string;
-  role: "CLIENT" | "ADMIN" | "SUPER_ADMIN";
 };
 
 export type TCookieMiddleware = {

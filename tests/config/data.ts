@@ -34,39 +34,27 @@ const data = {
 };
 
 const randomUserJwt = Cookie.signJwt({
-  username: data.username,
   email: "random email",
-  role: data.client,
 } as TCookie);
 
 const validFrJwt = Cookie.signJwt({
-  username: data.username,
   email: data.email,
-  role: data.client,
 } as TCookie);
 
 const validFrUpdateOneJwt = Cookie.signJwt({
-  username: `fr.${data.username}`,
   email: data.email,
-  role: data.client,
 } as TCookie);
 
 const validFrUpdateTwoJwt = Cookie.signJwt({
-  username: `fr2.${data.username}`,
   email: data.email,
-  role: data.client,
 } as TCookie);
 
 const validFrUpdateEmailJwt = Cookie.signJwt({
-  username: data.username,
   email: data.email2,
-  role: data.client,
 } as TCookie);
 
 const validEnJwt = Cookie.signJwt({
-  username: `en.${data.username}`,
   email: `en.${data.email}`,
-  role: data.client,
 } as TCookie);
 
 export default {

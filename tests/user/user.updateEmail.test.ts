@@ -4,6 +4,7 @@ import data from "../config/data.js";
 
 const route = "/api/user/email";
 
+// 1. Modification de l'email d'un compte sans cookie d'authentification
 describe(`PUT: ${route}`, () => {
   it("it should throw: user cookie not found", async () => {
     const res = await request(app).put(route);
@@ -13,6 +14,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 2. Modification de l'email d'un compte avec un cookie invalide
   it("it should throw: user cookie invalid", async () => {
     const res = await request(app)
       .put(route)
@@ -25,6 +27,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 3. Modification de l'email d'un compte avec un cookie contenant l'rmail d'un utilisteut inconnu
   it("it should throw: user not found", async () => {
     const res = await request(app)
       .put(route)
@@ -37,6 +40,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 4. Modification de l'email d'un compte sans renseigner la valeur du nouveau mail
   it("it should throw: newEmail required", async () => {
     const res = await request(app)
       .put(route)
@@ -47,6 +51,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 5. Modification de l'email d'un compte avec la valeur du nouveau mail supérieur à 255 caractères
   it("it should throw: newEmail too long", async () => {
     const res = await request(app)
       .put(route)
@@ -58,6 +63,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 6. Modification de l’email d’un compte avec la valeur du nouveau mail n’étant pas du bon format
   it("it should throw: newEmail invalid", async () => {
     const res = await request(app)
       .put(route)
@@ -69,6 +75,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 7. Modification de l’email d’un compte sans renseigner la valeur de la confirmation du nouveau mail
   it("it should throw: newEmail2 required", async () => {
     const res = await request(app)
       .put(route)
@@ -80,6 +87,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 8. Modification de l’email d’un compte avec la valeur de la confirmation du nouveau mail supérieur à 255 caractères
   it("it should throw: newEmail2 too long", async () => {
     const res = await request(app)
       .put(route)
@@ -94,6 +102,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 9. Modification de l’email d’un compte avec la valeur de la confirmation du nouveau mail n’étant pas du bon format
   it("it should throw: newEmail2 invalid", async () => {
     const res = await request(app)
       .put(route)
@@ -108,6 +117,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 10. Modification de l’email d’un compte sans la valeur du token unique
   it("it should throw: token required", async () => {
     const res = await request(app)
       .put(route)
@@ -122,6 +132,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 11. Modification de l’email d’un compte sans la valeur de la langue de la page du client
   it("it should throw: locale required", async () => {
     const res = await request(app)
       .put(route)
@@ -137,6 +148,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 12. Modification de l’email d’un compte avec la valeur de la langue de la page du client invalide (différente de “fr” ou “en”)
   it("it should throw: locale invalid", async () => {
     const res = await request(app)
       .put(route)
@@ -153,6 +165,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 13. Modification de l’email d’un compte avec la valeur du nouveau mail et de la valeur de la confirmation du nouveau mail différentes
   it("it should throw: newEmails not matching", async () => {
     const res = await request(app)
       .put(route)
@@ -169,6 +182,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 14. Modification de l’email d’un compte avec le nouveau mail identique à l’ancien mail
   it("it should throw: newEmail must be different", async () => {
     const res = await request(app)
       .put(route)
@@ -185,6 +199,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 15. Modification de l’email d’un compte avec un token inexistant en base de donnée
   it("it should throw: token not found", async () => {
     const res = await request(app)
       .put(route)
@@ -201,6 +216,7 @@ describe(`PUT: ${route}`, () => {
     );
   });
 
+  // 16. Changement de l’email du compte
   it("it should update email and verify if token not usable", async () => {
     const {
       body: { token },

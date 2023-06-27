@@ -1,6 +1,6 @@
   <h1>🚀 Exact Form API</h1>
 
-  <h2>Prérequis</h2>
+  <h2>⚙️ Prérequis</h2>
   <p>Ce projet est composé d'un front : <a href="https://github.com/mscholz-dev/exact-form">exact-form</a> 🔗</p>
 
   <h2>💻 Technologies Utilisées</h2>

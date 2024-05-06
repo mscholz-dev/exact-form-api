@@ -7,7 +7,10 @@ dotenv.config({
       : ".env",
 });
 import http from "http";
-import express from "express";
+import express, {
+  Request,
+  Response,
+} from "express";
 const app = express();
 const server = http.createServer(app);
 import morgan from "morgan";
@@ -62,6 +65,11 @@ app.use(
 
 // add security headers
 app.use(helmet());
+
+// healthcheck
+app.get("/", (req: Request, res: Response) => {
+  return res.status(200).send("OK");
+});
 
 // api routes
 app.use("/api/user", userRouter);

@@ -3,7 +3,7 @@
   <p>Article : <a href="https://mscholz.dev/projet/05-exact-form" target="_blank">mscholz.dev ▸ Exact Form</a></p>
 
   <h2>⚙️ Prérequis</h2>
-  <p>Ce projet est composé d'un front : <a href="https://github.com/mscholz-dev/exact-form">exact-form</a> 🔗</p>
+  <p>Ce projet est composé d'un front : <a href="https://github.com/mscholz-dev/exact-form" target="_blank">exact-form</a> 🔗</p>
 
   <h2>💻 Technologies Utilisées</h2>
   <ul>
